@@ -6,5 +6,5 @@ Automations in iOS using Javascript via the Scriptable app. Last Updated 04/25/2
 Saves a copy of all current Scriptable scripts to iCloud drive. Original author [mvan231](https://github.com/mvan231).
 
 ## Personal
-[Dog Days]() <br>
+[Dog Days] </br>
 Static widget displaying your dog's latest activity based on log timestamps in Airtable database.
