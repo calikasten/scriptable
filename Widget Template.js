@@ -1,7 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-purple; icon-glyph: object-ungroup;
-// https://dev.to/matthri/create-your-own-ios-widget-with-javascript-5a11
+
 let widget = await createWidget();
 
 // Check where the script is running
