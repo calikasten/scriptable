@@ -60,7 +60,7 @@ function getLaunchDateTime(launchData) {
   // Parse launch date to new date object
   const launchDateTime = new Date(launchData.date_utc)
   return launchDateTime
-}
+};
 
 function displayLaunchDateTime(stack, launchDateTime, precision) {
   // Check if next launch date is precise enough and display different details based on the precision
