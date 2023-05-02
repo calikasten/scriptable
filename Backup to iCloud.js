@@ -34,4 +34,4 @@ function myFunction(item, index){
     ab.write(newDirName+"/"+item, file)
     count++
   }
-}
+};
