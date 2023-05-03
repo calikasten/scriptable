@@ -6,7 +6,10 @@ Automations in iOS using Javascript via the Scriptable app. Last Updated 05/03/2
 Saves a copy of all current Scriptable scripts to iCloud drive. Original author [mvan231](https://github.com/mvan231).
 
 [Static Text Widget](https://github.com/calikasten/scriptable-scripts/blob/main/Static%20Text%20Widget.js) <br>
-A basic widget template for displaying static text.
+A basic template for creating a widget that displays a static text input.
+
+[Display API Response]() <br>
+A basic template for creating a widget that fetches data and displays the response.
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
 A basic widget template for creating a widget by adding content, getting data, displaying fetched data, and then adding it to an iOS home screen based on [these instructions](https://dev.to/matthri/create-your-own-ios-widget-with-javascript-5a11). Original author [matthias](https://github.com/matthri).
