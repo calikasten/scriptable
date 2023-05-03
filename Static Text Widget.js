@@ -1,6 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-gray; icon-glyph: font;
+
 let widget = await createWidget()
 
 // Check where the script is running
@@ -12,7 +13,7 @@ else {
 }
 Script.complete();
 
-// Display widget
+// Create widget
 async function createWidget() {
 	let testWidget = new ListWidget()
   // Add widget background
@@ -22,5 +23,6 @@ async function createWidget() {
 		widgetText.font = Font.boldSystemFont(15)
 		widgetText.textColor = new Color ("#ffffff")
 		widgetText.centerAlignText()
+// Display widget
 return testWidget
-}
+};
