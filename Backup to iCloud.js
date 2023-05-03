@@ -1,37 +1,37 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: deep-gray; icon-glyph: cloud;
-ab = FileManager.iCloud()
-dir=ab.documentsDirectory()
-
+// icon-color: light-gray; icon-glyph: cloud;
+iCloud = FileManager.iCloud()
+directory = iCloud.documentsDirectory()
+​
 const now = new Date()
-const bDirName = "Script Backups"
-const backupTo = `/${bDirName}`
-const newDirName = `${dir}${backupTo}`
-
-ab.createDirectory(newDirName,true)
-
-let a = ab.listContents(dir)
-
-// Provide a container for the script count
-let count = 0
-// For each item found in the directory, perform myFunction
-a.forEach(myFunction)
-
-let aa = new Alert()
-aa.addAction("OK")
-aa.title = "Success"
-aa.message = `${count} scripts backed up to iCloud.`
-aa.present()
-Script.complete()
-
-// Begin functions
-function myFunction(item, index){
-  var ext = (ab.fileExtension(dir+"/"+item))
+const directoryName = "Script Backups"
+const backupLocation = `/${directoryName}`
+const newDirectoryName = `${directory}${backupLocation}`
+​
+// Create new directory location for script backups
+iCloud.createDirectory(newDirectoryName,true)
+	let runBackup = iCloud.listContents(directory)
+	// Count number of scripts backed up to directory
+	let count = 0
+	// For each item found in the directory, perform script backup function
+	runBackup.forEach(backupScript)
+​
+// Begin script backup function
+function backupScript(item, index){
+  var ext = (iCloud.fileExtension(directory+"/"+item))
   if (ext == "js")
   {
-    let file = ab.read(dir+"/"+item)
-    ab.write(newDirName+"/"+item, file)
+    let file = iCloud.read(directory+"/"+item)
+    iCloud.write(newDirectoryName+"/"+item, file)
     count++
   }
-};
+}
+Script.complete();
+​
+// Display confirmation dialogue alert for successful backup
+let dialogue = new Alert()
+	dialogue.addAction("OK")
+	dialogue.title = "Success"
+	dialogue.message = `${count} scripts backed up to iCloud.`
+	dialogue.present()
