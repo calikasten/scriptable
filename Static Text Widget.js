@@ -14,17 +14,29 @@ Script.complete();
 
 // Create widget
 async function createWidget() {
-	let testWidget = new ListWidget()
-  		// Add widget background
-		testWidget.backgroundColor = new Color("#000000");
-	// Add text to a widget
-	let widgetText = testWidget.addText("INSERT TEXT HERE");
-		// Set widget text font and size
-		widgetText.font = Font.boldSystemFont(15)
-		// Set widget text color
-		widgetText.textColor = new Color ("#ffffff")
-		// Set widget text alignment
-		widgetText.centerAlignText()
+let testWidget = new ListWidget()
+
+// Add single, solid color background to widget
+// testWidget.backgroundColor = new Color("#000000")
+
+// Add gradient background to widget
+let gradient = new LinearGradient()
+	gradient.locations = [0 1]
+	gradient.colors = [new Color("000000"), new Color("1c1c1e")]
+	testWidget.backgroundGradient = gradient
+
+// Add text to a widget
+let widgetText = testWidget.addText("INSERT TEXT HERE")
+
+	// Set widget text font and size
+	widgetText.font = Font.boldSystemFont(15)
+	
+	// Set widget text color
+	widgetText.textColor = new Color ("#ffffff")
+		
+	// Set widget text alignment
+	widgetText.centerAlignText()
+	
 // Display widget
 return testWidget
 };
