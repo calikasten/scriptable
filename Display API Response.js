@@ -6,7 +6,7 @@ const API_KEY = "INSERT KEY HERE"
 const APP_ID = "INSERT APP ID HERE"
 const TABLE_NAME = "INSERT TABLE NAME HERE"
 
-// API call
+// Start API call
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1"
 // Make new API call request
 const newRequest = new Request(url)
@@ -15,7 +15,7 @@ const newRequest = new Request(url)
 // Return API response as JSON
 let json = await newRequest.loadJSON()
 
-//Isolate fields and values from API response
+// Isolate fields and values from API response
 const records = json["records"]
 	const fields = records['0']["fields"]
   const string = fields["String"]
@@ -25,6 +25,7 @@ const records = json["records"]
   const singleSelectArray = fields["Single-Select Array"]
 	const multiSelectArray = fields["Multi-Select Array"]
 
+// Start widget UI
 let widget = await createWidget()
 
 // Check where the script is running
