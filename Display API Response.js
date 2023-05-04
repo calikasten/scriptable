@@ -2,9 +2,9 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-gray; icon-glyph: laptop-code;
 // Set API variables
-const API_KEY = "keyZEwuGwnXwQMmCO"
-const APP_ID = "appHEaSiBocpIp1Yw"
-const TABLE_NAME = "Test_Table"
+const API_KEY = "INSERT KEY HERE"
+const APP_ID = "INSERT APP ID HERE"
+const TABLE_NAME = "INSERT TABLE NAME HERE"
 
 // API call
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1"
