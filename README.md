@@ -15,5 +15,5 @@ A basic template for creating a widget that fetches data and displays the respon
 A basic widget template for creating a widget by adding content, getting data, displaying fetched data, and then adding it to an iOS home screen based on [these instructions](https://dev.to/matthri/create-your-own-ios-widget-with-javascript-5a11). Original author [matthias](https://github.com/matthri).
 
 ## Personal
-[Dog Days 2.0] <br>
-View your wiener dog's most recent activities like food, business, and exercise. Version 2.0 is a static Javascript widget using GET requests to Airtable API for latest timestamp for a given activity.
+[Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) <br>
+View the time since your wiener dog's latest activities like business, food, exercise. Version 2.0 is a static Javascript widget that makes requests to the Airtable API to retrieve the latest timestamp for a given activity.
