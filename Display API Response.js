@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-gray; icon-glyph: laptop-code;
 // Set API variables
-const API_KEY = "INSERT KEY HERE"
+const API_KEY = "INSERT API KEY HERE"
 const APP_ID = "INSERT APP ID HERE"
 const TABLE_NAME = "INSERT TABLE NAME HERE"
 
