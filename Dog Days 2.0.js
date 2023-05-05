@@ -2,9 +2,9 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: teal; icon-glyph: paw;
 // Set API variables
-const API_KEY = "keyZEwuGwnXwQMmCO"
-const APP_ID = "app1PnYsdLk3i0N6S"
-const TABLE_NAME = "Activities"
+const API_KEY = "INSERT API KEY"
+const APP_ID = "INSERT APP ID"
+const TABLE_NAME = "INSERT TABLE NAME"
 
 // Lastest 💛 pee timestamp 
 async function timeSinceLastPee() {
