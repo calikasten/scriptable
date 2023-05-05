@@ -66,7 +66,7 @@ const timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 return timeDiff
 };
 
-// Lastest 💧 WATER timestamp 
+// Lastest 💧 water timestamp 
 async function timeSinceLastWater() {
 // Start API call
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1&view=Water"
