@@ -1,7 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-gray; icon-glyph: font;
-let widget = await createWidget()
+const widget = await createWidget()
 
 // Check where the script is running
 if (config.runsInWidget) {
@@ -14,19 +14,19 @@ Script.complete();
 
 // Create widget
 async function createWidget() {
-let testWidget = new ListWidget()
+const testWidget = new ListWidget()
 
 // Add single, solid color background to widget
 // testWidget.backgroundColor = new Color("#000000")
 
 // Add gradient background to widget
-let gradient = new LinearGradient()
+const gradient = new LinearGradient()
 	gradient.locations = [0 1]
 	gradient.colors = [new Color("000000"), new Color("1c1c1e")]
 	testWidget.backgroundGradient = gradient
 
 // Add text to a widget
-let widgetText = testWidget.addText("INSERT TEXT HERE")
+const widgetText = testWidget.addText("INSERT TEXT HERE")
 
 	// Set widget text font and size
 	widgetText.font = Font.boldSystemFont(15)
