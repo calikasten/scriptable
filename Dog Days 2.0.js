@@ -12,16 +12,16 @@ async function timeSinceLastPee() {
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1&view=Pee"
 const newRequest = new Request(url)
 	newRequest.headers = {"Authorization": "Bearer "+API_KEY}
-let json = await newRequest.loadJSON()
+const json = await newRequest.loadJSON()
 	// Isolate fields and values from API response
 	const records = json["records"]
 		const fields = records['0']["fields"]
 		const timestamp = fields["Timestamp"]
 // Get time difference between current time and response timestamp 
-const timestampRaw = new Date(timestamp)
-const now = new Date()
-const timeDiffMS = now - timestampRaw
-const timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
+let timestampRaw = new Date(timestamp)
+let now = new Date()
+let timeDiffMS = now - timestampRaw
+let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
 };
@@ -32,16 +32,16 @@ async function timeSinceLastPoop() {
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1&view=Poop"
 const newRequest = new Request(url)
 	newRequest.headers = {"Authorization": "Bearer "+API_KEY}
-let json = await newRequest.loadJSON()
+const json = await newRequest.loadJSON()
 	// Isolate fields and values from API response
 	const records = json["records"]
 		const fields = records['0']["fields"]
 		const timestamp = fields["Timestamp"]
 // Get time difference between current time and response timestamp 
-const timestampRaw = new Date(timestamp)
-const now = new Date()
-const timeDiffMS = now - timestampRaw
-const timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
+let timestampRaw = new Date(timestamp)
+let now = new Date()
+let timeDiffMS = now - timestampRaw
+let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
 };
@@ -52,16 +52,16 @@ async function timeSinceLastFood() {
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1&view=Food"
 const newRequest = new Request(url)
 	newRequest.headers = {"Authorization": "Bearer "+API_KEY}
-let json = await newRequest.loadJSON()
+const json = await newRequest.loadJSON()
 	// Isolate fields and values from API response
 	const records = json["records"]
 		const fields = records['0']["fields"]
 		const timestamp = fields["Timestamp"]
 // Get time difference between current time and response timestamp 
-const timestampRaw = new Date(timestamp)
-const now = new Date()
-const timeDiffMS = now - timestampRaw
-const timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
+let timestampRaw = new Date(timestamp)
+let now = new Date()
+let timeDiffMS = now - timestampRaw
+let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
 };
@@ -72,16 +72,16 @@ async function timeSinceLastWater() {
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1&view=Water"
 const newRequest = new Request(url)
 	newRequest.headers = {"Authorization": "Bearer "+API_KEY}
-let json = await newRequest.loadJSON()
+const json = await newRequest.loadJSON()
 	// Isolate fields and values from API response
 	const records = json["records"]
 		const fields = records['0']["fields"]
 		const timestamp = fields["Timestamp"]
 // Get time difference between current time and response timestamp 
-const timestampRaw = new Date(timestamp)
-const now = new Date()
-const timeDiffMS = now - timestampRaw
-const timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
+let timestampRaw = new Date(timestamp)
+let now = new Date()
+let timeDiffMS = now - timestampRaw
+let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
 };
@@ -92,22 +92,22 @@ async function timeSinceLastWalk() {
 const url = "https://api.airtable.com/v0/"+APP_ID+"/"+TABLE_NAME+"/?maxRecords=1&view=Exercise"
 const newRequest = new Request(url)
 	newRequest.headers = {"Authorization": "Bearer "+API_KEY}
-let json = await newRequest.loadJSON()
+const json = await newRequest.loadJSON()
 	// Isolate fields and values from API response
 	const records = json["records"]
 		const fields = records['0']["fields"]
 		const timestamp = fields["Timestamp"]
 // Get time difference between current time and response timestamp 
-const timestampRaw = new Date(timestamp)
-const now = new Date()
-const timeDiffMS = now - timestampRaw
-const timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
+let timestampRaw = new Date(timestamp)
+let now = new Date()
+let timeDiffMS = now - timestampRaw
+let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
 };
 
 // Start widget UI
-let widget = await createWidget()
+const widget = await createWidget()
 
 // Check where the script is running
 if (config.runsInWidget) {
@@ -120,16 +120,16 @@ Script.complete();
 
 // Create widget
 async function createWidget() {
-let dogDays = new ListWidget()
+const dogDays = new ListWidget()
 	// Add widget background
-	let gradient = new LinearGradient()
+	const gradient = new LinearGradient()
   	gradient.locations = [0, 1]
   	gradient.colors = [new Color("#000000"), new Color("#1c1c1e")]
   	gradient.startPoint = new Point(0.5, 0)
   	gradient.endPoint = new Point(0.5, 1)
   	dogDays.backgroundGradient = gradient
 	// Add widget heading	
-	let heading = dogDays.addText("Barley 🐶")
+	const heading = dogDays.addText("Barley 🐶")
   	heading.centerAlignText()
   	heading.font = Font.semiboldSystemFont(15)
   	heading.textColor = new Color("#ffffff")
