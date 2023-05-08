@@ -24,7 +24,7 @@ let timeDiffMS = now - timestampRaw
 let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
-};
+}
 
 // Lastest 💩 poop timestamp
 async function timeSinceLastPoop() {
@@ -44,7 +44,7 @@ let timeDiffMS = now - timestampRaw
 let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
-};
+}
 
 // Latest 🍗 food timestamp
 async function timeSinceLastFood() {
@@ -64,7 +64,7 @@ let timeDiffMS = now - timestampRaw
 let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
-};
+}
 
 // Lastest 💧 water timestamp 
 async function timeSinceLastWater() {
@@ -84,7 +84,7 @@ let timeDiffMS = now - timestampRaw
 let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
-};
+}
 
 // Latest 🚶‍♀️ walk timestamp
 async function timeSinceLastWalk() {
@@ -104,7 +104,7 @@ let timeDiffMS = now - timestampRaw
 let timeDiff = (timeDiffMS/(1000*60*60)).toFixed(2)
 // Function returns the time
 return timeDiff
-};
+}
 
 // Start widget UI
 const widget = await createWidget()
