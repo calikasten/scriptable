@@ -42,7 +42,7 @@ async function createWidget() {
 const apiResponseWidget = new ListWidget()
 			
 // Add API responses to the widget
-const stringResponse = apiResponseWidget.addText(string)
+let stringResponse = apiResponseWidget.addText(string)
 	stringResponse.centerAlignText()
 
 // Display widget
