@@ -30,7 +30,7 @@ function backupScript(item, index){
 Script.complete();
 
 // Display confirmation dialogue alert for successful backup
-let dialogue = new Alert()
+const dialogue = new Alert()
 	dialogue.addAction("OK")
 	dialogue.title = "Success"
 	dialogue.message = `${count} scripts backed up to iCloud.`
