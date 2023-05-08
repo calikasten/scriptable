@@ -13,7 +13,7 @@ const newRequest = new Request(url)
 	// Define query headers and specify Bearer token for authorization
 	newRequest.headers = {"Authorization": "Bearer "+API_KEY}
 // Return API response as JSON
-let json = await newRequest.loadJSON()
+const json = await newRequest.loadJSON()
 
 // Isolate fields and values from API response
 const records = json["records"]
@@ -26,7 +26,7 @@ const records = json["records"]
 	const multiSelectArray = fields["Multi-Select Array"]
 
 // Start widget UI
-let widget = await createWidget()
+const widget = await createWidget()
 
 // Check where the script is running
 if (config.runsInWidget) {
@@ -39,10 +39,10 @@ Script.complete();
 
 // Create widget
 async function createWidget() {
-let apiResponseWidget = new ListWidget()
+const apiResponseWidget = new ListWidget()
 			
 // Add API responses to the widget
-let stringResponse = apiResponseWidget.addText(string)
+const stringResponse = apiResponseWidget.addText(string)
 	stringResponse.centerAlignText()
 
 // Display widget
