@@ -122,12 +122,7 @@ Script.complete();
 async function createWidget() {
 const dogDays = new ListWidget()
 	// Add widget background
-	const gradient = new LinearGradient()
-  	gradient.locations = [0, 1]
-  	gradient.colors = [new Color("#000000"), new Color("#1c1c1e")]
-  	gradient.startPoint = new Point(0.5, 0)
-  	gradient.endPoint = new Point(0.5, 1)
-  	dogDays.backgroundGradient = gradient
+  	dogDays.backgroundColor = new Color("#1C1B1D")
 	// Add widget heading	
 	const heading = dogDays.addText("Barley 🐶")
   	heading.centerAlignText()
