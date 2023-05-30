@@ -22,7 +22,7 @@ const testWidget = new ListWidget()
 // Add gradient background to widget
 const gradient = new LinearGradient()
 	gradient.locations = [0 1]
-	gradient.colors = [new Color("000000"), new Color("1c1c1e")]
+	gradient.colors = [new Color("000000"), new Color("#1C1B1D")]
 	testWidget.backgroundGradient = gradient
 
 // Add text to a widget
