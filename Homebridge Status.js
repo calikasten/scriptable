@@ -1308,6 +1308,7 @@ async function getPersistedObject(
   return initialObjectToPersist;
 }
 
+
 function persistObject(object, path) {
   let raw = JSON.stringify(object, null, 2);
   fileManager.writeString(path, raw);
