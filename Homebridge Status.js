@@ -15,7 +15,7 @@ class Configuration {
   notificationIntervalInDays = 1;
   disableStateBackToNormalNotifications = true;
   fileManagerMode = "ICLOUD";
-  temperatureUnitConfig = "FARENHEIT";
+  temperatureUnitConfig = "FAHRENHEIT";
   requestTimeoutInterval = 15;
   pluginsOrSwUpdatesToIgnore = [];
   adaptToLightOrDarkMode = true;
@@ -1105,12 +1105,12 @@ function getTemperatureString(temperatureInCelsius) {
   if (temperatureInCelsius === undefined || temperatureInCelsius < 0)
     return undefined;
 
-  if (CONFIGURATION.temperatureUnitConfig === "FAHRENHEIT") {
+  if (CONFIGURATION.temperatureUnitConfig === "CELSIUS") {
+    return getAsRoundedString(temperatureInCelsius, 1) + "°C";
+  } else {
     return (
       getAsRoundedString(convertToFahrenheit(temperatureInCelsius), 1) + "°F"
     );
-  } else {
-    return getAsRoundedString(temperatureInCelsius, 1) + "°C";
   }
 }
 
