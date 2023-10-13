@@ -5,7 +5,7 @@ Automations in iOS using Javascript via the Scriptable app. Last Updated 10/13/2
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
 Saves a copy of all current Scriptable scripts to iCloud drive. Original author [mvan231](https://github.com/mvan231).
 
-[JSON Viewer]() <br>
+[JSON Viewer](https://github.com/calikasten/scriptable/blob/main/JSON%20Viewer.js) <br>
 View JSON object based on file, file URL, or plain text input.
 
 [Static Text Widget](https://github.com/calikasten/scriptable-scripts/blob/main/Static%20Text%20Widget.js) <br>
