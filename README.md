@@ -6,7 +6,7 @@ Automations in iOS using Javascript via the Scriptable app. Last Updated 10/13/2
 Saves a copy of all current Scriptable scripts to iCloud drive. Original author [mvan231](https://github.com/mvan231).
 
 [JSON Viewer](https://github.com/calikasten/scriptable/blob/main/JSON%20Viewer.js) <br>
-View JSON object based on file, file URL, or plain text input.
+View JSON object based on file, file URL, or plain text input. Modified from Scriptable gallery.
 
 [Static Text Widget](https://github.com/calikasten/scriptable-scripts/blob/main/Static%20Text%20Widget.js) <br>
 A basic template for creating a widget that displays a static text input.
