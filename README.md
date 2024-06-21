@@ -22,8 +22,10 @@ A basic widget template for creating a widget by adding content, getting data, d
 View the time since your wiener dog's latest activities like business, food, exercise. Version 2.0 is a Javascript widget that makes requests to the Airtable API to retrieve the latest timestamp for a given activity. <br>
 ![](https://github.com/calikasten/scriptable-scripts/blob/main/images/Dog%20Days%202.0.jpg)
 
-[F1: Next Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
-View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95).
-
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/Homebridge%20Status.js) <br>
 Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani).
+![](https://github.com/calikasten/scriptable-scripts/blob/main/images/Dog%20Days%202.0.jpg)
+
+[Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
+View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95).
+![](https://github.com/calikasten/scriptable-scripts/blob/main/images/Dog%20Days%202.0.jpg)
