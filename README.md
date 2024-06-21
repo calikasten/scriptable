@@ -20,7 +20,7 @@ A basic widget template for creating a widget by adding content, getting data, d
 ## Personal
 [Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) <br>
 View the time since your wiener dog's latest activities like business, food, exercise. Version 2.0 is a Javascript widget that makes requests to the Airtable API to retrieve the latest timestamp for a given activity. <br>
-![](https://github.com/calikasten/scriptable/blob/main/images/Dog%20Days%202.0.jpg)
+![](https://github.com/calikasten/scriptable/blob/main/images/Dog%20Days%202.1.jpg)
 
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/Homebridge%20Status.js) <br>
 Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani). <br>
