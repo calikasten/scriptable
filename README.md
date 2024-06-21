@@ -23,9 +23,9 @@ View the time since your wiener dog's latest activities like business, food, exe
 ![](https://github.com/calikasten/scriptable-scripts/blob/main/images/Dog%20Days%202.0.jpg)
 
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/Homebridge%20Status.js) <br>
-Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani).
+Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani). <br>
 ![](https://github.com/calikasten/scriptable-scripts/blob/main/images/Dog%20Days%202.0.jpg)
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
-View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95).
+View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
 ![](https://github.com/calikasten/scriptable-scripts/blob/main/images/Dog%20Days%202.0.jpg)
