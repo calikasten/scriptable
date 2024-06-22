@@ -1,6 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: red; icon-glyph: rocket;
+
 // https://dev.to/matthri/create-your-own-ios-widget-with-javascript-5a11
 
 let widget = await createWidget();
