@@ -7,17 +7,6 @@ const API_KEY = "<INSERT API KEY HERE>";
 const APP_ID = "<INSERT APP ID HERE>";
 const TABLE_NAME = "<INSERT TABLE NAME HERE>";
 
-// Display widget
-let widget = await createWidget();
-
-// Check where the script is running and run in widget
-if (config.runsInWidget) {
-  Script.setWidget(widget)
-} else {
-  widget.presentSmall()
-}
-Script.complete();
-
 // Begin functions to get data from API
 
 // Lastest 💛 pee timestamp
@@ -194,3 +183,14 @@ async function createWidget() {
   // Display widget
   return dogDays
 };
+
+// Display widget
+let widget = await createWidget();
+
+// Check where the script is running and run in widget
+if (config.runsInWidget) {
+  Script.setWidget(widget)
+} else {
+  widget.presentSmall()
+}
+Script.complete();
