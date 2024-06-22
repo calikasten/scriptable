@@ -136,29 +136,19 @@ function createWidget(data) {
     		var [d, h, m] = getCountdown(eventTime)
         
     		// Add remaining days
-    		var remainingDays = leftColumnBottomRow.addText(d)
+    		var remainingDays = leftColumnBottomRow.addText(d + ":")
     		remainingDays.textColor = Color.black()
     		remainingDays.font = Font.semiboldSystemFont(18)
-    		var days = leftColumnBottomRow.addText("D ")
-    		days.textColor = Color.black()
-    		days.font = Font.semiboldSystemFont(10)
     
     		// Add remaining hours
-    		var remainingHours = leftColumnBottomRow.addText(h)
+    		var remainingHours = leftColumnBottomRow.addText(h + ":")
     		remainingHours.textColor = Color.black()
     		remainingHours.font = Font.semiboldSystemFont(18)
-    		var hours = leftColumnBottomRow.addText("H ")
-    		hours.textColor = Color.black()
-    		hours.font = Font.semiboldSystemFont(10)
         
     		// Add remaining minutes
     		var remainingMinutes = leftColumnBottomRow.addText(m)
     		remainingMinutes.textColor = Color.black()
     		remainingMinutes.font = Font.semiboldSystemFont(18)
-    		var minutes = leftColumnBottomRow.addText("M")
-    		minutes.textColor = Color.black()
-    		minutes.font = Font.semiboldSystemFont(10)
-    		leftColumnTopRow.addSpacer(4)
     
     		// Add next race event date and time
     		var dateObj = new Date(eventTime)
