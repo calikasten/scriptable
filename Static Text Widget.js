@@ -5,17 +5,6 @@
 // Define variables
 const STATIC_TEXT = "<INSERT TEXT HERE>"
 
-// Display widget
-let widget = await createWidget();
-
-// Check where the script is running
-if (config.runsInWidget) {
-	Script.setWidget(widget);
-} else {
-	widget.presentSmall();
-}
-Script.complete();
-
 // Create widget
 async function createWidget() {
 	const newWidget = new ListWidget();
@@ -44,3 +33,13 @@ async function createWidget() {
 // Display widget
 return newWidget;
 }
+
+let widget = await createWidget();
+
+// Check where the script is running
+if (config.runsInWidget) {
+	Script.setWidget(widget);
+} else {
+	widget.presentSmall();
+}
+Script.complete();
