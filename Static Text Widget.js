@@ -2,6 +2,10 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-gray; icon-glyph: font;
 
+// Define variables
+const STATIC_TEXT = "<INSERT TEXT HERE>"
+
+// Display widget
 let widget = await createWidget();
 
 // Check where the script is running
@@ -26,7 +30,7 @@ async function createWidget() {
 	newWidget.backgroundGradient = gradient;
 	
 	// Add text to a widget
-	const widgetText = newWidget.addText("INSERT TEXT HERE");
+	const widgetText = newWidget.addText(STATIC_TEXT);
 	
 	// Set widget text font and size 
 	widgetText.font = Font.boldSystemFont(15);
