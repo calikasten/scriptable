@@ -1,12 +1,13 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-blue; icon-glyph: magic;
+
 let configurationFileName = "<INSERT CONFIG NAME.json>";
 const usePersistedConfiguration = true;
 const overwritePersistedConfig = false;
 const CONFIGURATION_JSON_VERSION = 3;
 
-// === Configuration setup
+// Begin configuration setup
 class Configuration {
   hbServiceMachineBaseUrl = "<INSERT IP ADDRESS AND PORT>";
   userName = "<INSERT HOMEBRIDGE USERNAME>";
@@ -114,7 +115,7 @@ class Configuration {
   dateFontSize = 7;
   notificationJsonFileName = "notificationState.json";
 }
-// === End configuration setup
+// End of configuration setup
 
 let CONFIGURATION = new Configuration();
 const noAuthUrl = () =>
@@ -244,7 +245,7 @@ class HomeBridgeStatus {
   }
 }
 
-// === Create Widget
+// Begin widget creation
 await initializeFileManager_Configuration_TimeFormatter_Fonts_AndToken();
 if (token === UNAVAILABLE) {
   await showNotAvailableWidget();
@@ -261,7 +262,7 @@ await handleNotifications(
 await createAndShowWidget(homeBridgeStatus);
 return;
 
-// === End widget creation
+// End of widget creation
 
 async function initializeFileManager_Configuration_TimeFormatter_Fonts_AndToken() {
   fileManager =
@@ -591,7 +592,7 @@ async function buildUsualGui(widget, homeBridgeStatus) {
 
     widget.addSpacer(10);
 
-    // === Display last refresh timestamp
+    // Display last refresh timestamp
     let updatedAt = addStyledText(
       widget,
       "Last refreshed: " + timeFormatter.string(new Date()),
