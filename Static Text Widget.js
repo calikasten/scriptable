@@ -30,8 +30,8 @@ async function createWidget() {
 	// Set widget text alignment
 	widgetText.centerAlignText();
 	
-// Display widget
-return newWidget;
+	// Display widget
+	return newWidget;
 }
 
 let widget = await createWidget();
