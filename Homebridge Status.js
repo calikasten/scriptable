@@ -894,7 +894,7 @@ async function getAuthToken() {
     return UNAVAILABLE;
   }
   if (authData.access_token) {
-    // no credentials needed
+    // No credentials needed
     return authData.access_token;
   }
 
@@ -1243,7 +1243,7 @@ function isTimeToNotifyAgain(dateToCheck) {
   let now = new Date();
   let timeBetweenDates = parseInt(
     (now.getTime() - dateInThePast.getTime()) / 1000
-  ); // seconds
+  ); // Seconds
   return (
     timeBetweenDates > CONFIGURATION.notificationIntervalInDays * 24 * 60 * 60
   );
@@ -1303,7 +1303,7 @@ async function getPersistedObject(
     }
   }
   if (createIfNotExisting) {
-    // create a new state json
+    // Create a new state JSON
     persistObject(initialObjectToPersist, path);
   }
   return initialObjectToPersist;
