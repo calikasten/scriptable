@@ -7,8 +7,7 @@ let widget = await createWidget();
 // Check where the script is running
 if (config.runsInWidget) {
 	Script.setWidget(widget);
-} 
-else {
+} else {
 	widget.presentSmall();
 }
 Script.complete();
