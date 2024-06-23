@@ -1,5 +1,5 @@
 # Scriptable
-Automations in iOS using Javascript via the Scriptable app. Last Updated 10/13/2023.
+Automations in iOS using Javascript via the Scriptable app. Last Updated 06/23/2024.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
