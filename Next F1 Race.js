@@ -31,7 +31,7 @@ const data = await getData();
 
 	// Get flag of race country
 	var raceCountryName = data.race.meetingCountryName;
-  // Convert whitespace in country name to "-" characters for URL
+  	// Convert whitespace in country name to "-" characters for URL
 	var country = raceCountryName.toLowerCase().replace(/\s/, "-");
 	var countryFlagUrl = "https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Flags%2016x9/" + country + "-flag.png";
 	var fetchCountryFlag = new Request(countryFlagUrl);
@@ -88,29 +88,30 @@ function createWidget(data) {
     const widget = new ListWidget();
     
     		// Set widget padding
-				widget.setPadding(0, 0, 0, 0);
+		widget.setPadding(0, 0, 0, 0);
     		// Set widget background
-				widget.backgroundColor = Color.white();
+		widget.backgroundColor = Color.white();
     		// Set widget accent color
-				const accentColor = new Color("e10600");
+		const accentColor = new Color("e10600");
 
-				// Add header banner with race country name, race country flag, and F1 logo
+		// Add header banner with race country name, race country flag, and F1 logo
     		const header = widget.addStack();
     		header.backgroundColor = accentColor;
-    		header.setPadding(12, 16, 12, 16);
+    		header.setPadding(22, 20, 12, 16);
 				
-				const flag = header.addImage(raceCountryFlag);
-    		flag.imageSize = new Size(35, 25);
+		const flag = header.addImage(raceCountryFlag);
+    		flag.imageSize = new Size(45, 30);
     		flag.cornerRadius = 4;
     		flag.borderColor = Color.white();
     		flag.borderWidth = 2;
 				
-				header.addSpacer(8);
+		header.addSpacer(8);
 				
-    		// Add race name
-    		const raceCountry = header.addText(raceName);
-    		raceCountry.textColor = Color.white();
-    		raceCountry.font = Font.boldSystemFont(12);
+    		// Add official race name
+    		const officialRaceName = header.addText(raceName);
+    		officialRaceName.textColor = Color.white();
+    		officialRaceName.font = Font.boldSystemFont(12);
+		officialRaceName.centerAlignText;
     
     		header.addSpacer();
     
@@ -174,10 +175,10 @@ function createWidget(data) {
     		nextEventTime.textColor = Color.black();
     		nextEventTime.font = Font.regularSystemFont(12);
     		
-				leftColumn.addSpacer();
+		leftColumn.addSpacer();
     		leftColumnTopRow.addSpacer();
         
-        // Add image of race track circuit
+        	// Add image of race track circuit
     		var raceCircuitImage = leftColumn.addImage(trackImage);
     		raceCircuitImage.imageSize = new Size(120, 100);
     
