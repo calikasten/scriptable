@@ -28,4 +28,4 @@ Configured for my home with most comments removed. Original author [lwitzani](ht
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
-![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/af9f5169-8ecc-4506-aa15-3a236bcd3fa0)
+![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/54941f95-bab3-46f6-85cc-f3be752eac68)
