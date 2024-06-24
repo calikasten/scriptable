@@ -59,8 +59,8 @@ const data = await getData();
 			break;
 		}
     	}
-    return nextEvent;
-};
+    	return nextEvent;
+	};
 
 // Calculate countdown until rased based on date difference
 function getCountdown(dateStr) {
