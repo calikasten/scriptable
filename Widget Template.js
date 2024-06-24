@@ -4,18 +4,6 @@
 
 // https://dev.to/matthri/create-your-own-ios-widget-with-javascript-5a11
 
-let widget = await createWidget();
-
-// Check where the script is running
-if (config.runsInWidget) {
-  // Runs inside a widget so add it to the homescreen widget
-  Script.setWidget(widget);
-} else {
-  // Show the medium widget inside the app
-  widget.presentSmall();
-}
-Script.complete();
-
 async function createWidget() {
   // Create new empty ListWidget instance
   let listwidget = new ListWidget();
@@ -91,3 +79,16 @@ function addDateText(stack, text) {
   dateText.font = Font.semiboldSystemFont(15);
   dateText.textColor = new Color("#ffffff");
 }
+
+// Display widget
+let widget = await createWidget();
+
+// Check where the script is running
+if (config.runsInWidget) {
+  // Runs inside a widget when added to the home screen
+  Script.setWidget(widget);
+} else {
+  // Otherwise show the small widget preview inside the Scriptable app
+  widget.presentSmall();
+}
+Script.complete();
