@@ -108,7 +108,7 @@ function createWidget(data) {
 		header.addSpacer();
 				
     		// Add official race name
-   		 const officialRaceName = header.addText(raceName);
+   		const officialRaceName = header.addText(raceName);
     		officialRaceName.textColor = Color.white();
     		officialRaceName.font = Font.boldSystemFont(12);
 		officialRaceName.centerAlignText();
