@@ -187,14 +187,14 @@ function createWidget(data) {
 }
 
 // Display widget
-const nextF1Race = createWidget(data);
+let widget = createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
 	// Run inside a widget when added to the home screen
-	Script.setWidget(nextF1Race);
+	Script.setWidget(widget);
 } else {
 	// Otherwise show the medium widget preview inside the Scriptable app
-    	nextF1Race.presentMedium();
+    	widget.presentMedium();
 }
 Script.complete();
