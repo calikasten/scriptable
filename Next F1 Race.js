@@ -130,7 +130,7 @@ function createWidget(data) {
 		var event = getNextEvent(events);
 		var eventTime = event.startTime + event.gmtOffset;
     
-    		var nextEventName = leftColumnTopRow.addText(event.description);
+    		const nextEventName = leftColumnTopRow.addText(event.description);
     		nextEventName.textColor = accentColor;
     		nextEventName.font = Font.boldSystemFont(16);
     
@@ -139,26 +139,26 @@ function createWidget(data) {
     		leftColumnBottomRow.bottomAlignContent();
     		leftColumnBottomRow.setPadding(8, 0, 0, 0);
     
-   		 var [d, h, m] = getCountdown(eventTime);
+   		var [d, h, m] = getCountdown(eventTime);
         
     		// Add remaining days
-    		var remainingDays = leftColumnBottomRow.addText(d + ":");
+    		const remainingDays = leftColumnBottomRow.addText(d + ":");
     		remainingDays.textColor = Color.black();
-   		 remainingDays.font = Font.semiboldSystemFont(18);
+   		remainingDays.font = Font.semiboldSystemFont(18);
     
     		// Add remaining hours
-    		var remainingHours = leftColumnBottomRow.addText(h + ":");
+    		const remainingHours = leftColumnBottomRow.addText(h + ":");
     		remainingHours.textColor = Color.black();
     		remainingHours.font = Font.semiboldSystemFont(18);
         
 		// Add remaining minutes
-    		var remainingMinutes = leftColumnBottomRow.addText(m);
+    		const remainingMinutes = leftColumnBottomRow.addText(m);
     		remainingMinutes.textColor = Color.black();
     		remainingMinutes.font = Font.semiboldSystemFont(18);
     		leftColumnTopRow.addSpacer(4);
     
     		// Add next race event date and time
-    		var dateObj = new Date(eventTime);
+    		const dateObj = new Date(eventTime);
     		var timeOptions1 = {
 			weekday: "long",
     		}
@@ -171,7 +171,7 @@ function createWidget(data) {
     		var timeStr = Intl.DateTimeFormat("en", timeOptions2).format(dateObj);
     		var dateStr = weekday + ", " + timeStr;
     		if (!eventTime) dateStr = "";
-    		var nextEventTime = leftColumnTopRow.addText(dateStr);
+    		const nextEventTime = leftColumnTopRow.addText(dateStr);
     		nextEventTime.textColor = Color.black();
     		nextEventTime.font = Font.regularSystemFont(12);
     		
@@ -179,7 +179,7 @@ function createWidget(data) {
     		leftColumnTopRow.addSpacer();
     
 		// Add image of race track circuit
-    		var raceCircuitImage = leftColumn.addImage(trackImage);
+    		const raceCircuitImage = leftColumn.addImage(trackImage);
     		raceCircuitImage.imageSize = new Size(120, 100);
     
     		// Return customized widget UI
