@@ -34,12 +34,15 @@ async function createWidget() {
 	return newWidget;
 }
 
+// Display widget
 let widget = await createWidget();
 
 // Check where the script is running
 if (config.runsInWidget) {
+	// Run inside a widget when added to the home screen
 	Script.setWidget(widget);
 } else {
+	// Otherweise show the small widget preview inside the Scriptable app
 	widget.presentSmall();
 }
 Script.complete();
