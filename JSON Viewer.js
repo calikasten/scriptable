@@ -1,6 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: file-code; share-sheet-inputs: file-url, url, plain-text;
+
 // Trigger this script via the share sheet with a URL input
 let url = args.urls[0];
 let fileURL = args.fileURLs[0];
