@@ -45,21 +45,21 @@ const data = await getData();
 
 	// Get next race date
 	function getNextEvent(events) {
-    	events.sort((a, b) => (a.startTime < b.startTime) ? -1 : 1);
-    	var nextEvent = {
-	        description: "Race Today",
-	        startTime: false,
-	        gmtOffset: 0,
-    	} 
-    	var now  = new Date();
-    	for (let event of events) {
-		var startTime = new Date(event.startTime + event.gmtOffset);
-		if (startTime > now) {
-			nextEvent = event;
-			break;
-		}
-    	}
-    	return nextEvent;
+    		events.sort((a, b) => (a.startTime < b.startTime) ? -1 : 1);
+    		var nextEvent = {
+	        	description: "Race Today",
+	        	startTime: false,
+	        	gmtOffset: 0,
+    		} 
+    		var now  = new Date();
+    		for (let event of events) {
+			var startTime = new Date(event.startTime + event.gmtOffset);
+			if (startTime > now) {
+				nextEvent = event;
+				break;
+			}
+    		}
+	return nextEvent;
 	};
 
 // Calculate countdown until rased based on date difference
