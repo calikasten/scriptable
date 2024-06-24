@@ -189,9 +189,11 @@ let widget = await createWidget();
 
 // Check where the script is running
 if (config.runsInWidget) {
+  
   // Run inside a widget when added to the home screen
   Script.setWidget(widget);
 } else {
+  
   // Otherwise show the medium widget preview inside the Scriptable app
   widget.presentSmall();
 }
