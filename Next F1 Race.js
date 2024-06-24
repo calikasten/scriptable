@@ -9,11 +9,11 @@ const LOCALE = "";
 // Function to get data from API
 async function getData() {
 	const url = "https://api.formula1.com/v1/event-tracker";
-  const newRequest = await new Request(url);
-  newRequest.headers = {
+	const newRequest = await new Request(url);
+ 	newRequest.headers = {
 		apikey: API_KEY,
 		locale: LOCALE,
-    }
+    	}
 	const response = await newRequest.loadJSON();
 	return response;
 }
