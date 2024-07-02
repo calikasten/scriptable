@@ -4,10 +4,10 @@
 
 // Function to get data from API
 async function getData() {
-  	const url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming";
+	const url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming";
   	const newRequest = await new Request(url);
-    const response = await newRequest.loadJSON();
-    return response;
+    	const response = await newRequest.loadJSON();
+    	return response;
 }
 
 // Define variables from API response
