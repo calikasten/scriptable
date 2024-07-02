@@ -1,3 +1,7 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: orange; icon-glyph: space-shuttle;
+
 // Function to get data from API
 async function getData() {
   	const url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming";
