@@ -1,5 +1,5 @@
 # Scriptable
-Automations in iOS using Javascript via the Scriptable app. Last Updated 07/01/2024.
+Automations in iOS using Javascript via the Scriptable app. Last Updated 07/07/2024.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
@@ -22,7 +22,8 @@ Configured for my home with most comments removed. Original author [lwitzani](ht
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
-![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/54941f95-bab3-46f6-85cc-f3be752eac68) ![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/5441f9ee-bab5-4fa1-bc8d-dfb12277af49)
+![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/5441f9ee-bab5-4fa1-bc8d-dfb12277af49) ![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/502e3cd5-3dfc-43a0-b46d-89d8112cf8e8)
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
 View details for the next rocket launch.
+
