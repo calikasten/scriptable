@@ -25,5 +25,5 @@ View details for the next F1 race and race weekend events. Original author [FeBe
 ![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/502e3cd5-3dfc-43a0-b46d-89d8112cf8e8)
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
-View details for the next rocket launch.
+View details for the next rocket launch. <br>
 ![Next Rocket Launch](https://github.com/user-attachments/assets/4848277f-742b-4284-bd79-a55caed050c3)
