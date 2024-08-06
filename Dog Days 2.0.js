@@ -5,7 +5,7 @@
 // Set API variables
 const API_KEY = "<INSERT API KEY HERE>";
 const APP_ID = "<INSERT APP ID HERE>";
-const TABLE_NAME = "<INSERT TABLE NAME HERE>";
+const TABLE_ID = "<INSERT TABLE ID HERE>";
 
 // Begin functions to get data from API
 
@@ -14,7 +14,7 @@ async function timeSinceLastPee() {
   
   // Start API call
   const url =
-    "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_NAME + "/?maxRecords=1&view=Pee";
+    "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1&view=Pee";
   const newRequest = new Request(url);
   newRequest.headers = { Authorization: "Bearer " + API_KEY };
   const json = await newRequest.loadJSON();
@@ -38,7 +38,7 @@ async function timeSinceLastPee() {
 async function timeSinceLastPoop() {
   
   // Start API call
-  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_NAME + "/?maxRecords=1&view=Poop";
+  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1&view=Poop";
   const newRequest = new Request(url);
   newRequest.headers = { Authorization: "Bearer " + API_KEY };
   const json = await newRequest.loadJSON();
@@ -62,7 +62,7 @@ async function timeSinceLastPoop() {
 async function timeSinceLastFood() {
   
   // Start API call
-  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_NAME + "/?maxRecords=1&view=Food";
+  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1&view=Food";
   const newRequest = new Request(url);
   newRequest.headers = { Authorization: "Bearer " + API_KEY };
   const json = await newRequest.loadJSON();
@@ -86,7 +86,7 @@ async function timeSinceLastFood() {
 async function timeSinceLastWater() {
   
   // Start API call
-  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_NAME + "/?maxRecords=1&view=Water";
+  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1&view=Water";
   const newRequest = new Request(url);
   newRequest.headers = { Authorization: "Bearer " + API_KEY };
   const json = await newRequest.loadJSON();
@@ -110,7 +110,7 @@ async function timeSinceLastWater() {
 async function timeSinceLastWalk() {
   
   // Start API call
-  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_NAME + "/?maxRecords=1&view=Exercise";
+  const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1&view=Exercise";
   const newRequest = new Request(url);
   newRequest.headers = { Authorization: "Bearer " + API_KEY };
   const json = await newRequest.loadJSON();
