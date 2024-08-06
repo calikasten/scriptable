@@ -3,21 +3,21 @@
 // icon-color: red; icon-glyph: rocket;
 
 // Set API variables
-const API_KEY = "";
+const API_TOKEN = "";
 const APP_ID = "";
-const TABLE_NAME = "";
+const TABLE_ID = "";
 
 // Function to get data from API
 async function getData() {
   
   // Query URL
-	const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_NAME + "/?maxRecords=1"
+	const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1"
   
   // Make API request
   const newRequest = new Request(url);
   
   // Authenticate for API
-  newRequest.headers = { Authorization: "Bearer " + API_KEY };
+  newRequest.headers = { Authorization: "Bearer " + API_TOKEN };
   
   // Return API response as JSON
 	const response = await newRequest.loadJSON();
