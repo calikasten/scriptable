@@ -2,16 +2,15 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: cloud;
 
+// Set  variables
 iCloud = FileManager.iCloud();
 directory = iCloud.documentsDirectory();
-
-const now = new Date();
-const directoryName = "Script Backups";
-const backupLocation = `/${directoryName}`;
-const newDirectoryName = `${directory}${backupLocation}`;
+const folderName = "Script Backups";
+const folderLocation = `/${folderName}`;
+const directoryPath = `${directory}${folderLocation}`;
 
 // Create new directory location for script backups
-iCloud.createDirectory(newDirectoryName, true);
+iCloud.createDirectory(directoryPath, true);
 let runBackup = iCloud.listContents(directory);
 // Count number of scripts backed up to directory
 let count = 0;
@@ -23,7 +22,7 @@ function backupScript(item, index) {
   var ext = iCloud.fileExtension(directory + "/" + item);
   if (ext == "js") {
   	let file = iCloud.read(directory + "/" + item);
-  	iCloud.write(newDirectoryName + "/" + item, file);
+  	iCloud.write(directoryPath + "/" + item, file);
   	count++;
   }
 }
