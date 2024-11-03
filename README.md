@@ -1,5 +1,5 @@
 # Scriptable
-Automations in iOS using Javascript via the Scriptable app. Last Updated 08/06/2024.
+Automations in iOS using Javascript via the Scriptable app. Last Updated 11/03/2024.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
@@ -7,6 +7,9 @@ Saves a copy of all current Scriptable scripts to iCloud drive. Original author 
 
 [JSON Viewer](https://github.com/calikasten/scriptable/blob/main/JSON%20Viewer.js) <br>
 View JSON object based on file, file URL, or plain text input. Modified from Scriptable gallery.
+
+[Sticky Note] <br>
+Sticky note widget that can display static note. Original author [drewkerr](https://github.com/drewkerr).
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
 A basic widget template for creating a widget by calling an API and displaying the fetched data.
