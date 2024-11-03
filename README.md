@@ -9,7 +9,7 @@ Saves a copy of all current Scriptable scripts to iCloud drive. Original author 
 View JSON object based on file, file URL, or plain text input. Modified from Scriptable gallery.
 
 [Sticky Note] <br>
-Sticky note widget that can display static note. Original author [drewkerr](https://github.com/drewkerr).
+Creates a new folder for saved Sticky Note text files and displays a static note in the widget. Original author [drewkerr](https://github.com/drewkerr).
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
 A basic widget template for creating a widget by calling an API and displaying the fetched data.
