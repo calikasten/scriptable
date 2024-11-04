@@ -47,7 +47,7 @@ const data = await getData();
 	function getNextEvent(events) {
 		events.sort((a, b) => (a.startTime < b.startTime) ? -1 : 1);
     		var nextEvent = {
-			description: "Race Today",
+		        description: "Race Today",
       			startTime: false,
       			gmtOffset: 0,
 		} 
@@ -195,7 +195,6 @@ if (config.runsInWidget) {
 	// Run inside a widget when added to the home screen 
 	Script.setWidget(widget);
 } else {
-	
 	// Otherwise show the medium widget preview inside the Scriptable app
   	widget.presentMedium();
 }
