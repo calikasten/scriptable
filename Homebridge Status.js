@@ -367,175 +367,170 @@ async function initializeLogoAndHeader(titleStack) {
 };
 
 function initializeFonts() {
-  headerFont = Font.boldMonospacedSystemFont(CONFIGURATION.headerFontSize);
-  infoFont = Font.systemFont(CONFIGURATION.informationFontSize);
-  chartAxisFont = Font.systemFont(CONFIGURATION.chartAxisFontSize);
-  updatedAtFont = Font.systemFont(CONFIGURATION.dateFontSize);
-}
+        headerFont = Font.boldMonospacedSystemFont(CONFIGURATION.headerFontSize);
+        infoFont = Font.systemFont(CONFIGURATION.informationFontSize);
+        chartAxisFont = Font.systemFont(CONFIGURATION.chartAxisFontSize);
+        updatedAtFont = Font.systemFont(CONFIGURATION.dateFontSize);
+};
 
 async function buildSiriGui(widget, homeBridgeStatus) {
-  widget.addSpacer(10);
-  let titleStack = widget.addStack();
-  await initializeLogoAndHeader(titleStack);
-  buildStatusPanelInHeader(titleStack, homeBridgeStatus);
-  widget.addSpacer(10);
-  let mainColumns = widget.addStack();
-  mainColumns.size = new Size(maxLineWidth, 100);
+        widget.addSpacer(10);
+        let titleStack = widget.addStack();
+        await initializeLogoAndHeader(titleStack);
+        buildStatusPanelInHeader(titleStack, homeBridgeStatus);
+        widget.addSpacer(10);
+        let mainColumns = widget.addStack();
+        mainColumns.size = new Size(maxLineWidth, 100);
 
-  let verticalStack = mainColumns.addStack();
-  verticalStack.layoutVertically();
-  if (
-    homeBridgeStatus.hbVersionInfos.updateAvailable ||
-    homeBridgeStatus.pluginVersionInfos.updateAvailable ||
-    homeBridgeStatus.nodeJsVersionInfos.updateAvailable
-  ) {
-    speakUpdateStatus(true);
-    addStyledText(
-      verticalStack,
-      CONFIGURATION.siriGui_title_update_available,
-      infoFont
-    );
-    if (homeBridgeStatus.hbVersionInfos.updateAvailable) {
-      verticalStack.addSpacer(5);
-      addUpdatableElement(
-        verticalStack,
-        CONFIGURATION.bulletPointIcon +
-          homeBridgeStatus.hbVersionInfos.name +
-          ": ",
-        homeBridgeStatus.hbVersionInfos.installedVersion,
-        homeBridgeStatus.hbVersionInfos.latestVersion
-      );
-    }
-    if (homeBridgeStatus.pluginVersionInfos.updateAvailable) {
-      for (plugin of homeBridgeStatus.pluginVersionInfos.plugins) {
-        if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes(plugin.name)) {
-          continue;
-        }
-        if (plugin.updateAvailable) {
-          verticalStack.addSpacer(5);
-          addUpdatableElement(
-            verticalStack,
-            CONFIGURATION.bulletPointIcon + plugin.name + ": ",
-            plugin.installedVersion,
-            plugin.latestVersion
-          );
-        }
-      }
-    }
-    if (homeBridgeStatus.nodeJsVersionInfos.updateAvailable) {
-      verticalStack.addSpacer(5);
-      addUpdatableElement(
-        verticalStack,
-        CONFIGURATION.bulletPointIcon +
-          homeBridgeStatus.nodeJsVersionInfos.name +
-          ": ",
-        homeBridgeStatus.nodeJsVersionInfos.currentVersion,
-        homeBridgeStatus.nodeJsVersionInfos.latestVersion
-      );
-    }
-  } else {
-    speakUpdateStatus(false);
-    verticalStack.addSpacer(30);
-    addStyledText(verticalStack, CONFIGURATION.siriGui_title_all_UTD, infoFont);
-  }
-}
+        let verticalStack = mainColumns.addStack();
+        verticalStack.layoutVertically();
+        if (
+                homeBridgeStatus.hbVersionInfos.updateAvailable ||
+                homeBridgeStatus.pluginVersionInfos.updateAvailable ||
+                homeBridgeStatus.nodeJsVersionInfos.updateAvailable
+        ) {
+                speakUpdateStatus(true);
+                addStyledText(
+                        verticalStack,
+                        CONFIGURATION.siriGui_title_update_available,
+                        infoFont
+                );
+                if (homeBridgeStatus.hbVersionInfos.updateAvailable) {
+                        verticalStack.addSpacer(5);
+                        addUpdatableElement(
+                                verticalStack,
+                                CONFIGURATION.bulletPointIcon +
+                                homeBridgeStatus.hbVersionInfos.name + ": ",
+                                homeBridgeStatus.hbVersionInfos.installedVersion,
+                                homeBridgeStatus.hbVersionInfos.latestVersion
+                        );
+                };
+                if (homeBridgeStatus.pluginVersionInfos.updateAvailable) {
+                        for (plugin of homeBridgeStatus.pluginVersionInfos.plugins) {
+                                if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes(plugin.name)) {
+                                        continue;
+                                };
+                                if (plugin.updateAvailable) {
+                                        verticalStack.addSpacer(5);
+                                        addUpdatableElement(
+                                                verticalStack,
+                                                CONFIGURATION.bulletPointIcon + plugin.name + ": ",
+                                                plugin.installedVersion,
+                                                plugin.latestVersion
+                                        );
+                                };
+                        };
+                };
+                if (homeBridgeStatus.nodeJsVersionInfos.updateAvailable) {
+                        verticalStack.addSpacer(5);
+                        addUpdatableElement(
+                                verticalStack,
+                                CONFIGURATION.bulletPointIcon +
+                                homeBridgeStatus.nodeJsVersionInfos.name + ": ",
+                                homeBridgeStatus.nodeJsVersionInfos.currentVersion,
+                                homeBridgeStatus.nodeJsVersionInfos.latestVersion
+                        );
+                };
+        } else {
+                speakUpdateStatus(false);
+                verticalStack.addSpacer(30);
+                addStyledText(verticalStack, CONFIGURATION.siriGui_title_all_UTD, infoFont);
+        };
+};
 
 function speakUpdateStatus(updateAvailable) {
-  if (CONFIGURATION.enableSiriFeedback) {
-    if (updateAvailable) {
-      Speech.speak(CONFIGURATION.siri_spokenAnswer_update_available);
-    } else {
-      Speech.speak(CONFIGURATION.siri_spokenAnswer_all_UTD);
-    }
-  }
-}
+        if (CONFIGURATION.enableSiriFeedback) {
+                if (updateAvailable) {
+                        Speech.speak(CONFIGURATION.siri_spokenAnswer_update_available);
+                } else {
+                        Speech.speak(CONFIGURATION.siri_spokenAnswer_all_UTD);
+                };
+        };
+};
 
 async function buildUsualGui(widget, homeBridgeStatus) {
-  widget.addSpacer(10);
-  let titleStack = widget.addStack();
-  await initializeLogoAndHeader(titleStack);
-  buildStatusPanelInHeader(titleStack, homeBridgeStatus);
-  widget.addSpacer(10);
-  let cpuData = await fetchData(cpuUrl());
-  let ramData = await fetchData(ramUrl());
-  let usedRamText = getUsedRamString(ramData);
-  let uptimesArray = await getUptimesArray();
-  if (cpuData && ramData) {
-    let mainColumns = widget.addStack();
-    mainColumns.size = new Size(maxLineWidth, 77);
-    mainColumns.addSpacer(4);
+        widget.addSpacer(10);
+          let titleStack = widget.addStack();
+          await initializeLogoAndHeader(titleStack);
+          buildStatusPanelInHeader(titleStack, homeBridgeStatus);
+          widget.addSpacer(10);
+          let cpuData = await fetchData(cpuUrl());
+          let ramData = await fetchData(ramUrl());
+          let usedRamText = getUsedRamString(ramData);
+          let uptimesArray = await getUptimesArray();
+          if (cpuData && ramData) {
+                let mainColumns = widget.addStack();
+                mainColumns.size = new Size(maxLineWidth, 77);
+                mainColumns.addSpacer(4);
 
-    let cpuColumn = mainColumns.addStack();
-    cpuColumn.layoutVertically();
-    addStyledText(
-      cpuColumn,
-      CONFIGURATION.title_cpuLoad +
-        getAsRoundedString(cpuData.currentLoad, 1) +
-        "%",
-      infoFont
-    );
-    addChartToWidget(cpuColumn, cpuData.cpuLoadHistory);
-    cpuColumn.addSpacer(7);
+                let cpuColumn = mainColumns.addStack();
+                cpuColumn.layoutVertically();
+                addStyledText(
+                        cpuColumn,
+                        CONFIGURATION.title_cpuLoad +
+                        getAsRoundedString(cpuData.currentLoad, 1) + "%",
+                        infoFont
+                );
+                addChartToWidget(cpuColumn, cpuData.cpuLoadHistory);
+                cpuColumn.addSpacer(7);
 
-    let temperatureString = getTemperatureString(cpuData?.cpuTemperature.main);
-    if (temperatureString) {
-      let cpuTempText = addStyledText(
-        cpuColumn,
-        CONFIGURATION.title_cpuTemp + temperatureString,
-        infoFont
-      );
-      cpuTempText.size = new Size(150, 30);
-      setTextColor(cpuTempText);
-    }
-
-    mainColumns.addSpacer(11);
-
-    let ramColumn = mainColumns.addStack();
-    ramColumn.layoutVertically();
-    addStyledText(
-      ramColumn,
-      CONFIGURATION.title_ramUsage + usedRamText + "%",
-      infoFont
-    );
-    addChartToWidget(ramColumn, ramData.memoryUsageHistory);
-    ramColumn.addSpacer(7);
-
-    if (uptimesArray) {
-      let uptimesStack = ramColumn.addStack();
-
-      let upStack = uptimesStack.addStack();
-      addStyledText(upStack, CONFIGURATION.title_uptimes, infoFont);
-
-      let vertPointsStack = upStack.addStack();
-      vertPointsStack.layoutVertically();
-
-      addStyledText(
-        vertPointsStack,
-        CONFIGURATION.bulletPointIcon +
-          CONFIGURATION.title_systemGuiName +
-          uptimesArray[0],
-        infoFont
-      );
-      addStyledText(
-        vertPointsStack,
-        CONFIGURATION.bulletPointIcon +
-          CONFIGURATION.title_uiService +
-          uptimesArray[1],
-        infoFont
-      );
-    }
-
-    widget.addSpacer(10);
-
-    // Display last refresh timestamp
-    let updatedAt = addStyledText(
-      widget,
-      "Last refreshed: " + timeFormatter.string(new Date()),
-      updatedAtFont
-    );
-    updatedAt.centerAlignText();
-  }
-}
+                let temperatureString = getTemperatureString(cpuData?.cpuTemperature.main);
+                if (temperatureString) {
+                        let cpuTempText = addStyledText(
+                                cpuColumn,
+                                CONFIGURATION.title_cpuTemp + temperatureString,
+                                infoFont
+                        );
+                        cpuTempText.size = new Size(150, 30);
+                        setTextColor(cpuTempText);
+                };
+        
+                mainColumns.addSpacer(11);
+        
+                let ramColumn = mainColumns.addStack();
+                ramColumn.layoutVertically();
+                addStyledText(
+                        ramColumn,
+                        CONFIGURATION.title_ramUsage + usedRamText + "%",
+                        infoFont
+                );
+                addChartToWidget(ramColumn, ramData.memoryUsageHistory);
+                ramColumn.addSpacer(7);
+        
+                if (uptimesArray) {
+                        let uptimesStack = ramColumn.addStack();
+                        let upStack = uptimesStack.addStack();
+                        addStyledText(upStack, CONFIGURATION.title_uptimes, infoFont);
+                        let vertPointsStack = upStack.addStack();
+                        vertPointsStack.layoutVertically();
+        
+                        addStyledText(
+                                vertPointsStack,
+                                CONFIGURATION.bulletPointIcon +
+                                CONFIGURATION.title_systemGuiName +
+                                uptimesArray[0],
+                                infoFont
+                        );
+                        addStyledText(
+                                vertPointsStack,
+                                CONFIGURATION.bulletPointIcon +
+                                CONFIGURATION.title_uiService +
+                                uptimesArray[1],
+                                infoFont
+                        );
+                };
+                          
+                widget.addSpacer(10);
+        
+                // Display last refresh timestamp
+                let updatedAt = addStyledText(
+                        widget,
+                        "Last refreshed: " + timeFormatter.string(new Date()),
+                        updatedAtFont
+                );
+                updatedAt.centerAlignText();
+        };
+};
 
 async function buildLockScreenWidgetHeader(widget) {
   let mainStack = widget.addStack();
