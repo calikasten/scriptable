@@ -533,154 +533,154 @@ async function buildUsualGui(widget, homeBridgeStatus) {
 };
 
 async function buildLockScreenWidgetHeader(widget) {
-  let mainStack = widget.addStack();
-  const logo = await getHbLogo();
-  const imgWidget = mainStack.addImage(logo);
-  imgWidget.imageSize = new Size(14, 14);
-  addStyledText(mainStack, CONFIGURATION.widgetTitle, headerFont);
-}
+        let mainStack = widget.addStack();
+        const logo = await getHbLogo();
+        const imgWidget = mainStack.addImage(logo);
+        imgWidget.imageSize = new Size(14, 14);
+        addStyledText(mainStack, CONFIGURATION.widgetTitle, headerFont);
+};
 
 async function buildLockScreenWidgetBody(widget, homeBridgeStatus) {
-  let verticalStack = widget.addStack();
-  verticalStack.layoutVertically();
-  buildStatusPanelInHeader(verticalStack, homeBridgeStatus);
-  await buildCpuRamInfoForLockScreen(verticalStack);
-}
+        let verticalStack = widget.addStack();
+        verticalStack.layoutVertically();
+        buildStatusPanelInHeader(verticalStack, homeBridgeStatus);
+        await buildCpuRamInfoForLockScreen(verticalStack);
+};
 
 function overwriteSizesForLockScreen() {
-  infoFont = Font.systemFont(7);
-  infoPanelFont = Font.semiboldMonospacedSystemFont(7);
-  iconSize = 8;
-  CONFIGURATION.spacer_betweenStatusColumns = 2;
-  CONFIGURATION.spacer_beforeFirstStatusColumn = 2;
-  verticalSpacerInfoPanel = 1;
-  timeFormatter.dateFormat = "HH:mm:ss";
-  updatedAtFont = Font.systemFont(6);
-}
+        infoFont = Font.systemFont(7);
+        infoPanelFont = Font.semiboldMonospacedSystemFont(7);
+        iconSize = 8;
+        CONFIGURATION.spacer_betweenStatusColumns = 2;
+        CONFIGURATION.spacer_beforeFirstStatusColumn = 2;
+        verticalSpacerInfoPanel = 1;
+        timeFormatter.dateFormat = "HH:mm:ss";
+        updatedAtFont = Font.systemFont(6);
+};
 
 async function buildCpuRamInfoForLockScreen(verticalStack) {
-  let cpuData = await fetchData(cpuUrl());
-  let ramData = await fetchData(ramUrl());
+        let cpuData = await fetchData(cpuUrl());
+        let ramData = await fetchData(ramUrl());
 
-  verticalStack.addSpacer(CONFIGURATION.spacer_beforeFirstStatusColumn);
-  let statusInfo = verticalStack.addStack();
-  let cpuInfos = statusInfo.addStack();
+        verticalStack.addSpacer(CONFIGURATION.spacer_beforeFirstStatusColumn);
+        let statusInfo = verticalStack.addStack();
+        let cpuInfos = statusInfo.addStack();
 
-  let cpuFirstColumn = cpuInfos.addStack();
-  cpuFirstColumn.layoutVertically();
-  addStyledText(cpuFirstColumn, "CPU:", infoFont);
-  cpuInfos.addSpacer(2);
+        let cpuFirstColumn = cpuInfos.addStack();
+        cpuFirstColumn.layoutVertically();
+        addStyledText(cpuFirstColumn, "CPU:", infoFont);
+        cpuInfos.addSpacer(2);
 
-  let cpuSecondColumn = cpuInfos.addStack();
-  cpuSecondColumn.layoutVertically();
-  addStyledText(
-    cpuSecondColumn,
-    getAsRoundedString(cpuData.currentLoad, 1) + "%",
-    infoFont
-  );
-  cpuSecondColumn.addSpacer(2);
+        let cpuSecondColumn = cpuInfos.addStack();
+        cpuSecondColumn.layoutVertically();
+        addStyledText(
+                cpuSecondColumn,
+                getAsRoundedString(cpuData.currentLoad, 1) + "%",
+                infoFont
+        );
+        cpuSecondColumn.addSpacer(2);
 
-  let temperatureString = getTemperatureString(cpuData?.cpuTemperature.main);
-  if (temperatureString) {
-    addStyledText(cpuSecondColumn, temperatureString, infoFont);
-  }
+        let temperatureString = getTemperatureString(cpuData?.cpuTemperature.main);
+        if (temperatureString) {
+                addStyledText(cpuSecondColumn, temperatureString, infoFont);
+        };
 
-  cpuInfos.addSpacer(17);
+        cpuInfos.addSpacer(17);
 
-  let ramInfos = statusInfo.addStack();
-  let usedRamText = getUsedRamString(ramData);
+        let ramInfos = statusInfo.addStack();
+        let usedRamText = getUsedRamString(ramData);
 
-  let ramFirstColumn = cpuInfos.addStack();
-  ramFirstColumn.layoutVertically();
-  addStyledText(ramFirstColumn, "RAM:", infoFont);
-  cpuInfos.addSpacer(2);
-  ramFirstColumn.addSpacer(2);
+        let ramFirstColumn = cpuInfos.addStack();
+        ramFirstColumn.layoutVertically();
+        addStyledText(ramFirstColumn, "RAM:", infoFont);
+        cpuInfos.addSpacer(2);
+        ramFirstColumn.addSpacer(2);
 
-  let ramSecondColumn = cpuInfos.addStack();
-  ramSecondColumn.layoutVertically();
-  addStyledText(ramSecondColumn, usedRamText + "%", infoFont);
-  ramSecondColumn.addSpacer(5);
+        let ramSecondColumn = cpuInfos.addStack();
+        ramSecondColumn.layoutVertically();
+        addStyledText(ramSecondColumn, usedRamText + "%", infoFont);
+        ramSecondColumn.addSpacer(5);
 
-  addStyledText(
-    ramSecondColumn,
-    "Last refreshed: " + timeFormatter.string(new Date()),
-    updatedAtFont
-  );
-}
+        addStyledText(
+                ramSecondColumn,
+                "Last refreshed: " + timeFormatter.string(new Date()),
+                updatedAtFont
+        );
+};
 
 function addUpdatableElement(
-  stackToAdd,
-  elementTitle,
-  versionCurrent,
-  versionLatest
+        stackToAdd,
+        elementTitle,
+        versionCurrent,
+        versionLatest
 ) {
-  let itemStack = stackToAdd.addStack();
-  itemStack.addSpacer(17);
-  addStyledText(itemStack, elementTitle, infoFont);
+        let itemStack = stackToAdd.addStack();
+        itemStack.addSpacer(17);
+        addStyledText(itemStack, elementTitle, infoFont);
 
-  let vertPointsStack = itemStack.addStack();
-  vertPointsStack.layoutVertically();
+        let vertPointsStack = itemStack.addStack();
+        vertPointsStack.layoutVertically();
 
-  let versionStack = vertPointsStack.addStack();
-  addStyledText(versionStack, versionCurrent, infoFont);
-  versionStack.addSpacer(3);
-  addIcon(
-    versionStack,
-    CONFIGURATION.siriGui_icon_version,
-    new Color(CONFIGURATION.siriGui_icon_version_color)
-  );
-  versionStack.addSpacer(3);
-  addStyledText(versionStack, versionLatest, infoFont);
-}
+        let versionStack = vertPointsStack.addStack();
+        addStyledText(versionStack, versionCurrent, infoFont);
+        versionStack.addSpacer(3);
+        addIcon(
+                versionStack,
+                CONFIGURATION.siriGui_icon_version,
+                new Color(CONFIGURATION.siriGui_icon_version_color)
+        );
+        versionStack.addSpacer(3);
+        addStyledText(versionStack, versionLatest, infoFont);
+};
 
 function handleSettingOfBackgroundColor(widget) {
-  if (!CONFIGURATION.adaptToLightOrDarkMode) {
-    switch (CONFIGURATION.bgColorMode) {
-      case "CUSTOM":
-        widget.backgroundGradient = createLinearGradient(
-          CONFIGURATION.customBackgroundColor1_light,
-          CONFIGURATION.customBackgroundColor2_light
-        );
-        break;
-      case "BLACK_LIGHT":
-        widget.backgroundGradient = blackBgGradient_light;
-        break;
-      case "BLACK_DARK":
-        widget.backgroundGradient = blackBgGradient_dark;
-        break;
-      case "PURPLE_DARK":
-        widget.backgroundGradient = purpleBgGradient_dark;
-        break;
-      case "PURPLE_LIGHT":
-      default:
-        widget.backgroundGradient = purpleBgGradient_light;
-    }
-  } else {
-    switch (CONFIGURATION.bgColorMode) {
-      case "CUSTOM":
-        setGradient(
-          widget,
-          createLinearGradient(
-            CONFIGURATION.customBackgroundColor1_light,
-            CONFIGURATION.customBackgroundColor2_light
-          ),
-          createLinearGradient(
-            CONFIGURATION.customBackgroundColor1_dark,
-            CONFIGURATION.customBackgroundColor2_dark
-          )
-        );
-        break;
-      case "BLACK_LIGHT":
-      case "BLACK_DARK":
-        setGradient(widget, blackBgGradient_light, blackBgGradient_dark);
-        break;
-      case "PURPLE_DARK":
-      case "PURPLE_LIGHT":
-      default:
-        setGradient(widget, purpleBgGradient_light, purpleBgGradient_dark);
-    }
-  }
-}
+        if (!CONFIGURATION.adaptToLightOrDarkMode) {
+                switch (CONFIGURATION.bgColorMode) {
+                        case "CUSTOM":
+                        widget.backgroundGradient = createLinearGradient(
+                                CONFIGURATION.customBackgroundColor1_light,
+                                CONFIGURATION.customBackgroundColor2_light
+                        );
+                        break;
+                        case "BLACK_LIGHT":
+                        widget.backgroundGradient = blackBgGradient_light;
+                        break;
+                        case "BLACK_DARK":
+                        widget.backgroundGradient = blackBgGradient_dark;
+                        break;
+                        case "PURPLE_DARK":
+                        widget.backgroundGradient = purpleBgGradient_dark;
+                        break;
+                        case "PURPLE_LIGHT":
+                        default: 
+                        widget.backgroundGradient = purpleBgGradient_light;
+                };
+          } else {
+                switch (CONFIGURATION.bgColorMode) {
+                case "CUSTOM":
+                setGradient(
+                        widget,
+                        createLinearGradient(
+                                CONFIGURATION.customBackgroundColor1_light,
+                                CONFIGURATION.customBackgroundColor2_light
+                        ),
+                        createLinearGradient(
+                                CONFIGURATION.customBackgroundColor1_dark,
+                                CONFIGURATION.customBackgroundColor2_dark
+                        )
+                );
+                break;
+                case "BLACK_LIGHT":
+                case "BLACK_DARK":
+                setGradient(widget, blackBgGradient_light, blackBgGradient_dark);
+                break;
+                case "PURPLE_DARK":
+                case "PURPLE_LIGHT":
+                default:
+                setGradient(widget, purpleBgGradient_light, purpleBgGradient_dark);
+                };
+        };
+};
 
 function setGradient(widget, lightOption, darkOption) {
   if (Device.isUsingDarkAppearance()) {
