@@ -191,7 +191,6 @@ let widget = createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
-	
 	// Run inside a widget when added to the home screen 
 	Script.setWidget(widget);
 } else {
