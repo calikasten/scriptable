@@ -21,9 +21,9 @@ runBackup.forEach(backupScript);
 function backupScript(item, index) {
         var ext = iCloud.fileExtension(directory + "/" + item);
         if (ext == "js") {
-  	    let file = iCloud.read(directory + "/" + item);
-  	    iCloud.write(directoryPath + "/" + item, file);
-  	    count++;
+  	        let file = iCloud.read(directory + "/" + item);
+  	        iCloud.write(directoryPath + "/" + item, file);
+  	        count++;
         }
 }
 Script.complete();
