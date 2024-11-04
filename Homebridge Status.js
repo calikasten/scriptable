@@ -801,252 +801,246 @@ function useCredentialsFromWidgetParameter(givenParameter) {
 };
 
 async function getAuthToken() {
-if (
-    CONFIGURATION.hbServiceMachineBaseUrl ===
-    ">enter the ip with the port <"
-  ) {
-    throw "Base URL to machine not entered! Edit variable called hbServiceMachineBaseUrl";
-  }
-  let req = new Request(noAuthUrl());
-  req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
-  const headers = {
-    accept: "*/*",
-    "Content-Type": "application/json",
-  };
-  req.method = "POST";
-  req.headers = headers;
-  req.body = JSON.stringify({});
-  let authData;
-  try {
-    authData = await req.loadJSON();
-  } catch (e) {
-    return UNAVAILABLE;
-  }
-  if (authData.access_token) {
-    // No credentials needed
-    return authData.access_token;
-  }
+        if (
+                CONFIGURATION.hbServiceMachineBaseUrl ===
+                ">enter the ip with the port <"
+        ) {
+                throw "Base URL to machine not entered! Edit variable called hbServiceMachineBaseUrl";
+        };
+        let req = new Request(noAuthUrl());
+        req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
+        const headers = {
+                accept: "*/*",
+                "Content-Type": "application/json",
+        };
+        req.method = "POST";
+        req.headers = headers;
+        req.body = JSON.stringify({});
+        let authData;
+        try {
+                authData = await req.loadJSON();
+        } catch (e) {
+                return UNAVAILABLE;
+        };
+        if (authData.access_token) {
+                return authData.access_token;
+        };
 
-  req = new Request(authUrl());
-  req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
-  let body = {
-    username: CONFIGURATION.userName,
-    password: CONFIGURATION.password,
-    otp: "string",
-  };
-  req.body = JSON.stringify(body);
-  req.method = "POST";
-  req.headers = headers;
-  try {
-    authData = await req.loadJSON();
-  } catch (e) {
-    return UNAVAILABLE;
-  }
-  return authData.access_token;
-}
+        req = new Request(authUrl());
+        req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
+        let body = {
+                username: CONFIGURATION.userName,
+                password: CONFIGURATION.password,
+                otp: "string",
+        };
+        req.body = JSON.stringify(body);
+        req.method = "POST";
+        req.headers = headers;
+        
+        try {
+                authData = await req.loadJSON();
+        } catch (e) {
+                return UNAVAILABLE;
+        };
+        return authData.access_token;
+};
 
 async function fetchData(url) {
-  let req = new Request(url);
-  req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
-  let headers = {
-    accept: "*/*",
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + token,
-  };
-  req.headers = headers;
-  let result;
-  try {
-    result = req.loadJSON();
-  } catch (e) {
-    return undefined;
-  }
-  return result;
-}
+        let req = new Request(url);
+        req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
+        let headers = {
+                accept: "*/*",
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+        };
+        req.headers = headers;
+        let result;
+        try {
+                result = req.loadJSON();
+        } catch (e) {
+                return undefined;
+        };
+        return result;
+};
 
 async function getOverallStatus() {
-  const statusData = await fetchData(overallStatusUrl());
-  if (statusData === undefined) {
-    return undefined;
-  }
-  return statusData.status === "up";
-}
+        const statusData = await fetchData(overallStatusUrl());
+        if (statusData === undefined) {
+                return undefined;
+        };
+        return statusData.status === "up";
+};
 
 async function getHomebridgeVersionInfos() {
-  if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes("HOMEBRIDGE_UTD")) {
-    log(
-      "You configured Homebridge to not be checked for updates. Widget will show that it's UTD!"
-    );
-    return { updateAvailable: false };
-  }
-  const hbVersionData = await fetchData(hbVersionUrl());
-  if (hbVersionData === undefined) {
-    return undefined;
-  }
-  return hbVersionData;
-}
+        if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes("HOMEBRIDGE_UTD")) {
+                log(
+                        "You configured Homebridge to not be checked for updates. Widget will show that it's UTD!"
+                );
+                return {
+                        updateAvailable: false 
+                };
+        };
+        const hbVersionData = await fetchData(hbVersionUrl());
+        if (hbVersionData === undefined) {
+                return undefined;
+        };
+        return hbVersionData;
+};
 
 async function getNodeJsVersionInfos() {
-  if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes("NODEJS_UTD")) {
-    log(
-      "You configured Node.js to not be checked for updates. Widget will show that it's UTD!"
-    );
-    return { updateAvailable: false };
-  }
-  const nodeJsData = await fetchData(nodeJsUrl());
-  if (nodeJsData === undefined) {
-    return undefined;
-  }
-  nodeJsData.name = "node.js";
-  return nodeJsData;
-}
+        if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes("NODEJS_UTD")) {
+                log(
+                        "You configured Node.js to not be checked for updates. Widget will show that it's UTD!"
+                );
+                return {
+                        updateAvailable: false 
+                };
+        };
+        const nodeJsData = await fetchData(nodeJsUrl());
+        if (nodeJsData === undefined) {
+                return undefined;
+        };
+        nodeJsData.name = "node.js";
+        return nodeJsData;
+};
 
 async function getPluginVersionInfos() {
-  const pluginsData = await fetchData(pluginsUrl());
-  if (pluginsData === undefined) {
-    return undefined;
-  }
-  for (plugin of pluginsData) {
-    if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes(plugin.name)) {
-      log(
-        "You configured " +
-          plugin.name +
-          " to not be checked for updates. Widget will show that it's UTD!"
-      );
-      continue;
-    }
-    if (plugin.updateAvailable) {
-      return { plugins: pluginsData, updateAvailable: true };
-    }
-  }
-  return { plugins: pluginsData, updateAvailable: false };
-}
+        const pluginsData = await fetchData(pluginsUrl());
+        if (pluginsData === undefined) {
+                return undefined;
+        };
+        for (plugin of pluginsData) {
+                if (CONFIGURATION.pluginsOrSwUpdatesToIgnore.includes(plugin.name)) {
+                        log("You configured " + plugin.name + " to not be checked for updates. Widget will show that it's UTD!");
+                continue;
+                };
+                if (plugin.updateAvailable) {
+                        return {
+                                plugins: pluginsData, updateAvailable: true 
+                        };
+                };
+        };
+        return {
+                plugins: pluginsData, updateAvailable: false 
+        };
+};
 
 function getUsedRamString(ramData) {
-  if (ramData === undefined) return "unknown";
-  return getAsRoundedString(
-    100 - (100 * ramData.mem.available) / ramData.mem.total,
-    2
-  );
-}
+        if (ramData === undefined) return "unknown";
+        return getAsRoundedString(100 - (100 * ramData.mem.available) / ramData.mem.total,2);
+};
 
 async function getUptimesArray() {
-  const uptimeData = await fetchData(uptimeUrl());
-  if (uptimeData === undefined) return undefined;
-
-  return [
-    formatSeconds(uptimeData.time.uptime),
-    formatSeconds(uptimeData.processUptime),
-  ];
-}
+        const uptimeData = await fetchData(uptimeUrl());
+        if (uptimeData === undefined) return undefined;
+        return [
+                formatSeconds(uptimeData.time.uptime),
+                formatSeconds(uptimeData.processUptime),
+        ];
+};
 
 function formatSeconds(value) {
-  if (value > 60 * 60 * 24 * 10) {
-    return getAsRoundedString(value / 60 / 60 / 24, 0) + "d"; 
-  } else if (value > 60 * 60 * 24) {
-    return getAsRoundedString(value / 60 / 60 / 24, 1) + "d";
-  } else if (value > 60 * 60) {
-    return getAsRoundedString(value / 60 / 60, 1) + "h";
-  } else if (value > 60) {
-    return getAsRoundedString(value / 60, 1) + "m";
-  } else {
-    return getAsRoundedString(value, 1) + "s";
-  }
-}
+        if (value > 60 * 60 * 24 * 10) {
+                return getAsRoundedString(value / 60 / 60 / 24, 0) + "d"; 
+        } else if (value > 60 * 60 * 24) {
+                return getAsRoundedString(value / 60 / 60 / 24, 1) + "d";
+        } else if (value > 60 * 60) {
+                return getAsRoundedString(value / 60 / 60, 1) + "h";
+        } else if (value > 60) {
+                return getAsRoundedString(value / 60, 1) + "m";
+        } else {
+                return getAsRoundedString(value, 1) + "s";
+        };
+};
 
 async function loadImage(imgUrl) {
-  let req = new Request(imgUrl);
-  req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
-  let image = await req.loadImage();
-  return image;
-}
+        let req = new Request(imgUrl);
+        req.timeoutInterval = CONFIGURATION.requestTimeoutInterval;
+        let image = await req.loadImage();
+        return image;
+};
 
 async function getHbLogo() {
-  let path = getFilePath(CONFIGURATION.hbLogoFileName);
-  if (fileManager.fileExists(path)) {
-    const fileDownloaded = await fileManager.isFileDownloaded(path);
-    if (!fileDownloaded) {
-      await fileManager.downloadFileFromiCloud(path);
-    }
-    return fileManager.readImage(path);
-  } else {
-    const logo = await loadImage(CONFIGURATION.logoUrl);
-    fileManager.writeImage(path, logo);
-    return logo;
-  }
-}
+        let path = getFilePath(CONFIGURATION.hbLogoFileName);
+        if (fileManager.fileExists(path)) {
+                const fileDownloaded = await fileManager.isFileDownloaded(path);
+                if (!fileDownloaded) {
+                        await fileManager.downloadFileFromiCloud(path);
+                };
+        return fileManager.readImage(path);
+        } else {
+                const logo = await loadImage(CONFIGURATION.logoUrl);
+                fileManager.writeImage(path, logo);
+                return logo;
+        };
+};
 
 function getFilePath(fileName) {
-  let dirPath = fileManager.joinPath(
-    fileManager.documentsDirectory(),
-    "homebridgeStatus"
-  );
-  if (!fileManager.fileExists(dirPath)) {
-    fileManager.createDirectory(dirPath);
-  }
-  return fileManager.joinPath(dirPath, fileName);
-}
+        let dirPath = fileManager.joinPath(
+                fileManager.documentsDirectory(),
+                "homebridgeStatus"
+        );
+        if (!fileManager.fileExists(dirPath)) {
+                fileManager.createDirectory(dirPath);
+        }
+        return fileManager.joinPath(dirPath, fileName);
+};
 
 function addNotAvailableInfos(widget, titleStack) {
-  let statusInfo = titleStack.addText(
-    "                                                 "
-  );
-  setTextColor(statusInfo);
-  statusInfo.size = new Size(150, normalLineHeight);
-  let errorText = widget.addText(CONFIGURATION.error_noConnectionText);
-  errorText.size = new Size(410, 130);
-  errorText.font = infoFont;
-  setTextColor(errorText);
+        let statusInfo = titleStack.addText("                                                 ");
+        setTextColor(statusInfo);
+        statusInfo.size = new Size(150, normalLineHeight);
+        let errorText = widget.addText(CONFIGURATION.error_noConnectionText);
+        errorText.size = new Size(410, 130);
+        errorText.font = infoFont;
+        setTextColor(errorText);
 
-  widget.addSpacer(15);
-  let updatedAt = widget.addText("Last refreshed: " + timeFormatter.string(new Date()));
-  updatedAt.font = updatedAtFont;
-  setTextColor(updatedAt);
-  updatedAt.centerAlignText();
+        widget.addSpacer(15);
+        let updatedAt = widget.addText("Last refreshed: " + timeFormatter.string(new Date()));
+        updatedAt.font = updatedAtFont;
+        setTextColor(updatedAt);
+        updatedAt.centerAlignText();
 
-  return widget;
-}
+        return widget;
+};
 
 function getAsRoundedString(value, decimals) {
-  let factor = Math.pow(10, decimals);
-  return (Math.round((value + Number.EPSILON) * factor) / factor)
-    .toString()
-    .replace(".", CONFIGURATION.decimalChar);
-}
+        let factor = Math.pow(10, decimals);
+        return (Math.round((value + Number.EPSILON) * factor) / factor)
+        .toString()
+        .replace(".", CONFIGURATION.decimalChar);
+};
 
 function getMaxString(arrayOfNumbers, decimals) {
-  let factor = Math.pow(10, decimals);
-  return (
-    Math.round((Math.max(...arrayOfNumbers) + Number.EPSILON) * factor) / factor
-  )
-    .toString()
-    .replace(".", CONFIGURATION.decimalChar);
-}
+        let factor = Math.pow(10, decimals);
+        return (Math.round((Math.max(...arrayOfNumbers) + Number.EPSILON) * factor) / factor)
+        .toString()
+        .replace(".", CONFIGURATION.decimalChar);
+};
 
 function getMinString(arrayOfNumbers, decimals) {
-  let factor = Math.pow(10, decimals);
-  return (
-    Math.round((Math.min(...arrayOfNumbers) + Number.EPSILON) * factor) / factor
-  )
-    .toString()
-    .replace(".", CONFIGURATION.decimalChar);
-}
+        let factor = Math.pow(10, decimals);
+        return (
+                Math.round((Math.min(...arrayOfNumbers) + Number.EPSILON) * factor) / factor
+        )
+        .toString()
+        .replace(".", CONFIGURATION.decimalChar);
+};
 
 function getTemperatureString(temperatureInCelsius) {
-  if (temperatureInCelsius === undefined || temperatureInCelsius < 0)
-    return undefined;
+        if (temperatureInCelsius === undefined || temperatureInCelsius < 0)
+        return undefined;
 
-  if (CONFIGURATION.temperatureUnitConfig === "CELSIUS") {
-    return getAsRoundedString(temperatureInCelsius, 1) + "°C";
-  } else {
-    return (
-      getAsRoundedString(convertToFahrenheit(temperatureInCelsius), 1) + "°F"
-    );
-  }
-}
+        if (CONFIGURATION.temperatureUnitConfig === "CELSIUS") {
+                return getAsRoundedString(temperatureInCelsius, 1) + "°C";
+        } else {
+                return (getAsRoundedString(convertToFahrenheit(temperatureInCelsius), 1) + "°F");
+        };
+};
 
 function convertToFahrenheit(temperatureInCelsius) {
-  return (temperatureInCelsius * 9) / 5 + 32;
-}
+        return (temperatureInCelsius * 9) / 5 + 32;
+};
 
 function addStatusIcon(widget, statusBool) {
   let name = "";
