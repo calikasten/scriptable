@@ -8,7 +8,7 @@ Saves a copy of all current Scriptable scripts to iCloud drive. Original author 
 [JSON Viewer](https://github.com/calikasten/scriptable/blob/main/JSON%20Viewer.js) <br>
 View JSON object based on file, file URL, or plain text input. Modified from Scriptable gallery.
 
-[Sticky Note] <br>
+[Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
 Creates a new folder for saved Sticky Note text files and displays a static note in the widget. Original author [drewkerr](https://github.com/drewkerr).
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
