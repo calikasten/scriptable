@@ -158,10 +158,10 @@ class LineChart {
         };
         _getSmoothPath(points) {
                 let path = new Path();
-              path.move(new Point(0, this.ctx.size.height));
-              path.addLine(points[0]);
-              for (let i = 0; i < points.length - 1; i++) {
-                      let xAvg = (points[i].x + points[i + 1].x) / 2;
+                path.move(new Point(0, this.ctx.size.height));
+                path.addLine(points[0]);
+                for (let i = 0; i < points.length - 1; i++) {
+                        let xAvg = (points[i].x + points[i + 1].x) / 2;
                       let yAvg = (points[i].y + points[i + 1].y) / 2;
                       let avg = new Point(xAvg, yAvg);
                       let cp1 = new Point((xAvg + points[i].x) / 2, points[i].y);
@@ -176,15 +176,15 @@ class LineChart {
       };
 
       configure(fn) {
-      let path = this._calculatePath();
-      if (fn) {
-              fn(this.ctx, path);
-      } else {
-              this.ctx.addPath(path);
-              this.ctx.fillPath(path);
-      };
-      return this.ctx;
-      };
+              let path = this._calculatePath();
+              if (fn) {
+                      fn(this.ctx, path);
+                } else {
+                      this.ctx.addPath(path);
+                      this.ctx.fillPath(path);
+                };
+                return this.ctx;
+        };
 };
 
 class HomeBridgeStatus {
@@ -198,16 +198,16 @@ class HomeBridgeStatus {
         constructor() {}
 
         async initialize() {
-            this.overallStatus = await getOverallStatus();
-            this.hbVersionInfos = await getHomebridgeVersionInfos();
-            this.hbUpToDate =
-            this.hbVersionInfos === undefined? undefined: !this.hbVersionInfos.updateAvailable;
-            this.pluginVersionInfos = await getPluginVersionInfos();
-            this.pluginsUpToDate =
-            this.pluginVersionInfos === undefined? undefined: !this.pluginVersionInfos.updateAvailable;
-            this.nodeJsVersionInfos = await getNodeJsVersionInfos();
-            this.nodeJsUpToDate =
-            this.nodeJsVersionInfos === undefined? undefined: !this.nodeJsVersionInfos.updateAvailable;
+                this.overallStatus = await getOverallStatus();
+                this.hbVersionInfos = await getHomebridgeVersionInfos();
+                this.hbUpToDate =
+                this.hbVersionInfos === undefined? undefined: !this.hbVersionInfos.updateAvailable;
+                this.pluginVersionInfos = await getPluginVersionInfos();
+                this.pluginsUpToDate =
+                this.pluginVersionInfos === undefined? undefined: !this.pluginVersionInfos.updateAvailable;
+                this.nodeJsVersionInfos = await getNodeJsVersionInfos();
+                this.nodeJsUpToDate =
+                this.nodeJsVersionInfos === undefined? undefined: !this.nodeJsVersionInfos.updateAvailable;
         return this;
         };
 };
@@ -223,8 +223,8 @@ await handleConfigPersisting();
 await handleNotifications(
         homeBridgeStatus.overallStatus,
         homeBridgeStatus.hbUpToDate,
-          homeBridgeStatus.pluginsUpToDate,
-          homeBridgeStatus.nodeJsUpToDate
+        homeBridgeStatus.pluginsUpToDate,
+        homeBridgeStatus.nodeJsUpToDate
 );
 await createAndShowWidget(homeBridgeStatus);
 return;
@@ -247,13 +247,12 @@ async function initializeFileManager_Configuration_TimeFormatter_Fonts_AndToken(
         };
         if (usePersistedConfiguration && !overwritePersistedConfig) {
                 CONFIGURATION = await getPersistedObject(
-                getFilePath(configurationFileName),
-                CONFIGURATION_JSON_VERSION,
-                CONFIGURATION,
-                false
-                );
-        log(
-                "Configuration " + configurationFileName + " is used! Trying to authenticate...");
+                        getFilePath(configurationFileName),
+                        CONFIGURATION_JSON_VERSION,
+                        CONFIGURATION,
+                        false
+                        );
+                log("Configuration " + configurationFileName + " is used! Trying to authenticate...");
         };
         timeFormatter.dateFormat = CONFIGURATION.dateFormat;
         initializeFonts();
@@ -314,58 +313,58 @@ function buildStatusPanelInHeader(titleStack, homeBridgeStatus) {
 };
 
 async function showNotAvailableWidget() {
-  if (!config.runsInAccessoryWidget) {
-    let widget = new ListWidget();
-    handleSettingOfBackgroundColor(widget);
-    let mainStack = widget.addStack();
-    await initializeLogoAndHeader(mainStack);
-    addNotAvailableInfos(widget, mainStack);
-    finalizeAndShowWidget(widget);
-  } else {
-    overwriteSizesForLockScreen();
-    let widget = new ListWidget();
-    handleSettingOfBackgroundColor(widget);
-    await buildLockScreenWidgetHeader(widget);
-    widget.addSpacer(2);
-    addStyledText(
-      widget,
-      CONFIGURATION.error_noConnectionLockScreenText,
-      updatedAtFont
-    );
-    await widget.presentSmall();
-    Script.setWidget(widget);
-    Script.complete();
-  }
-}
+        if (!config.runsInAccessoryWidget) {
+                let widget = new ListWidget();
+                handleSettingOfBackgroundColor(widget);
+                let mainStack = widget.addStack();
+                await initializeLogoAndHeader(mainStack);
+                addNotAvailableInfos(widget, mainStack);
+                finalizeAndShowWidget(widget);
+        } else {
+                overwriteSizesForLockScreen();
+                let widget = new ListWidget();
+                handleSettingOfBackgroundColor(widget);
+                await buildLockScreenWidgetHeader(widget);
+                widget.addSpacer(2);
+                addStyledText(
+                        widget,
+                        CONFIGURATION.error_noConnectionLockScreenText,
+                        updatedAtFont
+                );
+                await widget.presentSmall();
+                Script.setWidget(widget);
+                Script.complete();
+        };
+};
 
 async function finalizeAndShowWidget(widget) {
-  if (!config.runsInWidget) {
-    await widget.presentMedium();
-  }
-  Script.setWidget(widget);
-  Script.complete();
-}
+        if (!config.runsInWidget) {
+        await widget.presentMedium();
+};
+Script.setWidget(widget);
+Script.complete();
+};
 
 async function initializeToken() {
-  token = await getAuthToken();
-  if (token === undefined) {
-    throw "Credentials not valid";
-  }
-}
+        token = await getAuthToken();
+        if (token === undefined) {
+        throw "Credentials not valid";
+        };
+};
 
 async function initializeLogoAndHeader(titleStack) {
-  titleStack.size = new Size(maxLineWidth, normalLineHeight);
-  const logo = await getHbLogo();
-  const imgWidget = titleStack.addImage(logo);
-  imgWidget.imageSize = new Size(40, 30);
+        titleStack.size = new Size(maxLineWidth, normalLineHeight);
+        const logo = await getHbLogo();
+        const imgWidget = titleStack.addImage(logo);
+        imgWidget.imageSize = new Size(40, 30);
 
-  let headerText = addStyledText(
-    titleStack,
-    CONFIGURATION.widgetTitle,
-    headerFont
-  );
-  headerText.size = new Size(60, normalLineHeight);
-}
+        let headerText = addStyledText(
+        titleStack,
+        CONFIGURATION.widgetTitle,
+        headerFont
+        );
+        headerText.size = new Size(60, normalLineHeight);
+};
 
 function initializeFonts() {
   headerFont = Font.boldMonospacedSystemFont(CONFIGURATION.headerFontSize);
