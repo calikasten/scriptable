@@ -7,7 +7,7 @@ async function getData() {
 	const newRequest = await new Request(url);
 	const response = await newRequest.loadJSON();
 	return response;
-}
+};
 
 // Define variables from API response
 const data = await getData();
@@ -33,12 +33,12 @@ const data = await getData();
 		month: "numeric",
       		day: "numeric",
      		year: "2-digit"
-    	}
+    	};
     	var formatTime = {
 		hour: "numeric",
 		minute: "numeric",
       		hour12: false
-    	}
+    	};
     	var dateString = Intl.DateTimeFormat("en", formatDate).format(launchDate);
     	var timeString = Intl.DateTimeFormat("en", formatTime).format(launchDate);
     	var launchDateTime = dateString + " at " + timeString;
@@ -74,18 +74,16 @@ function createWidget(data) {
     
 	// Return customized widget UI
 	return widget;
-}
+};
 
 // Display widget
 let widget = createWidget();
 
 // Check where the script is running
 if (config.runsInWidget) {
-	
 	// Run inside a widget when added to the home screen
 	Script.setWidget(widget);
 } else {
-
 	// Otherwise show the small widget preview inside the Scriptable app
 	widget.presentSmall();
 }
