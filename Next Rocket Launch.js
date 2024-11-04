@@ -13,9 +13,7 @@ async function getData() {
 const data = await getData();
 
 	// Get background image
-  	var imageUrl = "https://media.wired.com/photos/5bbadf1c40061e2cf09198a9/master/w_2240,c_limit/SpaceX-1047301226a.jpg";
-  	var fetchImage = new Request(imageUrl);
-	const image = await fetchImage.loadImage();
+  	let image = await new Request("https://media.wired.com/photos/5bbadf1c40061e2cf09198a9/master/w_2240,c_limit/SpaceX-1047301226a.jpg").loadImage();
 
 	// Get launch details
 	var launchDetails = data.results;
