@@ -1043,206 +1043,199 @@ function convertToFahrenheit(temperatureInCelsius) {
 };
 
 function addStatusIcon(widget, statusBool) {
-  let name = "";
-  let color;
-  if (statusBool === undefined) {
-    name = CONFIGURATION.icon_statusUnknown;
-    color = new Color(CONFIGURATION.icon_colorUnknown);
-  } else if (statusBool) {
-    name = CONFIGURATION.icon_statusGood;
-    color = new Color(CONFIGURATION.icon_colorGood);
-  } else {
-    name = CONFIGURATION.icon_statusBad;
-    color = new Color(CONFIGURATION.icon_colorBad);
-  }
-  addIcon(widget, name, color);
-}
+        let name = "";
+        let color;
+        if (statusBool === undefined) {
+                name = CONFIGURATION.icon_statusUnknown;
+                color = new Color(CONFIGURATION.icon_colorUnknown);
+        } else if (statusBool) {
+                name = CONFIGURATION.icon_statusGood;
+                color = new Color(CONFIGURATION.icon_colorGood);
+        } else {
+                name = CONFIGURATION.icon_statusBad;
+                color = new Color(CONFIGURATION.icon_colorBad);
+        };
+        addIcon(widget, name, color);
+};
 
 function addStatusInfo(lineWidget, statusBool, shownText) {
-  let itemStack = lineWidget.addStack();
-  addStatusIcon(itemStack, statusBool);
-  itemStack.addSpacer(2);
-  let text = itemStack.addText(shownText);
-  text.font = infoPanelFont;
-  setTextColor(text);
-}
+        let itemStack = lineWidget.addStack();
+        addStatusIcon(itemStack, statusBool);
+        itemStack.addSpacer(2);
+        let text = itemStack.addText(shownText);
+        text.font = infoPanelFont;
+        setTextColor(text);
+};
 
 async function handleNotifications(hbRunning, hbUtd, pluginsUtd, nodeUtd) {
-  if (!CONFIGURATION.notificationEnabled) {
-    return;
-  }
-  let path = getFilePath(CONFIGURATION.notificationJsonFileName);
-  let state = await getPersistedObject(
-    path,
-    NOTIFICATION_JSON_VERSION,
-    INITIAL_NOTIFICATION_STATE,
-    true
-  );
-  let now = new Date();
-  let shouldUpdateState = false;
-  if (
-    shouldNotify(
-      hbRunning,
-      state.hbRunning.status,
-      state.hbRunning.lastNotified
-    )
-  ) {
-    state.hbRunning.status = hbRunning;
-    state.hbRunning.lastNotified = now;
-    shouldUpdateState = true;
-    scheduleNotification(CONFIGURATION.notifyText_hbNotRunning);
-  } else if (hbRunning && !state.hbRunning.status) {
-    state.hbRunning.status = hbRunning;
-    state.hbRunning.lastNotified = undefined;
-    shouldUpdateState = true;
-    if (!CONFIGURATION.disableStateBackToNormalNotifications) {
-      scheduleNotification(CONFIGURATION.notifyText_hbNotRunning_backNormal);
-    }
-  }
+        if (!CONFIGURATION.notificationEnabled) {
+                return;
+        };
+        let path = getFilePath(CONFIGURATION.notificationJsonFileName);
+        let state = await getPersistedObject(
+                path,
+                NOTIFICATION_JSON_VERSION,
+                INITIAL_NOTIFICATION_STATE,
+                true
+        );
+        let now = new Date();
+        let shouldUpdateState = false;
+        if (
+                shouldNotify(
+                        hbRunning,
+                        state.hbRunning.status,
+                        state.hbRunning.lastNotified
+                )
+        ) {
+        state.hbRunning.status = hbRunning;
+        state.hbRunning.lastNotified = now;
+        shouldUpdateState = true;
+        scheduleNotification(CONFIGURATION.notifyText_hbNotRunning);
+        } else if (hbRunning && !state.hbRunning.status) {
+                state.hbRunning.status = hbRunning;
+                state.hbRunning.lastNotified = undefined;
+                shouldUpdateState = true;
+                if (!CONFIGURATION.disableStateBackToNormalNotifications) {
+                        scheduleNotification(CONFIGURATION.notifyText_hbNotRunning_backNormal);
+                };
+        };
 
-  if (shouldNotify(hbUtd, state.hbUtd.status, state.hbUtd.lastNotified)) {
-    state.hbUtd.status = hbUtd;
-    state.hbUtd.lastNotified = now;
-    shouldUpdateState = true;
-    scheduleNotification(CONFIGURATION.notifyText_hbNotUtd);
-  } else if (hbUtd && !state.hbUtd.status) {
-    state.hbUtd.status = hbUtd;
-    state.hbUtd.lastNotified = undefined;
-    shouldUpdateState = true;
-    if (!CONFIGURATION.disableStateBackToNormalNotifications) {
-      scheduleNotification(CONFIGURATION.notifyText_hbNotUtd_backNormal);
-    }
-  }
-
-  if (
-    shouldNotify(
-      pluginsUtd,
-      state.pluginsUtd.status,
-      state.pluginsUtd.lastNotified
-    )
-  ) {
-    state.pluginsUtd.status = pluginsUtd;
-    state.pluginsUtd.lastNotified = now;
-    shouldUpdateState = true;
-    scheduleNotification(CONFIGURATION.notifyText_pluginsNotUtd);
-  } else if (pluginsUtd && !state.pluginsUtd.status) {
-    state.pluginsUtd.status = pluginsUtd;
-    state.pluginsUtd.lastNotified = undefined;
-    shouldUpdateState = true;
-    if (!CONFIGURATION.disableStateBackToNormalNotifications) {
-      scheduleNotification(CONFIGURATION.notifyText_pluginsNotUtd_backNormal);
-    }
-  }
-
-  if (shouldNotify(nodeUtd, state.nodeUtd.status, state.nodeUtd.lastNotified)) {
-    state.nodeUtd.status = nodeUtd;
-    state.nodeUtd.lastNotified = now;
-    shouldUpdateState = true;
-    scheduleNotification(CONFIGURATION.notifyText_nodejsNotUtd);
-  } else if (nodeUtd && !state.nodeUtd.status) {
-    state.nodeUtd.status = nodeUtd;
-    state.nodeUtd.lastNotified = undefined;
-    shouldUpdateState = true;
-    if (!CONFIGURATION.disableStateBackToNormalNotifications) {
-      scheduleNotification(CONFIGURATION.notifyText_nodejsNotUtd_backNormal);
-    }
-  }
-
-  if (shouldUpdateState) {
-    persistObject(state, path);
-  }
-}
+        if (shouldNotify(hbUtd, state.hbUtd.status, state.hbUtd.lastNotified)) {
+                state.hbUtd.status = hbUtd;
+                state.hbUtd.lastNotified = now;
+                shouldUpdateState = true;
+                scheduleNotification(CONFIGURATION.notifyText_hbNotUtd);
+        } else if (hbUtd && !state.hbUtd.status) {
+                state.hbUtd.status = hbUtd;
+                state.hbUtd.lastNotified = undefined;
+                shouldUpdateState = true;
+                if (!CONFIGURATION.disableStateBackToNormalNotifications) {
+                        scheduleNotification(CONFIGURATION.notifyText_hbNotUtd_backNormal);
+                };
+        };
+        if (
+                shouldNotify(
+                pluginsUtd,
+                state.pluginsUtd.status,
+                state.pluginsUtd.lastNotified
+        )
+        ) {
+                state.pluginsUtd.status = pluginsUtd;
+                state.pluginsUtd.lastNotified = now;
+                shouldUpdateState = true;
+                scheduleNotification(CONFIGURATION.notifyText_pluginsNotUtd);
+        } else if (pluginsUtd && !state.pluginsUtd.status) {
+                state.pluginsUtd.status = pluginsUtd;
+                state.pluginsUtd.lastNotified = undefined;
+                shouldUpdateState = true;
+                if (!CONFIGURATION.disableStateBackToNormalNotifications) {
+                        scheduleNotification(CONFIGURATION.notifyText_pluginsNotUtd_backNormal);
+                };
+        };
+        if (shouldNotify(nodeUtd, state.nodeUtd.status, state.nodeUtd.lastNotified)) {
+                state.nodeUtd.status = nodeUtd;
+                state.nodeUtd.lastNotified = now;
+                shouldUpdateState = true;
+                scheduleNotification(CONFIGURATION.notifyText_nodejsNotUtd);
+        } else if (nodeUtd && !state.nodeUtd.status) {
+                state.nodeUtd.status = nodeUtd;
+                state.nodeUtd.lastNotified = undefined;
+                shouldUpdateState = true;
+                if (!CONFIGURATION.disableStateBackToNormalNotifications) {
+                        scheduleNotification(CONFIGURATION.notifyText_nodejsNotUtd_backNormal);
+                };
+        };
+        if (shouldUpdateState) {
+                persistObject(state, path);
+        };
+};
 
 function shouldNotify(currentBool, boolFromLastTime, lastNotifiedDate) {
-  return (
-    !currentBool && (boolFromLastTime || isTimeToNotifyAgain(lastNotifiedDate))
-  );
-}
+        return (
+                !currentBool && (boolFromLastTime || isTimeToNotifyAgain(lastNotifiedDate))
+        );
+};
 
 function isTimeToNotifyAgain(dateToCheck) {
-  if (dateToCheck === undefined) return true;
+        if (dateToCheck === undefined) return true;
 
-  let dateInThePast = new Date(dateToCheck);
-  let now = new Date();
-  let timeBetweenDates = parseInt(
-    (now.getTime() - dateInThePast.getTime()) / 1000
-  ); // Seconds
-  return (
-    timeBetweenDates > CONFIGURATION.notificationIntervalInDays * 24 * 60 * 60
-  );
-}
+        let dateInThePast = new Date(dateToCheck);
+        let now = new Date();
+        let timeBetweenDates = parseInt(
+                (now.getTime() - dateInThePast.getTime()) / 1000
+        ); 
+        return (
+                timeBetweenDates > CONFIGURATION.notificationIntervalInDays * 24 * 60 * 60
+        );
+};
 
 function scheduleNotification(text) {
-  let not = new Notification();
-  not.title = CONFIGURATION.notification_title;
-  not.body = text;
-  not.addAction(
-    CONFIGURATION.notification_expandedButtonText,
-    CONFIGURATION.hbServiceMachineBaseUrl,
-    false
-  );
-  not.sound = CONFIGURATION.notification_ringTone;
-  not.schedule();
-}
+        let not = new Notification();
+        not.title = CONFIGURATION.notification_title;
+        not.body = text;
+        not.addAction(
+                CONFIGURATION.notification_expandedButtonText,
+                CONFIGURATION.hbServiceMachineBaseUrl,
+                false
+        );
+        not.sound = CONFIGURATION.notification_ringTone;
+        not.schedule();
+};
 
 async function getPersistedObject(
-  path,
-  versionToCheckAgainst,
-  initialObjectToPersist,
-  createIfNotExisting
+        path,
+        versionToCheckAgainst,
+        initialObjectToPersist,
+        createIfNotExisting
 ) {
-  if (fileManager.fileExists(path)) {
-    const fileDownloaded = await fileManager.isFileDownloaded(path);
-    if (!fileDownloaded) {
-      await fileManager.downloadFileFromiCloud(path);
-    }
-    let raw, persistedObject;
-    try {
-      raw = fileManager.readString(path);
-      persistedObject = JSON.parse(raw);
-    } catch (e) {
-      fileManager.remove(path);
-    }
-
-    if (
-      persistedObject &&
-      (persistedObject.jsonVersion === undefined ||
-        persistedObject.jsonVersion < versionToCheckAgainst)
-    ) {
-      log(
-        "Unfortunately, the configuration structure changed and your old config is not compatible anymore. It is now renamed, marked as deprecated and a new one is created with the initial configuration. "
-      );
-      persistObject(
-        persistedObject,
-        getFilePath("DEPRECATED_" + configurationFileName)
-      );
-      fileManager.remove(path);
-      let migratedConfig = { ...initialObjectToPersist, ...persistedObject };
-      migratedConfig.jsonVersion = CONFIGURATION_JSON_VERSION;
-      persistObject(migratedConfig, path);
-      return migratedConfig;
-    } else {
-      return persistedObject;
-    }
-  }
-  if (createIfNotExisting) {
-    // Create a new state JSON
-    persistObject(initialObjectToPersist, path);
-  }
-  return initialObjectToPersist;
-}
-
+        if (fileManager.fileExists(path)) {
+                const fileDownloaded = await fileManager.isFileDownloaded(path);
+                if (!fileDownloaded) {
+                        await fileManager.downloadFileFromiCloud(path);
+                }
+                let raw, persistedObject;
+                try {
+                        raw = fileManager.readString(path);
+                        persistedObject = JSON.parse(raw);
+                } catch (e) {
+                        fileManager.remove(path);
+                };
+        
+                if (
+                        persistedObject &&
+                        (persistedObject.jsonVersion === undefined ||
+                        persistedObject.jsonVersion < versionToCheckAgainst)
+                ) {
+                        log("Unfortunately, the configuration structure changed and your old config is not compatible anymore. It is now renamed, marked as deprecated and a new one is created with the initial configuration. ");
+                        persistObject(
+                                persistedObject,
+                                getFilePath("DEPRECATED_" + configurationFileName)
+                        );
+                        fileManager.remove(path);
+                        let migratedConfig = { ...initialObjectToPersist, ...persistedObject };
+                        migratedConfig.jsonVersion = CONFIGURATION_JSON_VERSION;
+                        persistObject(migratedConfig, path);
+                        return migratedConfig;
+                } else {
+                        return persistedObject;
+                };
+        };
+        if (createIfNotExisting) {
+                persistObject(initialObjectToPersist, path);
+        };
+        return initialObjectToPersist;
+};
 
 function persistObject(object, path) {
-  let raw = JSON.stringify(object, null, 2);
-  fileManager.writeString(path, raw);
-}
+        let raw = JSON.stringify(object, null, 2);
+        fileManager.writeString(path, raw);
+};
 
 function addIcon(widget, name, color) {
-  let sf = SFSymbol.named(name);
-  let iconImage = sf.image;
-  let imageWidget = widget.addImage(iconImage);
-  imageWidget.resizable = true;
-  imageWidget.imageSize = new Size(iconSize, iconSize);
-  imageWidget.tintColor = color;
-}
+        let sf = SFSymbol.named(name);
+        let iconImage = sf.image;
+        let imageWidget = widget.addImage(iconImage);
+        imageWidget.resizable = true;
+        imageWidget.imageSize = new Size(iconSize, iconSize);
+        imageWidget.tintColor = color;
+};
