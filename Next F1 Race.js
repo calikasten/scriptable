@@ -3,7 +3,7 @@
 // icon-color: red; icon-glyphy: flag-checkered;
 
 // Set API variables
-const API_KEY = "";
+const API_KEY = "<INSERT API KEY HERE>";
 const LOCALE = "";
 
 // Function to get data from API
