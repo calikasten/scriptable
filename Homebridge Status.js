@@ -9,130 +9,109 @@ const CONFIGURATION_JSON_VERSION = 3;
 
 // Begin configuration setup
 class Configuration {
-  hbServiceMachineBaseUrl = "<INSERT IP ADDRESS AND PORT>";
-  userName = "<INSERT HOMEBRIDGE USERNAME>";
-  password = "<INSERT HOMEBRIDGE PASSWORD>";
-  notificationEnabled = true;
-  notificationIntervalInDays = 1;
-  disableStateBackToNormalNotifications = true;
-  fileManagerMode = "ICLOUD";
-  temperatureUnitConfig = "FAHRENHEIT";
-  requestTimeoutInterval = 15;
-  pluginsOrSwUpdatesToIgnore = [];
-  adaptToLightOrDarkMode = true;
-  bgColorMode = "PURPLE_DARK";
-  chartColor_dark = "#FFFFFF";
-  fontColor_dark = "#FFFFFF";
-  failIcon = "❌";
-  bulletPointIcon = "▫️";
-  decimalChar = ".";
-  jsonVersion = CONFIGURATION_JSON_VERSION;
-  logoUrl =
-    "https://github.com/homebridge/branding/blob/master/logos/homebridge-silhouette-round-white.png?raw=true";
+        hbServiceMachineBaseUrl = "<INSERT IP ADDRESS AND PORT>";
+        userName = "<INSERT HOMEBRIDGE USERNAME>";
+        password = "<INSERT HOMEBRIDGE PASSWORD>";
+        notificationEnabled = true;
+        notificationIntervalInDays = 1;
+        disableStateBackToNormalNotifications = true;
+        fileManagerMode = "ICLOUD";
+        temperatureUnitConfig = "FAHRENHEIT";
+        requestTimeoutInterval = 15;
+        pluginsOrSwUpdatesToIgnore = [];
+        adaptToLightOrDarkMode = true;
+        bgColorMode = "PURPLE_DARK";
+        chartColor_dark = "#FFFFFF";
+        fontColor_dark = "#FFFFFF";
+        failIcon = "❌";
+        bulletPointIcon = "▫️";
+        decimalChar = ".";
+        jsonVersion = CONFIGURATION_JSON_VERSION;
+        logoUrl = "https://github.com/homebridge/branding/blob/master/logos/homebridge-silhouette-round-white.png?raw=true";
 
-  // Icons:
-  icon_statusGood = "checkmark.circle.fill";
-  icon_colorGood = "#" + Color.green().hex; 
-  icon_statusBad = "exclamationmark.triangle.fill"; 
-  icon_colorBad = "#" + Color.red().hex; 
-  icon_statusUnknown = "questionmark.circle.fill"; 
-  icon_colorUnknown = "#" + Color.yellow().hex; 
+        // Icons:
+        icon_statusGood = "checkmark.circle.fill";
+        icon_colorGood = "#" + Color.green().hex; 
+        icon_statusBad = "exclamationmark.triangle.fill"; 
+        icon_colorBad = "#" + Color.red().hex; 
+        icon_statusUnknown = "questionmark.circle.fill"; 
+        icon_colorUnknown = "#" + Color.yellow().hex; 
 
-  // Internationalization:
-  status_hbRunning = "Running";
-  status_hbUtd = "UTD";
-  status_pluginsUtd = "Plugins UTD  ";
-  status_nodejsUtd = "Node.js UTD  ";
-  spacer_beforeFirstStatusColumn = 8;
-  spacer_betweenStatusColumns = 5;
-  spacer_afterSecondColumn = 0;
+        // Internationalization:
+        status_hbRunning = "Running";
+        status_hbUtd = "UTD";
+        status_pluginsUtd = "Plugins UTD  ";
+        status_nodejsUtd = "Node.js UTD  ";
+        spacer_beforeFirstStatusColumn = 8;
+        spacer_betweenStatusColumns = 5;
+        spacer_afterSecondColumn = 0;
+      
+        title_cpuLoad = "CPU Load: ";
+        title_cpuTemp = "CPU Temp: ";
+        title_ramUsage = "RAM Usage: ";
+        title_uptimes = "Uptimes:";
+      
+        title_uiService = "UI-Service: ";
+        title_systemGuiName = "Raspberry Pi: ";
+      
+        notification_title = "Homebridge Status changed:";
+        notification_expandedButtonText = "Details";
+        notification_ringTone = "event";
+      
+        notifyText_hbNotRunning = "Your Homebridge instance stopped";
+        notifyText_hbNotUtd = "Update available for Homebridge";
+        notifyText_pluginsNotUtd = "Update available for one of your Plugins";
+      
+        notifyText_nodejsNotUtd = "Update available for Node.js";
+        notifyText_hbNotRunning_backNormal =
+          "Your Homebridge instance is back online";
+        notifyText_hbNotUtd_backNormal = "Homebridge is now up to date";
+        notifyText_pluginsNotUtd_backNormal = "Plugins are now up to date";
+        notifyText_nodejsNotUtd_backNormal = "Node.js is now up to date";
+      
+        siriGui_title_update_available = "Available Updates:";
+        siriGui_title_all_UTD = "Everything is up to date!";
+        siriGui_icon_version = "arrow.right.square.fill";
+        siriGui_icon_version_color = "#" + Color.blue().hex;
+        siri_spokenAnswer_update_available = "At least one update is available";
+        siri_spokenAnswer_all_UTD = "Everything is up to date";
 
-  title_cpuLoad = "CPU Load: ";
-  title_cpuTemp = "CPU Temp: ";
-  title_ramUsage = "RAM Usage: ";
-  title_uptimes = "Uptimes:";
-
-  title_uiService = "UI-Service: ";
-  title_systemGuiName = "Raspberry Pi: ";
-
-  notification_title = "Homebridge Status changed:";
-  notification_expandedButtonText = "Details";
-  notification_ringTone = "event";
-
-  notifyText_hbNotRunning = "Your Homebridge instance stopped";
-  notifyText_hbNotUtd = "Update available for Homebridge";
-  notifyText_pluginsNotUtd = "Update available for one of your Plugins";
-
-  notifyText_nodejsNotUtd = "Update available for Node.js";
-  notifyText_hbNotRunning_backNormal =
-    "Your Homebridge instance is back online";
-  notifyText_hbNotUtd_backNormal = "Homebridge is now up to date";
-  notifyText_pluginsNotUtd_backNormal = "Plugins are now up to date";
-  notifyText_nodejsNotUtd_backNormal = "Node.js is now up to date";
-
-  siriGui_title_update_available = "Available Updates:";
-  siriGui_title_all_UTD = "Everything is up to date!";
-  siriGui_icon_version = "arrow.right.square.fill";
-  siriGui_icon_version_color = "#" + Color.blue().hex;
-  siri_spokenAnswer_update_available = "At least one update is available";
-  siri_spokenAnswer_all_UTD = "Everything is up to date";
-
-  error_noConnectionText =
-    "   " +
-    this.failIcon +
-    " UI-Service not reachable!\n          " +
-    this.bulletPointIcon +
-    " Server started?\n          " +
-    this.bulletPointIcon +
-    " UI-Service process started?\n          " +
-    this.bulletPointIcon +
-    " Server-URL " +
-    this.hbServiceMachineBaseUrl +
-    " correct?\n          " +
-    this.bulletPointIcon +
-    " Are you in the same network?";
-  error_noConnectionLockScreenText =
-    "  " +
-    this.failIcon +
-    " UI-Service not reachable!\n    " +
-    this.bulletPointIcon +
-    " Server started?\n    " +
-    this.bulletPointIcon +
-    " UI-Service process started?\n    " +
-    this.bulletPointIcon +
-    " " +
-    this.hbServiceMachineBaseUrl +
-    " correct?\n    " +
-    this.bulletPointIcon +
-    " Are you in the same network?";
-
-  widgetTitle = " Homebridge ";
-  dateFormat = "MM-dd-yyyy HH:mm:ss";
-  hbLogoFileName = Device.model() + "hbLogo.png";
-  headerFontSize = 12;
-  informationFontSize = 10;
-  chartAxisFontSize = 7;
-  dateFontSize = 7;
-  notificationJsonFileName = "notificationState.json";
-}
+        error_noConnectionText = "   " + 
+          this.failIcon + " UI-Service not reachable!\n          " + 
+          this.bulletPointIcon + " Server started?\n          " + 
+          this.bulletPointIcon + " UI-Service process started?\n          " + 
+          this.bulletPointIcon + " Server-URL " +
+          this.hbServiceMachineBaseUrl + " correct?\n          " +
+          this.bulletPointIcon + " Are you in the same network?"; 
+  
+        error_noConnectionLockScreenText = "  " +
+          this.failIcon + " UI-Service not reachable!\n    " +
+          this.bulletPointIcon + " Server started?\n    " +
+          this.bulletPointIcon + " UI-Service process started?\n    " +
+          this.bulletPointIcon + " " +
+          this.hbServiceMachineBaseUrl + " correct?\n    " + this.bulletPointIcon + " Are you in the same network?";
+      
+        widgetTitle = " Homebridge ";
+        dateFormat = "MM-dd-yyyy HH:mm:ss";
+        hbLogoFileName = Device.model() + "hbLogo.png";
+        headerFontSize = 12;
+        informationFontSize = 10;
+        chartAxisFontSize = 7;
+        dateFontSize = 7;
+        notificationJsonFileName = "notificationState.json";
+      }
 // End of configuration setup
 
 let CONFIGURATION = new Configuration();
-const noAuthUrl = () =>
-  CONFIGURATION.hbServiceMachineBaseUrl + "/api/auth/noauth";
+const noAuthUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/auth/noauth";
 const authUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/auth/login";
 const cpuUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/cpu";
-const overallStatusUrl = () =>
-  CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/homebridge";
+const overallStatusUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/homebridge";
 const ramUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/ram";
-const uptimeUrl = () =>
-  CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/uptime";
+const uptimeUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/uptime";
 const pluginsUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/plugins";
-const hbVersionUrl = () =>
-  CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/homebridge-version";
-const nodeJsUrl = () =>
-  CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/nodejs";
-
+const hbVersionUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/homebridge-version";
+const nodeJsUrl = () => CONFIGURATION.hbServiceMachineBaseUrl + "/api/status/nodejs";
 const timeFormatter = new DateFormatter();
 const maxLineWidth = 300; 
 const normalLineHeight = 35;
@@ -152,79 +131,74 @@ const UNAVAILABLE = "UNAVAILABLE";
 const NOTIFICATION_JSON_VERSION = 1; 
 
 const INITIAL_NOTIFICATION_STATE = {
-  jsonVersion: NOTIFICATION_JSON_VERSION,
-  hbRunning: { status: true },
-  hbUtd: { status: true },
-  pluginsUtd: { status: true },
-  nodeUtd: { status: true },
+        jsonVersion: NOTIFICATION_JSON_VERSION,
+        hbRunning: { status: true },
+        hbUtd: { status: true },
+        pluginsUtd: { status: true },
+        nodeUtd: { status: true },
 };
 
 class LineChart {
-  constructor(width, height, values) {
-    this.ctx = new DrawContext();
-    this.ctx.size = new Size(width, height);
-    this.values = values;
-  }
+        constructor(width, height, values) {
+                this.ctx = new DrawContext();
+                this.ctx.size = new Size(width, height);
+                this.values = values;
+        }
+        _calculatePath() {
+                let maxValue = Math.max(...this.values);
+                let minValue = Math.min(...this.values);
+                let difference = maxValue - minValue;
+                let count = this.values.length;
+                let step = this.ctx.size.width / (count - 1);
+                let points = this.values.map((current, index, all) => {
+                        let x = step * index;
+                        let y = this.ctx.size.height - ((current - minValue) / difference) * this.ctx.size.height;
+                return new Point(x, y);
+        });
+        return this._getSmoothPath(points);
+        }
+        _getSmoothPath(points) {
+                let path = new Path();
+              path.move(new Point(0, this.ctx.size.height));
+              path.addLine(points[0]);
+              for (let i = 0; i < points.length - 1; i++) {
+                      let xAvg = (points[i].x + points[i + 1].x) / 2;
+                      let yAvg = (points[i].y + points[i + 1].y) / 2;
+                      let avg = new Point(xAvg, yAvg);
+                      let cp1 = new Point((xAvg + points[i].x) / 2, points[i].y);
+                      let next = new Point(points[i + 1].x, points[i + 1].y);
+                      let cp2 = new Point((xAvg + points[i + 1].x) / 2, points[i + 1].y);
+                      path.addQuadCurve(avg, cp1);
+                      path.addQuadCurve(next, cp2);
+              }
+      path.addLine(new Point(this.ctx.size.width, this.ctx.size.height));
+      path.closeSubpath();
+      return path;
+      }
 
-  _calculatePath() {
-    let maxValue = Math.max(...this.values);
-    let minValue = Math.min(...this.values);
-    let difference = maxValue - minValue;
-    let count = this.values.length;
-    let step = this.ctx.size.width / (count - 1);
-    let points = this.values.map((current, index, all) => {
-      let x = step * index;
-      let y =
-        this.ctx.size.height -
-        ((current - minValue) / difference) * this.ctx.size.height;
-      return new Point(x, y);
-    });
-    return this._getSmoothPath(points);
-  }
-
-  _getSmoothPath(points) {
-    let path = new Path();
-    path.move(new Point(0, this.ctx.size.height));
-    path.addLine(points[0]);
-    for (let i = 0; i < points.length - 1; i++) {
-      let xAvg = (points[i].x + points[i + 1].x) / 2;
-      let yAvg = (points[i].y + points[i + 1].y) / 2;
-      let avg = new Point(xAvg, yAvg);
-      let cp1 = new Point((xAvg + points[i].x) / 2, points[i].y);
-      let next = new Point(points[i + 1].x, points[i + 1].y);
-      let cp2 = new Point((xAvg + points[i + 1].x) / 2, points[i + 1].y);
-      path.addQuadCurve(avg, cp1);
-      path.addQuadCurve(next, cp2);
-    }
-    path.addLine(new Point(this.ctx.size.width, this.ctx.size.height));
-    path.closeSubpath();
-    return path;
-  }
-
-  configure(fn) {
-    let path = this._calculatePath();
-    if (fn) {
-      fn(this.ctx, path);
-    } else {
-      this.ctx.addPath(path);
-      this.ctx.fillPath(path);
-    }
-    return this.ctx;
-  }
+      configure(fn) {
+      let path = this._calculatePath();
+      if (fn) {
+              fn(this.ctx, path);
+      } else {
+              this.ctx.addPath(path);
+              this.ctx.fillPath(path);
+      }
+      return this.ctx;
+      }
 }
 
 class HomeBridgeStatus {
-  overallStatus;
-  hbVersionInfos;
-  hbUpToDate;
-  pluginVersionInfos;
-  pluginsUpToDate;
-  nodeJsVersionInfos;
-  nodeJsUpToDate;
+        overallStatus;
+        hbVersionInfos;
+        hbUpToDate;
+        pluginVersionInfos;
+        pluginsUpToDate;
+        nodeJsVersionInfos;
+        nodeJsUpToDate;
+        constructor() {}
 
-  constructor() {}
-
-  async initialize() {
+        async initialize() {
     this.overallStatus = await getOverallStatus();
     this.hbVersionInfos = await getHomebridgeVersionInfos();
     this.hbUpToDate =
