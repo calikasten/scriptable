@@ -14,7 +14,7 @@ function loadData() {
     let filePath = iCloud.joinPath(directoryPath, "sticky-note.txt")
     return iCloud.readString(filePath)
   } catch(error) {
-    return data
+return data
   }
 }
 
@@ -29,13 +29,13 @@ async function editData(data) {
   if (action < 0) {
     return data
   } else {
-    return editor.textFieldValue(0)
+      return editor.textFieldValue(0)
   }
 }
 
 // Function to create new directory location and save entered sticky note text
 function saveData(data) {
-	let filePath = iCloud.joinPath(directoryPath, "sticky-note.txt");
+  let filePath = iCloud.joinPath(directoryPath, "sticky-note.txt");
   iCloud.writeString(filePath, data);
 }
 
@@ -44,21 +44,21 @@ function createWidget(note) {
   let widget = new ListWidget()
   widget.setPadding(16, 16, 16, 8)
 
-	// Set widget gradient background
-	let startColor = new Color("#F8DE5F")
+  // Set widget gradient background
+  let startColor = new Color("#F8DE5F")
   let endColor = new Color("#FFCF00")
   let gradient = new LinearGradient()
   gradient.colors = [startColor, endColor]
   gradient.locations = [0.0, 1]
   widget.backgroundGradient = gradient
 
-	// Add entered sticky note text to widget
+  // Add entered sticky note text to widget
   let noteText = widget.addText(note)
   noteText.textColor = Color.black()
   noteText.font = Font.mediumRoundedSystemFont(16)
   noteText.centerAlignText();
   
-  //Return customized widget UI
+  // Return customized widget UI
   return widget;
 }
 
