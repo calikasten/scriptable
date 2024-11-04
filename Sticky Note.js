@@ -11,17 +11,17 @@ const directoryPath = `${directory}${folderLocation}`;
 
 // Function to load saved sticky note text
 function loadData() {
-        try {
-        let filePath = iCloud.joinPath(directoryPath, "sticky-note.txt")
-        return iCloud.readString(filePath)
-        } catch(error) {
-                return data
-        }
+  try {
+    let filePath = iCloud.joinPath(directoryPath, "sticky-note.txt")
+    return iCloud.readString(filePath)
+  } catch(error) {
+    return data
+  }
 }
 
 // Function to enter new text for sticky note
 async function editData(data) {
-        let editor = new Alert()
+  let editor = new Alert()
   editor.title = "Enter Sticky Note Text"
   editor.addTextField(data)
   editor.addCancelAction("Cancel")
