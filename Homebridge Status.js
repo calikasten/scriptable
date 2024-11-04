@@ -683,126 +683,125 @@ function handleSettingOfBackgroundColor(widget) {
 };
 
 function setGradient(widget, lightOption, darkOption) {
-  if (Device.isUsingDarkAppearance()) {
-    widget.backgroundGradient = darkOption;
-  } else {
-    widget.backgroundGradient = lightOption;
-  }
-}
+        if (Device.isUsingDarkAppearance()) {
+                widget.backgroundGradient = darkOption;
+        } else {
+                widget.backgroundGradient = lightOption;
+        };
+};
 
 function getChartColorToUse() {
-  if (CONFIGURATION.adaptToLightOrDarkMode && Device.isUsingDarkAppearance()) {
-    return new Color(CONFIGURATION.chartColor_dark);
-  } else {
-    return new Color(CONFIGURATION.chartColor_light);
-  }
-}
+        if (CONFIGURATION.adaptToLightOrDarkMode && Device.isUsingDarkAppearance()) {
+                return new Color(CONFIGURATION.chartColor_dark);
+        } else {
+                return new Color(CONFIGURATION.chartColor_light);
+        };
+};
 
 function setTextColor(textWidget) {
-  if (CONFIGURATION.adaptToLightOrDarkMode && Device.isUsingDarkAppearance()) {
-    textWidget.textColor = new Color(CONFIGURATION.fontColor_dark);
-  } else {
-    textWidget.textColor = new Color(CONFIGURATION.fontColor_light);
-  }
-}
+        if (CONFIGURATION.adaptToLightOrDarkMode && Device.isUsingDarkAppearance()) {
+                textWidget.textColor = new Color(CONFIGURATION.fontColor_dark);
+        } else {
+                textWidget.textColor = new Color(CONFIGURATION.fontColor_light);
+        };
+};
 
 function createLinearGradient(color1, color2) {
-  const gradient = new LinearGradient();
-  gradient.locations = [0, 1];
-  gradient.colors = [new Color(color1), new Color(color2)];
-  return gradient;
-}
+        const gradient = new LinearGradient();
+        gradient.locations = [0, 1];
+        gradient.colors = [new Color(color1), new Color(color2)];
+        return gradient;
+};
 
 function addStyledText(stackToAddTo, text, font) {
-  let textHandle = stackToAddTo.addText(text);
-  textHandle.font = font;
-  setTextColor(textHandle);
-  return textHandle;
-}
+        let textHandle = stackToAddTo.addText(text);
+        textHandle.font = font;
+        setTextColor(textHandle);
+        return textHandle;
+};
 
 function addChartToWidget(column, chartData) {
-  let horizontalStack = column.addStack();
-  horizontalStack.addSpacer(5);
-  let yAxisLabelsStack = horizontalStack.addStack();
-  yAxisLabelsStack.layoutVertically();
+        let horizontalStack = column.addStack();
+        horizontalStack.addSpacer(5);
+        let yAxisLabelsStack = horizontalStack.addStack();
+        yAxisLabelsStack.layoutVertically();
 
-  addStyledText(
-    yAxisLabelsStack,
-    getMaxString(chartData, 2) + "%",
-    chartAxisFont
-  );
-  yAxisLabelsStack.addSpacer(6);
-  addStyledText(
-    yAxisLabelsStack,
-    getMinString(chartData, 2) + "%",
-    chartAxisFont
-  );
-  yAxisLabelsStack.addSpacer(6);
+        addStyledText(
+                yAxisLabelsStack,
+                getMaxString(chartData, 2) + "%",
+                chartAxisFont
+        );
+        yAxisLabelsStack.addSpacer(6);
+        addStyledText(
+                yAxisLabelsStack,
+                getMinString(chartData, 2) + "%",
+                chartAxisFont
+        );
+        yAxisLabelsStack.addSpacer(6);
+        horizontalStack.addSpacer(2);
 
-  horizontalStack.addSpacer(2);
+        let chartImage = new LineChart(500, 100, chartData)
+        .configure((ctx, path) => {
+                ctx.opaque = false;
+                ctx.setFillColor(getChartColorToUse());
+                ctx.addPath(path);
+                ctx.fillPath(path);
+        })
+        .getImage();
 
-  let chartImage = new LineChart(500, 100, chartData)
-    .configure((ctx, path) => {
-      ctx.opaque = false;
-      ctx.setFillColor(getChartColorToUse());
-      ctx.addPath(path);
-      ctx.fillPath(path);
-    })
-    .getImage();
+        let vertChartImageStack = horizontalStack.addStack();
+        vertChartImageStack.layoutVertically();
 
-  let vertChartImageStack = horizontalStack.addStack();
-  vertChartImageStack.layoutVertically();
+        let chartImageHandle = vertChartImageStack.addImage(chartImage);
+        chartImageHandle.imageSize = new Size(100, 25);
 
-  let chartImageHandle = vertChartImageStack.addImage(chartImage);
-  chartImageHandle.imageSize = new Size(100, 25);
+        let xAxisStack = vertChartImageStack.addStack();
+        xAxisStack.size = new Size(100, 10);
 
-  let xAxisStack = vertChartImageStack.addStack();
-  xAxisStack.size = new Size(100, 10);
-
-  addStyledText(xAxisStack, "t-10m", chartAxisFont);
-  xAxisStack.addSpacer(75);
-  addStyledText(xAxisStack, "t", chartAxisFont);
-}
+        addStyledText(xAxisStack, "t-10m", chartAxisFont);
+        xAxisStack.addSpacer(75);
+        addStyledText(xAxisStack, "t", chartAxisFont);
+};
 
 function checkIfConfigFileParameterIsProvided(givenParameter) {
-  if (
-    givenParameter.trim().startsWith("USE_CONFIG:") &&
-    givenParameter.trim().endsWith(".json")
-  ) {
-    configurationFileName = givenParameter.trim().split("USE_CONFIG:")[1];
-    if (!fileManager.fileExists(getFilePath(configurationFileName))) {
-      throw (
-        "Config file with provided name " +
-        configurationFileName +
-        " does not exist!\nCreate it first by running the script once providing the name in variable configurationFileName and maybe with variable overwritePersistedConfig set to true"
-      );
-    }
-    return true;
-  }
-  return false;
-}
+        if (
+                givenParameter.trim().startsWith("USE_CONFIG:") &&
+                givenParameter.trim().endsWith(".json")
+        ) {
+                configurationFileName = givenParameter.trim().split("USE_CONFIG:")[1];
+                if (!fileManager.fileExists(getFilePath(configurationFileName))) {
+                        throw (
+                                "Config file with provided name " +
+                                configurationFileName +
+                                " does not exist!\nCreate it first by running the script once providing the name in variable configurationFileName and maybe with variable overwritePersistedConfig set to true"
+                        );
+                };
+                return true;
+        };
+        return false;
+};
 
 function useCredentialsFromWidgetParameter(givenParameter) {
-  if (givenParameter.includes(",,")) {
-    let credentials = givenParameter.split(",,");
-    if (
-      credentials.length === 3 &&
-      credentials[0].length > 0 &&
-      credentials[1].length > 0 &&
-      credentials[2].length > 0 &&
-      credentials[2].startsWith("http")
-    ) {
-      CONFIGURATION.userName = credentials[0].trim();
-      CONFIGURATION.password = credentials[1].trim();
-      CONFIGURATION.hbServiceMachineBaseUrl = credentials[2].trim();
-      return true;
-    }
-  }
-  return false;
-}
+        if (givenParameter.includes(",,")) {
+                let credentials = givenParameter.split(",,");
+                if (
+                        credentials.length === 3 &&
+                        credentials[0].length > 0 &&
+                        credentials[1].length > 0 &&
+                        credentials[2].length > 0 &&
+                        credentials[2].startsWith("http")
+                ) {
+                        CONFIGURATION.userName = credentials[0].trim();
+                        CONFIGURATION.password = credentials[1].trim();
+                        CONFIGURATION.hbServiceMachineBaseUrl = credentials[2].trim();
+                        return true;
+                };
+        };
+        return false;
+};
 
 async function getAuthToken() {
-  if (
+if (
     CONFIGURATION.hbServiceMachineBaseUrl ===
     ">enter the ip with the port <"
   ) {
