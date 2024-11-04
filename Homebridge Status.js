@@ -63,8 +63,7 @@ class Configuration {
         notifyText_pluginsNotUtd = "Update available for one of your Plugins";
       
         notifyText_nodejsNotUtd = "Update available for Node.js";
-        notifyText_hbNotRunning_backNormal =
-          "Your Homebridge instance is back online";
+        notifyText_hbNotRunning_backNormal = "Your Homebridge instance is back online";
         notifyText_hbNotUtd_backNormal = "Homebridge is now up to date";
         notifyText_pluginsNotUtd_backNormal = "Plugins are now up to date";
         notifyText_nodejsNotUtd_backNormal = "Node.js is now up to date";
@@ -77,19 +76,19 @@ class Configuration {
         siri_spokenAnswer_all_UTD = "Everything is up to date";
 
         error_noConnectionText = "   " + 
-          this.failIcon + " UI-Service not reachable!\n          " + 
-          this.bulletPointIcon + " Server started?\n          " + 
-          this.bulletPointIcon + " UI-Service process started?\n          " + 
-          this.bulletPointIcon + " Server-URL " +
-          this.hbServiceMachineBaseUrl + " correct?\n          " +
-          this.bulletPointIcon + " Are you in the same network?"; 
+            this.failIcon + " UI-Service not reachable!\n          " + 
+            this.bulletPointIcon + " Server started?\n          " + 
+            this.bulletPointIcon + " UI-Service process started?\n          " + 
+            this.bulletPointIcon + " Server-URL " +
+            this.hbServiceMachineBaseUrl + " correct?\n          " +
+            this.bulletPointIcon + " Are you in the same network?"; 
   
         error_noConnectionLockScreenText = "  " +
-          this.failIcon + " UI-Service not reachable!\n    " +
-          this.bulletPointIcon + " Server started?\n    " +
-          this.bulletPointIcon + " UI-Service process started?\n    " +
-          this.bulletPointIcon + " " +
-          this.hbServiceMachineBaseUrl + " correct?\n    " + this.bulletPointIcon + " Are you in the same network?";
+            this.failIcon + " UI-Service not reachable!\n    " +
+            this.bulletPointIcon + " Server started?\n    " +
+            this.bulletPointIcon + " UI-Service process started?\n    " +
+            this.bulletPointIcon + " " +
+            this.hbServiceMachineBaseUrl + " correct?\n    " + this.bulletPointIcon + " Are you in the same network?";
       
         widgetTitle = " Homebridge ";
         dateFormat = "MM-dd-yyyy HH:mm:ss";
@@ -99,7 +98,7 @@ class Configuration {
         chartAxisFontSize = 7;
         dateFontSize = 7;
         notificationJsonFileName = "notificationState.json";
-      }
+      };
 // End of configuration setup
 
 let CONFIGURATION = new Configuration();
@@ -143,7 +142,7 @@ class LineChart {
                 this.ctx = new DrawContext();
                 this.ctx.size = new Size(width, height);
                 this.values = values;
-        }
+        };
         _calculatePath() {
                 let maxValue = Math.max(...this.values);
                 let minValue = Math.min(...this.values);
@@ -156,7 +155,7 @@ class LineChart {
                 return new Point(x, y);
         });
         return this._getSmoothPath(points);
-        }
+        };
         _getSmoothPath(points) {
                 let path = new Path();
               path.move(new Point(0, this.ctx.size.height));
@@ -170,11 +169,11 @@ class LineChart {
                       let cp2 = new Point((xAvg + points[i + 1].x) / 2, points[i + 1].y);
                       path.addQuadCurve(avg, cp1);
                       path.addQuadCurve(next, cp2);
-              }
+              };
       path.addLine(new Point(this.ctx.size.width, this.ctx.size.height));
       path.closeSubpath();
       return path;
-      }
+      };
 
       configure(fn) {
       let path = this._calculatePath();
@@ -183,10 +182,10 @@ class LineChart {
       } else {
               this.ctx.addPath(path);
               this.ctx.fillPath(path);
-      }
+      };
       return this.ctx;
-      }
-}
+      };
+};
 
 class HomeBridgeStatus {
         overallStatus;
@@ -199,39 +198,33 @@ class HomeBridgeStatus {
         constructor() {}
 
         async initialize() {
-    this.overallStatus = await getOverallStatus();
-    this.hbVersionInfos = await getHomebridgeVersionInfos();
-    this.hbUpToDate =
-      this.hbVersionInfos === undefined
-        ? undefined
-        : !this.hbVersionInfos.updateAvailable;
-    this.pluginVersionInfos = await getPluginVersionInfos();
-    this.pluginsUpToDate =
-      this.pluginVersionInfos === undefined
-        ? undefined
-        : !this.pluginVersionInfos.updateAvailable;
-    this.nodeJsVersionInfos = await getNodeJsVersionInfos();
-    this.nodeJsUpToDate =
-      this.nodeJsVersionInfos === undefined
-        ? undefined
-        : !this.nodeJsVersionInfos.updateAvailable;
-    return this;
-  }
-}
+            this.overallStatus = await getOverallStatus();
+            this.hbVersionInfos = await getHomebridgeVersionInfos();
+            this.hbUpToDate =
+            this.hbVersionInfos === undefined? undefined: !this.hbVersionInfos.updateAvailable;
+            this.pluginVersionInfos = await getPluginVersionInfos();
+            this.pluginsUpToDate =
+            this.pluginVersionInfos === undefined? undefined: !this.pluginVersionInfos.updateAvailable;
+            this.nodeJsVersionInfos = await getNodeJsVersionInfos();
+            this.nodeJsUpToDate =
+            this.nodeJsVersionInfos === undefined? undefined: !this.nodeJsVersionInfos.updateAvailable;
+        return this;
+        };
+};
 
 // Begin widget creation
 await initializeFileManager_Configuration_TimeFormatter_Fonts_AndToken();
 if (token === UNAVAILABLE) {
-  await showNotAvailableWidget();
-  return;
-}
+        await showNotAvailableWidget();
+        return;
+};
 const homeBridgeStatus = await new HomeBridgeStatus().initialize();
 await handleConfigPersisting();
 await handleNotifications(
-  homeBridgeStatus.overallStatus,
-  homeBridgeStatus.hbUpToDate,
-  homeBridgeStatus.pluginsUpToDate,
-  homeBridgeStatus.nodeJsUpToDate
+        homeBridgeStatus.overallStatus,
+        homeBridgeStatus.hbUpToDate,
+          homeBridgeStatus.pluginsUpToDate,
+          homeBridgeStatus.nodeJsUpToDate
 );
 await createAndShowWidget(homeBridgeStatus);
 return;
@@ -239,117 +232,86 @@ return;
 // End of widget creation
 
 async function initializeFileManager_Configuration_TimeFormatter_Fonts_AndToken() {
-  fileManager =
-    CONFIGURATION.fileManagerMode === "LOCAL"
-      ? FileManager.local()
-      : FileManager.iCloud();
-
-  if (args.widgetParameter) {
-    if (args.widgetParameter.length > 0) {
-      let foundCredentialsInParameter = useCredentialsFromWidgetParameter(
-        args.widgetParameter
-      );
-      let fileNameSuccessfullySet = false;
-      if (!foundCredentialsInParameter) {
-        fileNameSuccessfullySet = checkIfConfigFileParameterIsProvided(
-          args.widgetParameter
-        );
-      }
-      if (!foundCredentialsInParameter && !fileNameSuccessfullySet) {
-        throw "Format of provided parameter not valid\n2 Valid examples: 1. USE_CONFIG:yourfilename.json\n2. admin,,mypassword123,,http://192.168.178.33:8581";
-      }
-    }
-  }
-  if (usePersistedConfiguration && !overwritePersistedConfig) {
-    CONFIGURATION = await getPersistedObject(
-      getFilePath(configurationFileName),
-      CONFIGURATION_JSON_VERSION,
-      CONFIGURATION,
-      false
-    );
-    log(
-      "Configuration " +
-        configurationFileName +
-        " is used! Trying to authenticate..."
-    );
-  }
-  timeFormatter.dateFormat = CONFIGURATION.dateFormat;
-  initializeFonts();
-  await initializeToken();
-}
+        fileManager = CONFIGURATION.fileManagerMode === "LOCAL"? FileManager.local(): FileManager.iCloud();
+        if (args.widgetParameter) {
+                if (args.widgetParameter.length > 0) {
+                        let foundCredentialsInParameter = useCredentialsFromWidgetParameter(args.widgetParameter);
+                        let fileNameSuccessfullySet = false;
+                        if (!foundCredentialsInParameter) {
+                                fileNameSuccessfullySet = checkIfConfigFileParameterIsProvided(args.widgetParameter);
+                        };
+                        if (!foundCredentialsInParameter && !fileNameSuccessfullySet) {
+                                throw "Format of provided parameter not valid\n2 Valid examples: 1. USE_CONFIG:yourfilename.json\n2. admin,,mypassword123,,http://192.168.178.33:8581";
+                        };
+                };
+        };
+        if (usePersistedConfiguration && !overwritePersistedConfig) {
+                CONFIGURATION = await getPersistedObject(
+                getFilePath(configurationFileName),
+                CONFIGURATION_JSON_VERSION,
+                CONFIGURATION,
+                false
+                );
+        log(
+                "Configuration " + configurationFileName + " is used! Trying to authenticate...");
+        };
+        timeFormatter.dateFormat = CONFIGURATION.dateFormat;
+        initializeFonts();
+        await initializeToken();
+};
 
 async function createAndShowWidget(homeBridgeStatus) {
-  if (config.runsInAccessoryWidget) {
-    await createAndShowLockScreenWidget(homeBridgeStatus);
-  } else {
-    let widget = new ListWidget();
-    handleSettingOfBackgroundColor(widget);
-    if (!config.runsWithSiri) {
-      await buildUsualGui(widget, homeBridgeStatus);
-    } else if (config.runsWithSiri) {
-      await buildSiriGui(widget, homeBridgeStatus);
-    }
-    finalizeAndShowWidget(widget);
-  }
-}
+        if (config.runsInAccessoryWidget) {
+                await createAndShowLockScreenWidget(homeBridgeStatus);
+        } else {
+                let widget = new ListWidget();
+                handleSettingOfBackgroundColor(widget);
+                if (!config.runsWithSiri) {
+                        await buildUsualGui(widget, homeBridgeStatus);
+                } else if (config.runsWithSiri) {
+                        await buildSiriGui(widget, homeBridgeStatus);
+                };
+                finalizeAndShowWidget(widget);
+        };
+};
 
 async function createAndShowLockScreenWidget(homeBridgeStatus) {
-  let widget = new ListWidget();
-  handleSettingOfBackgroundColor(widget);
-  overwriteSizesForLockScreen();
-  await buildLockScreenWidgetHeader(widget);
-  await buildLockScreenWidgetBody(widget, homeBridgeStatus);
-  await widget.presentSmall();
-  Script.setWidget(widget);
-  Script.complete();
-}
+        let widget = new ListWidget();
+        handleSettingOfBackgroundColor(widget);
+        overwriteSizesForLockScreen();
+        await buildLockScreenWidgetHeader(widget);
+        await buildLockScreenWidgetBody(widget, homeBridgeStatus);
+        await widget.presentSmall();
+        Script.setWidget(widget);
+        Script.complete();
+};
 
 async function handleConfigPersisting() {
-  if (usePersistedConfiguration || overwritePersistedConfig) {
-    log(
-      "The valid configuration " +
-        configurationFileName +
-        " has been saved. Changes can only be applied if overwritePersistedConfig is set to true. Should be set to false after applying changes again!"
-    );
-    persistObject(CONFIGURATION, getFilePath(configurationFileName));
-  }
-}
+        if (usePersistedConfiguration || overwritePersistedConfig) {
+                log("The valid configuration " + configurationFileName + " has been saved. Changes can only be applied if overwritePersistedConfig is set to true. Should be set to false after applying changes again!");
+                persistObject(CONFIGURATION, getFilePath(configurationFileName));
+        };
+};
 
 function buildStatusPanelInHeader(titleStack, homeBridgeStatus) {
-  titleStack.addSpacer(CONFIGURATION.spacer_beforeFirstStatusColumn);
-  let statusInfo = titleStack.addStack();
-  let firstColumn = statusInfo.addStack();
-  firstColumn.layoutVertically();
-  addStatusInfo(
-    firstColumn,
-    homeBridgeStatus.overallStatus,
-    CONFIGURATION.status_hbRunning
-  );
-  firstColumn.addSpacer(verticalSpacerInfoPanel);
-  addStatusInfo(
-    firstColumn,
-    homeBridgeStatus.pluginsUpToDate,
-    CONFIGURATION.status_pluginsUtd
-  );
+        titleStack.addSpacer(CONFIGURATION.spacer_beforeFirstStatusColumn);
+        let statusInfo = titleStack.addStack();
+        let firstColumn = statusInfo.addStack();
+        firstColumn.layoutVertically();
+        addStatusInfo(firstColumn, homeBridgeStatus.overallStatus, CONFIGURATION.status_hbRunning);
+        firstColumn.addSpacer(verticalSpacerInfoPanel);
+        addStatusInfo(firstColumn, homeBridgeStatus.pluginsUpToDate, CONFIGURATION.status_pluginsUtd);
 
-  statusInfo.addSpacer(CONFIGURATION.spacer_betweenStatusColumns);
+        statusInfo.addSpacer(CONFIGURATION.spacer_betweenStatusColumns);
 
-  let secondColumn = statusInfo.addStack();
-  secondColumn.layoutVertically();
-  addStatusInfo(
-    secondColumn,
-    homeBridgeStatus.hbUpToDate,
-    CONFIGURATION.status_hbUtd
-  );
-  secondColumn.addSpacer(verticalSpacerInfoPanel);
-  addStatusInfo(
-    secondColumn,
-    homeBridgeStatus.nodeJsUpToDate,
-    CONFIGURATION.status_nodejsUtd
-  );
+        let secondColumn = statusInfo.addStack();
+        secondColumn.layoutVertically();
+        addStatusInfo(secondColumn, homeBridgeStatus.hbUpToDate, CONFIGURATION.status_hbUtd);
+        secondColumn.addSpacer(verticalSpacerInfoPanel);
+        addStatusInfo(secondColumn, homeBridgeStatus.nodeJsUpToDate, CONFIGURATION.status_nodejsUtd);
 
-  titleStack.addSpacer(CONFIGURATION.spacer_afterSecondColumn);
-}
+        titleStack.addSpacer(CONFIGURATION.spacer_afterSecondColumn);
+};
 
 async function showNotAvailableWidget() {
   if (!config.runsInAccessoryWidget) {
