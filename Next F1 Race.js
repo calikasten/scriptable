@@ -22,7 +22,7 @@ async function getData() {
 const data = await getData();
 	
 	// Get F1 logo
-	var f1LogoUrl = "https://felix-bernhard.com/f1-logo.png";
+	var f1LogoUrl = "https://1000logos.net/wp-content/uploads/2021/06/F1-logo.png";
 	var fetchLogo = new Request(f1LogoUrl);
 	var f1Logo = await fetchLogo.loadImage();
 	
