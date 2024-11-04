@@ -13,10 +13,10 @@ async function getData() {
  	newRequest.headers = {
 		apikey: API_KEY,
 		locale: LOCALE,
-    	}
+    	};
 	const response = await newRequest.loadJSON();
 	return response;
-}
+};
 
 // Define variables from API response
 const data = await getData();
@@ -50,23 +50,23 @@ const data = await getData();
 		        description: "Race Today",
       			startTime: false,
       			gmtOffset: 0,
-		} 
+		} ;
   	var now  = new Date();
   	for (let event of events) {
   		var startTime = new Date(event.startTime + event.gmtOffset);
 			if (startTime > now) {
     				nextEvent = event;
       				break;
-      				}
-    		}
+      				};
+    		};
     	return nextEvent;
-	}
+	};
 
 // Calculate countdown until rased based on date difference
 function getCountdown(dateStr) {
 	if (!dateStr) {
 		return ["00", "00", "00"];
-	}
+	};
   	var date = new Date(dateStr);
   	var now  = new Date();
   	var diff = (date - now) / 1000;
@@ -81,7 +81,7 @@ function getCountdown(dateStr) {
 	m = m.toString().padStart(2, "0");
     
   	return [d, h, m];
-}
+};
 
 // Function to create and customize widget UI
 function createWidget(data) {
@@ -184,7 +184,7 @@ function createWidget(data) {
     
     		// Return customized widget UI
     		return widget;
-}
+};
 
 // Display widget
 let widget = createWidget(data);
@@ -196,5 +196,5 @@ if (config.runsInWidget) {
 } else {
 	// Otherwise show the medium widget preview inside the Scriptable app
   	widget.presentMedium();
-}
+};
 Script.complete();
