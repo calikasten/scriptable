@@ -62,14 +62,12 @@ const data = await getData();
     	return nextEvent;
 	};
 
-// Calculate countdown until rased based on date difference
+// Calculate countdown until race based on date difference
 function getCountdown(dateStr) {
 	if (!dateStr) {
 		return ["00", "00", "00"];
 	};
-  	var date = new Date(dateStr);
-  	var now  = new Date();
-  	var diff = (date - now) / 1000;
+  	const diff = (Date.parse(dateStr) - Date.parse(new Date())) / 1000;
     
 	// Set difference in days, hours, and minutes
 	var d = Math.floor(diff / 60 / 60 / 24);
