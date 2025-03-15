@@ -24,7 +24,7 @@ function backupScript(item) {
     const filePath = `${directory}/${item}`;
     const extension = FileManager.iCloud().fileExtension(filePath);
 
-		// Skip backups for non-Javascript (.js) files
+    // Skip backups for non-Javascript (.js) files
     if (extension !== SCRIPT_EXTENSION) {
         return;
     }
