@@ -2,35 +2,47 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: cloud;
 
-// Set  variables
-iCloud = FileManager.iCloud();
-directory = iCloud.documentsDirectory();
-const folderName = "Script Backups";
-const folderLocation = `/${folderName}`;
+// Set configuration variables
+const SCRIPT_EXTENSION = "js";
+const FOLDER_NAME = "Script Backups";
+const directory = FileManager.iCloud().documentsDirectory();
+const folderLocation = `/${FOLDER_NAME}`;
 const directoryPath = `${directory}${folderLocation}`;
 
-// Create new directory location for script backups
-iCloud.createDirectory(directoryPath, true);
-let runBackup = iCloud.listContents(directory);
-// Count number of scripts backed up to directory
-let count = 0;
-// For each item found in the directory, perform script backup function
+// Create directory location for script backups
+FileManager.iCloud().createDirectory(directoryPath, true);
+
+// Retrieve list of files to backup
+const runBackup = FileManager.iCloud().listContents(directory);
+let scriptBackupCount = 0;
+
+// Backup each file that was found
 runBackup.forEach(backupScript);
 
-// Begin script backup function
-function backupScript(item, index) {
-        var ext = iCloud.fileExtension(directory + "/" + item);
-        if (ext == "js") {
-  	        let file = iCloud.read(directory + "/" + item);
-  	        iCloud.write(directoryPath + "/" + item, file);
-  	        count++;
-        }
-}
-Script.complete();
+// Function to create a file backup
+function backupScript(item) {
+    const filePath = `${directory}/${item}`;
+    const extension = FileManager.iCloud().fileExtension(filePath);
 
-// Display confirmation dialogue alert for successful backup
+		// Skip backups for non-Javascript (.js) files
+    if (extension !== SCRIPT_EXTENSION) {
+        return;
+    }
+
+    try {
+        const file = FileManager.iCloud().read(filePath);
+        FileManager.iCloud().write(`${directoryPath}/${item}`, file);
+        scriptBackupCount++;
+    } catch (error) {
+        console.error(`Failed to back up ${item}: ${error.message}`);
+    }
+}
+
+// Display success confirmation
 const dialogue = new Alert();
 dialogue.addAction("OK");
 dialogue.title = "Success";
-dialogue.message = `${count} scripts backed up to iCloud.`;
+dialogue.message = `${scriptBackupCount} scripts backed up to iCloud.`;
 dialogue.present();
+
+Script.complete();
