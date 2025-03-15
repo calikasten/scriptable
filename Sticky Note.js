@@ -85,7 +85,7 @@ async function loadImage() {
   return context.getImage(); 
 }
 
-// Function to create and customize the widget UI
+// Function to create and customize widget UI
 async function createWidget(note) {
   const widget = new ListWidget();
 
