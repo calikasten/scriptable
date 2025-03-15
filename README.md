@@ -31,7 +31,4 @@ Allows for multiple date countdowns to work through the same widget code by inpu
 
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
 Creates a new folder for saved Sticky Note text files and displays a static note in the widget. Original author [drewkerr](https://github.com/drewkerr). <br>
-![sticky-note](https://github.com/user-attachments/assets/d6d5b207-d54f-4901-908c-17804d6419f2)
 ![sticky_note](https://github.com/user-attachments/assets/7983bc18-17d6-418a-ac9f-5ecdb8deba00)
-
-
