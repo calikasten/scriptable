@@ -30,7 +30,7 @@ async function getData() {
 const data = await getData();
 
 const launchDetails = data.results[0];
-const missionName = launchDetails.mission.name || "Unknown 	Mission";
+const missionName = launchDetails.mission.name || "Unknown Mission";
 const rocketType = launchDetails.rocket.configuration.name || "Unknown Rocket";
 const launchDateTime = formatDateTime(launchDetails.net);
 
