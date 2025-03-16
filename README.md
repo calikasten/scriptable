@@ -26,9 +26,6 @@ View details for the next rocket launch. <br>
 ![Next Rocket Launch](https://github.com/user-attachments/assets/4848277f-742b-4284-bd79-a55caed050c3)
 
 ## Productivity
-[Multi-Input Date Countdown](https://github.com/calikasten/scriptable/blob/main/Multi-Input%20Date%20Countdown.js) <br>
-Allows for multiple date countdowns to work through the same widget code by inputting countdown date as individual widget parameters. Original author [flasozzi](https://gist.github.com/flasozzi).
-
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
 Creates a new folder for saved Sticky Note text files and displays a static note in the widget. Original author [drewkerr](https://github.com/drewkerr). <br>
 ![sticky_note](https://github.com/user-attachments/assets/7983bc18-17d6-418a-ac9f-5ecdb8deba00)
