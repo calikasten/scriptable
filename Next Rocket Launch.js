@@ -20,6 +20,7 @@ async function getData() {
     return response;
   } catch (error) {
     console.error("Failed to fetch data from API", error);
+    
     // Don't return anything if API request fails
     return null;
   }
