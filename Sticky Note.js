@@ -21,7 +21,7 @@ function loadData() {
     return iCloud.readString(filePath);
   } catch (error) {
     console.error("Error loading data: ", error);
-    return '';  // Default fallback text
+    return '';  
   }
 }
 
@@ -80,8 +80,8 @@ async function loadImage() {
   const x = (widgetWidth - drawWidth) / 2;
   const y = (widgetHeight - drawHeight) / 2;
   context.drawImageInRect(image, new Rect(x, y, drawWidth, drawHeight));
-
-	// Return the modified image to use as the widget background
+  
+  // Return the modified image to use as the widget background
   return context.getImage(); 
 }
 
