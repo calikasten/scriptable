@@ -26,6 +26,19 @@ async function getData() {
   }
 }
 
+// Fetch data from API response
+const data = await getData();
+
+const launchDetails = data.results[0];
+const missionName = launchDetails.mission.name || "Unknown 	Mission";
+const rocketType = launchDetails.rocket.configuration.name || "Unknown Rocket";
+const launchDateTime = formatDateTime(launchDetails.net);
+
+if (!data) {
+  console.error("No data available.");
+  return;
+}
+
 // Function to format date and time
 function formatDateTime(timestamp) {
   const launchDate = new Date(timestamp);
@@ -44,19 +57,6 @@ function formatDateTime(timestamp) {
   const timeString = Intl.DateTimeFormat("en", timeOptions).format(launchDate);
 
   return `${dateString} at ${timeString}`;
-}
-
-// Fetch data from API response
-const data = await getData();
-
-const launchDetails = data.results[0];
-const missionName = launchDetails.mission.name || "Unknown 	Mission";
-const rocketType = launchDetails.rocket.configuration.name || "Unknown Rocket";
-const launchDateTime = formatDateTime(launchDetails.net);
-
-if (!data) {
-  console.error("No data available.");
-  return;
 }
 
 // Function to create and customize widget UI
