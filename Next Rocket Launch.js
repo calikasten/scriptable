@@ -12,14 +12,14 @@ async function getData() {
 
     // Check if the response is valid
     if (!response || !response.results || response.results.length === 0) {
-      throw new Error("No data returned from API");
+      throw new Error("No data returned from API.");
     }
 
     // Log and return data from valid response
     console.log(response);
     return response;
   } catch (error) {
-    console.error("Failed to fetch data from API", error);
+    console.error("Failed to fetch data from API:", error);
     
     // Don't return anything if API request fails
     return null;
@@ -72,7 +72,7 @@ async function createWidget(data) {
   try {
     widget.backgroundImage = await imageRequest.loadImage();
   } catch (error) {
-    console.error("Failed to load background image", error);
+    console.error("Failed to load background image:", error);
   }
 
   // Add header displaying mission name
