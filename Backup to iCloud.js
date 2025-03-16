@@ -21,21 +21,21 @@ runBackup.forEach(backupScript);
 
 // Function to create a file backup
 function backupScript(item) {
-    const filePath = `${directory}/${item}`;
-    const extension = FileManager.iCloud().fileExtension(filePath);
+  const filePath = `${directory}/${item}`;
+  const extension = FileManager.iCloud().fileExtension(filePath);
 
-    // Skip backups for non-Javascript (.js) files
-    if (extension !== SCRIPT_EXTENSION) {
-        return;
-    }
+  // Skip backups for non-Javascript (.js) files
+  if (extension !== SCRIPT_EXTENSION) {
+    return;
+  }
 
-    try {
-        const file = FileManager.iCloud().read(filePath);
-        FileManager.iCloud().write(`${directoryPath}/${item}`, file);
-        scriptBackupCount++;
-    } catch (error) {
-        console.error(`Failed to back up ${item}: ${error.message}`);
-    }
+  try {
+    const file = FileManager.iCloud().read(filePath);
+    FileManager.iCloud().write(`${directoryPath}/${item}`, file);
+    scriptBackupCount++;
+  } catch (error) {
+    console.error(`Failed to back up ${item}: ${error.message}`);
+  }
 }
 
 // Display success confirmation
