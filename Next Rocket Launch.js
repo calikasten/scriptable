@@ -105,10 +105,12 @@ const widget = await createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
-  // Run inside a widget when added to the home screen
+  
+  // Run inside widget
   Script.setWidget(widget);
 } else {
-  // Otherwise show the small widget preview inside the Scriptable app
+  
+  // Otherwise show preview
   widget.presentSmall();
 }
 Script.complete();
