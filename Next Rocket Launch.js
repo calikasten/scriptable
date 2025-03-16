@@ -39,7 +39,7 @@ if (!data) {
   return;
 }
 
-// Function to format date and time
+// Helper fnction to format date and time
 function formatDateTime(timestamp) {
   const launchDate = new Date(timestamp);
   const dateOptions = {
