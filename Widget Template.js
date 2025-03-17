@@ -3,139 +3,168 @@
 // icon-color: red; icon-glyph: rocket;
 
 // Set API variables
-const API_TOKEN = "<INSERT API KEY HERE>";
+const API_TOKEN = "<INSERT API TOKEN HERE>";
 const APP_ID = "<INSERT APP ID HERE>";
 const TABLE_ID = "<INSERT TABLE ID HERE>";
 
 // Function to get data from API
 async function getData() {
-  
-	// Query URL
-	const url = "https://api.airtable.com/v0/" + APP_ID + "/" + TABLE_ID + "/?maxRecords=1";
-  
-  	// Make API request
-  	const newRequest = new Request(url);
-  
-  	// Authenticate for API
-  	newRequest.headers = { Authorization: "Bearer " + API_TOKEN };
-  
-  	// Return API response as JSON
-	const response = await newRequest.loadJSON();
-  	return response
-};
+  // API URL
+  const url = `https://api.airtable.com/v0/${APP_ID}/${TABLE_ID}/?maxRecords=1`;
 
-// Parse and isolate values from Airtable API resopnse 
-const json = await getData();
-const records = json["records"];
-const fields = records["0"]["fields"];
-const rawTimestamp = fields["Timestamp"];
-const rawString = fields["String"];
-const rawNumber = fields["Number"];
-const rawBoolean = fields["Boolean"];
-const rawDuration = fields["Duration"];
-const rawSingleSelectArray = fields["Single-Select Array"];
-const rawMultiSelectArray = fields["Multi-Select Array"];
+  // Try/Catch for error handling
+  try {
+    // Create new API reequest
+    const request = new Request(url);
+
+    // Authentication for API request
+    request.headers = { Authorization: `Bearer ${API_TOKEN}` };
+
+    // Make API request and load JSON response
+    const response = await request.loadJSON();
+
+    // Check if the response is valid
+    if (!response || !response.records || response.records.length === 0) {
+      throw new Error("No data returned from API.");
+    }
+
+    // Log and return data from valid response
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error fetching data from API:", error);
+
+    // Don't return anything if API request fails
+    return { records: [] };
+  }
+}
+
+// Fetch data from API response
+const data = await getData();
+const records = data["records"];
+
+if (!data) {
+  console.error("No data available.");
+  return;
+}
+
+// Helper function to extract fields from the response
+function extractField(records, fieldName) {
+  return records.length > 0 ? records[0].fields[fieldName] : null;
+}
+
+// Helper function to format date and time
+function formatDateTime(rawTimestamp) {
+  const timestamp = new Date(rawTimestamp);
+  if (isNaN(timestamp.getTime())) return "Invalid Date.";
+  const formatDate = new DateFormatter();
+  formatDate.dateFormat = DATE_FORMAT;
+  return formatDate.string(timestamp);
+}
+
+// Helper function to calculate time difference in days
+function calculateTimeDifference(timestamp) {
+  const apiTimestamp = new Date(timestamp);
+  const now = new Date();
+  const timeDiffMS = now - apiTimestamp;
+
+  // Convert from milliseconds to days
+  return (timeDiffMS / (1000 * 60 * 60 * 24)).toFixed(0);
+}
+
+// Helper function to caluclate time duration in minutes
+/* function calcuateDuration(duration) {
+  const apiDuration = duration
+} */
+
+// Set style constants for UI
+const DATE_FORMAT = "MM-dd-YYYY";
+const TEXT_COLOR = new Color("#FFFF00");
+const FONT_SIZE = 10;
+const SPACER = 0.5;
+const FONT = Font.semiboldSystemFont(FONT_SIZE);
+
+// Helper function to apply consistent text styling to widget
+function applyTextStyle(textElement) {
+  textElement.font = FONT;
+  textElement.textColor = TEXT_COLOR;
+  textElement.leftAlignText();
+}
+
+// Helper function to dynamically add text fields to widget
+function addTextField(widget, prefix, fieldValue) {
+  const fieldText = widget.addText(`${prefix} ${fieldValue}`);
+  applyTextStyle(fieldText);
+  widget.addSpacer(SPACER);
+}
 
 // Function to create and customize widget UI
 async function createWidget() {
-	const widget = new ListWidget();
-  
-  	// Add single, solid color background to widget
-  	//widget.backgroundColor = new Color("#1C1B1D");
-  
-  	// Add gradient background to widget
-  	const gradient = new LinearGradient();
-  	gradient.locations = [1, .25];
-  	gradient.colors = [new Color("#000000"), new Color("#1C1B1D")];
-  	widget.backgroundGradient = gradient;
-  
-  	// Add widget title
-  	const title = widget.addText("Title");
-  	title.font = Font.semiboldSystemFont(16);
-  	title.textColor = new Color("#ffffff");
-  	title.centerAlignText();
-  	widget.addSpacer(5);
-  
-  	// Add static text to widget
-	const widgetStaticText = widget.addText("1. Static text");
-  	widgetStaticText.font = Font.boldSystemFont(10);
- 	 widgetStaticText.textColor = new Color("#ffffff");
-  	widgetStaticText.leftAlignText();
-  	widget.addSpacer(.5);
+  const widget = new ListWidget();
 
-  	// Parse day and time from API timestamp response and add to widget
-	let timestamp = new Date(rawTimestamp);
-  	let formatDate = new DateFormatter();
-  	formatDate.dateFormat = 'MM-dd-YYYY'
-  	let apiTimestamp = widget.addText("2. " + formatDate.string(timestamp));
- 	apiTimestamp.font = Font.semiboldSystemFont(10);
-  	apiTimestamp.leftAlignText();
-  	widget.addSpacer(.5);
-  
-  	// Calculate time difference since API timestamp response and add to widget
-	let currentDate = new Date();
-	let timeDiffMS = currentDate - timestamp;
-  	let timeDiffSecs = (timeDiffMS / 1000)
-  	let timeDiffMins = (timeDiffSecs / 60)
-  	let timeDiffHrs = (timeDiffMins / 60)
-  	let timeDiffDays = (timeDiffHrs / 24)
-  	let apiTimeDiff = widget.addText("3. " + timeDiffDays.toFixed(0) + " days");
-  	apiTimeDiff.font = Font.semiboldSystemFont(10);
-  	apiTimeDiff.leftAlignText();
-  	widget.addSpacer(.5);
+  // Add single, solid color background to widget
+  widget.backgroundColor = new Color("#1C1B1D");
 
-  	// Add string (dynamic text) from API response to widget
-	let apiString = widget.addText("4. " + rawString);
- 	apiString.font = Font.semiboldSystemFont(10);
-  	apiString.leftAlignText();
-  	widget.addSpacer(.5);
-  
-  	// Add number from API response to widget
-	let apiNumber = widget.addText("5. " + rawNumber);
- 	apiNumber.font = Font.semiboldSystemFont(10);
-  	apiNumber.leftAlignText();
-  	widget.addSpacer(.5);
-  
-  	// Add boolean from API response to widget
-	let apiBoolean = widget.addText("6. " + rawBoolean);
- 	apiBoolean.font = Font.semiboldSystemFont(10);
-  	apiBoolean.leftAlignText();
-  	widget.addSpacer(.5);
-  
-  	// Add duration from API response to widget
-  	let durationMins = (rawDuration / 60)
-	let apiDuration = widget.addText("7. " + durationMins + " minutes");
- 	apiDuration.font = Font.semiboldSystemFont(10);
-  	apiDuration.leftAlignText();
-  	widget.addSpacer(.5);
-  
-  	// Add single select array value from API response to widget
-	let apiSingleSelectArray = widget.addText("8. " + rawSingleSelectArray);
- 	apiSingleSelectArray.font = Font.semiboldSystemFont(10);
-  	apiSingleSelectArray.leftAlignText();
-  	widget.addSpacer(.5);
+  /* // Add gradient background to widget
+  const gradient = new LinearGradient();
+  gradient.locations = [1, .25];
+  gradient.colors = [new Color("#000000"), new Color("#1C1B1D")];
+  widget.backgroundGradient = gradient; */
 
-  	// Add multi select array value from API response to widget
-	let apiMultiSelectArray = widget.addText("9. " + rawMultiSelectArray);
- 	apiMultiSelectArray.font = Font.semiboldSystemFont(10);
-  	apiMultiSelectArray.leftAlignText(); 
-  	widget.addSpacer(.5);
+  // Add widget title
+  const title = widget.addText("Title");
+  title.font = Font.semiboldSystemFont(16);
+  title.textColor = new Color("#FFFFFF");
+  title.centerAlignText();
+  widget.addSpacer(5);
 
-  	// Return customized widget UI
-  	return widget;
-};
+  // Display date via "timestamp" from API response
+  const timestamp = extractField(records, "Timestamp");
+  const displayDateTime = widget.addText("1. " + formatDateTime(timestamp));
+  applyTextStyle(displayDateTime);
+  widget.addSpacer(SPACER);
+
+  // Display calculated time difference in days
+  const timeDifference = calculateTimeDifference(timestamp);
+  const displayTimeDiff = widget.addText(`2. ${timeDifference} days`);
+  applyTextStyle(displayTimeDiff);
+  widget.addSpacer(SPACER);
+
+  // Display "string" from API response
+  addTextField(widget, "3.", extractField(records, "String"));
+
+  // Display "number" from API response
+  addTextField(widget, "4.", extractField(records, "Number"));
+
+  // Display "boolean" from API response
+  addTextField(widget, "5.", "testing");
+
+  // Display calculated duration in minutes
+  addTextField(widget, "6.", "testing2");
+
+  // Display "single-select array" from API response
+  const singleSelectArray = extractField(records, "Single-Select Array");
+  addTextField(widget, "7.", singleSelectArray);
+
+  // Display "multi-select array" from API repsonse
+  const multiSelectArray = extractField(records, "Multi-Select Array");
+  addTextField(widget, "8.", multiSelectArray);
+
+  // Return customized widget UI
+  return widget;
+}
 
 // Display widget
-let widget = await createWidget();
+const widget = await createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
-  
-	// Run inside a widget when added to the home screen
-  	Script.setWidget(widget);
+
+  // Run inside a widget
+  Script.setWidget(widget);
 } else {
   
-	// Otherwise show the small widget preview inside the Scriptable app
-  	widget.presentSmall();
+  // Otherwise show preview
+  widget.presentSmall();
 }
 Script.complete();
