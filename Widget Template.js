@@ -19,7 +19,7 @@ async function getData() {
   // Try...catch for error handling
   try {
     
-    // Create new API reequest
+    // Create new API request
     const request = new Request(url);
 
     // Authentication for API request
