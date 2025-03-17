@@ -16,7 +16,7 @@ async function getData() {
   // API URL
   const url = `https://api.airtable.com/v0/${APP_ID}/${TABLE_ID}/?maxRecords=1`;
 
-  // Try...catch for error handling
+  // Try/catch for error handling
   try {
     
     // Create new API request
