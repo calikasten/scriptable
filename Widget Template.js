@@ -3,22 +3,30 @@
 // icon-color: red; icon-glyph: rocket;
 
 // Set API variables
-const API_TOKEN = "<INSERT API TOKEN HERE>";
-const APP_ID = "<INSERT APP ID HERE>";
-const TABLE_ID = "<INSERT TABLE ID HERE>";
+const API_TOKEN = "INSERT API TOKEN HERE";
+const APP_ID = "INSERT APP ID HERE";
+const TABLE_ID = "INSERT TABLE ID HERE";
+
+// Set constant for static text used in widget title
+const TITLE = "TITLE";
 
 // Function to get data from API
 async function getData() {
+  
   // API URL
   const url = `https://api.airtable.com/v0/${APP_ID}/${TABLE_ID}/?maxRecords=1`;
 
-  // Try/Catch for error handling
+  // Try...catch for error handling
   try {
+    
     // Create new API reequest
     const request = new Request(url);
 
     // Authentication for API request
     request.headers = { Authorization: `Bearer ${API_TOKEN}` };
+
+    // Parameters for API request
+    request.body = { field: "Timestamp", direction: "desc" };
 
     // Make API request and load JSON response
     const response = await request.loadJSON();
@@ -43,17 +51,12 @@ async function getData() {
 const data = await getData();
 const records = data["records"];
 
-if (!data) {
-  console.error("No data available.");
-  return;
-}
-
 // Helper function to extract fields from the response
 function extractField(records, fieldName) {
   return records.length > 0 ? records[0].fields[fieldName] : null;
 }
 
-// Helper function to format date and time
+// Helper function to format date
 function formatDateTime(rawTimestamp) {
   const timestamp = new Date(rawTimestamp);
   if (isNaN(timestamp.getTime())) return "Invalid Date.";
@@ -72,10 +75,23 @@ function calculateTimeDifference(timestamp) {
   return (timeDiffMS / (1000 * 60 * 60 * 24)).toFixed(0);
 }
 
-// Helper function to caluclate time duration in minutes
-/* function calcuateDuration(duration) {
-  const apiDuration = duration
-} */
+// Helper function to calculate time duration in minutes
+function calcuateDuration(duration) {
+  return duration ? duration / 60 : 0;
+}
+
+// Helper function for handling boolean response
+function determineBoolean(boolean) {
+  if (boolean === undefined) return "false";
+  return boolean;
+}
+
+// Helper function to dynamically add a new list element
+function addNewListElement(widget, prefix, fieldValue) {
+  const fieldText = widget.addText(`${prefix} ${fieldValue}`);
+  applyTextStyle(fieldText);
+  widget.addSpacer(SPACER);
+}
 
 // Set style constants for UI
 const DATE_FORMAT = "MM-dd-YYYY";
@@ -91,64 +107,56 @@ function applyTextStyle(textElement) {
   textElement.leftAlignText();
 }
 
-// Helper function to dynamically add text fields to widget
-function addTextField(widget, prefix, fieldValue) {
-  const fieldText = widget.addText(`${prefix} ${fieldValue}`);
-  applyTextStyle(fieldText);
-  widget.addSpacer(SPACER);
-}
-
 // Function to create and customize widget UI
 async function createWidget() {
   const widget = new ListWidget();
 
-  // Add single, solid color background to widget
-  widget.backgroundColor = new Color("#1C1B1D");
-
-  /* // Add gradient background to widget
-  const gradient = new LinearGradient();
-  gradient.locations = [1, .25];
-  gradient.colors = [new Color("#000000"), new Color("#1C1B1D")];
-  widget.backgroundGradient = gradient; */
-
   // Add widget title
-  const title = widget.addText("Title");
+  const title = widget.addText(TITLE);
   title.font = Font.semiboldSystemFont(16);
   title.textColor = new Color("#FFFFFF");
   title.centerAlignText();
   widget.addSpacer(5);
 
-  // Display date via "timestamp" from API response
+  // Add "timestamp" from API response to widget list
   const timestamp = extractField(records, "Timestamp");
   const displayDateTime = widget.addText("1. " + formatDateTime(timestamp));
   applyTextStyle(displayDateTime);
   widget.addSpacer(SPACER);
 
-  // Display calculated time difference in days
+  // Add calculated time difference in days to widget list
   const timeDifference = calculateTimeDifference(timestamp);
   const displayTimeDiff = widget.addText(`2. ${timeDifference} days`);
   applyTextStyle(displayTimeDiff);
   widget.addSpacer(SPACER);
 
-  // Display "string" from API response
-  addTextField(widget, "3.", extractField(records, "String"));
+  // Add calculated duration in minutes to widget list
+  const duration = extractField(records, "Duration");
+  const durationMins = calcuateDuration(duration);
+  const displayDuration = widget.addText(`3. ${durationMins} minutes`);
+  applyTextStyle(displayDuration);
+  widget.addSpacer(SPACER);
 
-  // Display "number" from API response
-  addTextField(widget, "4.", extractField(records, "Number"));
+  // Add "string" from API response to widget list
+  addNewListElement(widget, "4.", extractField(records, "String"));
 
-  // Display "boolean" from API response
-  addTextField(widget, "5.", "testing");
+  // Add "number" from API response to widget list
+  addNewListElement(widget, "5.", extractField(records, "Number"));
 
-  // Display calculated duration in minutes
-  addTextField(widget, "6.", "testing2");
+  // Add "boolean" from API response to widget list
+  const boolean = extractField(records, "Boolean");
+  const trueFalse = determineBoolean(boolean);
+  const displayBoolean = widget.addText(`6. ${trueFalse}`);
+  applyTextStyle(displayBoolean);
+  widget.addSpacer(SPACER);
 
-  // Display "single-select array" from API response
+  // Add "single-select array" from API response to widget list
   const singleSelectArray = extractField(records, "Single-Select Array");
-  addTextField(widget, "7.", singleSelectArray);
+  addNewListElement(widget, "7.", singleSelectArray);
 
-  // Display "multi-select array" from API repsonse
+  // Add "multi-select array" from API response to widget list
   const multiSelectArray = extractField(records, "Multi-Select Array");
-  addTextField(widget, "8.", multiSelectArray);
+  addNewListElement(widget, "8.", multiSelectArray);
 
   // Return customized widget UI
   return widget;
@@ -159,11 +167,9 @@ const widget = await createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
-
   // Run inside a widget
   Script.setWidget(widget);
 } else {
-  
   // Otherwise show preview
   widget.presentSmall();
 }
