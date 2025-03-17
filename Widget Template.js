@@ -8,7 +8,7 @@ const APP_ID = "INSERT APP ID HERE";
 const TABLE_ID = "INSERT TABLE ID HERE";
 
 // Set constant for static text used in widget title
-const TITLE = "TITLE";
+const TITLE_TEXT = "TITLE";
 
 // Function to get data from API
 async function getData() {
@@ -112,7 +112,7 @@ async function createWidget() {
   const widget = new ListWidget();
 
   // Add widget title
-  const title = widget.addText(TITLE);
+  const title = widget.addText(TITLE_TEXT);
   title.font = Font.semiboldSystemFont(16);
   title.textColor = new Color("#FFFFFF");
   title.centerAlignText();
