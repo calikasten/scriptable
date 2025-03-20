@@ -22,38 +22,38 @@ async function getData() {
 const data = await getData();
 	
 	// Get F1 logo
-	var f1LogoUrl = "https://1000logos.net/wp-content/uploads/2021/06/F1-logo.png";
-	var fetchLogo = new Request(f1LogoUrl);
-	var f1Logo = await fetchLogo.loadImage();
+	const f1LogoUrl = "https://1000logos.net/wp-content/uploads/2021/06/F1-logo.png";
+	const fetchLogo = new Request(f1LogoUrl);
+	const f1Logo = await fetchLogo.loadImage();
 	
 	// Get official race name
-	var raceName = data.race.meetingOfficialName;
+	const raceName = data.race.meetingOfficialName;
 
 	// Get flag of race country
-	var raceCountryName = data.race.meetingCountryName;
+	const raceCountryName = data.race.meetingCountryName;
  	// Convert whitespace in country name to "-" characters for URL
-	var country = raceCountryName.toLowerCase().replace(/\s/, "-");
-	var countryFlagUrl = "https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Flags%2016x9/" + country + "-flag.png";
-	var fetchCountryFlag = new Request(countryFlagUrl);
-	var raceCountryFlag = await fetchCountryFlag.loadImage();
+	const country = raceCountryName.toLowerCase().replace(/\s/, "-");
+	const countryFlagUrl = "https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Flags%2016x9/" + country + "-flag.png";
+	const fetchCountryFlag = new Request(countryFlagUrl);
+	const raceCountryFlag = await fetchCountryFlag.loadImage();
 
 	// Get race circuit image
-	var raceCircuit = data.circuitSmallImage.url;
+	const raceCircuit = data.circuitSmallImage.url;
 	raceCircuit = raceCircuit.slice(0, -4) + "%20carbon.png";
-	var raceCircuitImage = new Request(raceCircuit);
-	var trackImage = await raceCircuitImage.loadImage();
+	const raceCircuitImage = new Request(raceCircuit);
+	const trackImage = await raceCircuitImage.loadImage();
 
 	// Get next race date
 	function getNextEvent(events) {
 		events.sort((a, b) => (a.startTime < b.startTime) ? -1 : 1);
-    		var nextEvent = {
+    		const nextEvent = {
 		        description: "Race Today",
       			startTime: false,
       			gmtOffset: 0,
 		} ;
-  	var now  = new Date();
+  	const now  = new Date();
   	for (let event of events) {
-  		var startTime = new Date(event.startTime + event.gmtOffset);
+  		const startTime = new Date(event.startTime + event.gmtOffset);
 			if (startTime > now) {
     				nextEvent = event;
       				break;
@@ -70,9 +70,9 @@ function getCountdown(dateStr) {
   	const diff = (Date.parse(dateStr) - Date.parse(new Date())) / 1000;
     
 	// Set difference in days, hours, and minutes
-	var d = Math.floor(diff / 60 / 60 / 24);
-	var h = Math.floor(diff / 60 / 60 % 24);
-	var m = Math.ceil(diff / 60 % 60);
+	const d = Math.floor(diff / 60 / 60 / 24);
+	const h = Math.floor(diff / 60 / 60 % 24);
+	const m = Math.ceil(diff / 60 % 60);
     
   	d = d.toString().padStart(2, "0");
 	h = h.toString().padStart(2, "0");
@@ -117,27 +117,27 @@ function createWidget(data) {
     		logo.imageSize = new Size(50, 25);
     
 		// Add next race event details
-		var leftColumn = widget.addStack();
+		const leftColumn = widget.addStack();
 		leftColumn.setPadding(6, 16, 6, 16);
 		    
-		var leftColumnTopRow = leftColumn.addStack();
+		const leftColumnTopRow = leftColumn.addStack();
 		leftColumnTopRow.layoutVertically();
 		leftColumnTopRow.addSpacer();
     
-		var events = data.seasonContext.timetables;
-		var event = getNextEvent(events);
-		var eventTime = event.startTime + event.gmtOffset;
+		const events = data.seasonContext.timetables;
+		const event = getNextEvent(events);
+		const eventTime = event.startTime + event.gmtOffset;
     
     		const nextEventName = leftColumnTopRow.addText(event.description);
     		nextEventName.textColor = accentColor;
     		nextEventName.font = Font.boldSystemFont(16);
     
     		// Add countdown until next race event
-    		var leftColumnBottomRow = leftColumnTopRow.addStack();
+    		const leftColumnBottomRow = leftColumnTopRow.addStack();
     		leftColumnBottomRow.bottomAlignContent();
     		leftColumnBottomRow.setPadding(8, 0, 0, 0);
     
-   		var [d, h, m] = getCountdown(eventTime);
+   		const [d, h, m] = getCountdown(eventTime);
         
     		// Add remaining days
     		const remainingDays = leftColumnBottomRow.addText(d + ":");
@@ -157,17 +157,17 @@ function createWidget(data) {
     
     		// Add next race event date and time
     		const dateObj = new Date(eventTime);
-    		var timeOptions1 = {
+    		const timeOptions1 = {
 			weekday: "long",
     		}
-   		var timeOptions2 = {
+   		const timeOptions2 = {
 			hour: "numeric",
 			minute: "numeric",
       			hour12: false
     		}
-    		var weekday = Intl.DateTimeFormat("en", timeOptions1).format(dateObj);
-    		var timeStr = Intl.DateTimeFormat("en", timeOptions2).format(dateObj);
-    		var dateStr = weekday + ", " + timeStr;
+    		const weekday = Intl.DateTimeFormat("en", timeOptions1).format(dateObj);
+    		const timeStr = Intl.DateTimeFormat("en", timeOptions2).format(dateObj);
+    		const dateStr = weekday + ", " + timeStr;
     		if (!eventTime) dateStr = "";
     		const nextEventTime = leftColumnTopRow.addText(dateStr);
     		nextEventTime.textColor = Color.black();
@@ -185,7 +185,7 @@ function createWidget(data) {
 };
 
 // Display widget
-let widget = createWidget(data);
+const widget = createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
