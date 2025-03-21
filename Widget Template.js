@@ -40,7 +40,7 @@ async function getData() {
     console.log(response);
     return response;
   } catch (error) {
-    console.error("Error fetching data from API:", error);
+    console.error("Error fetching data from API.");
 
     // Don't return anything if API request fails
     return { records: [] };
