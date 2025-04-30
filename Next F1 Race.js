@@ -128,7 +128,7 @@ function createWidget(data) {
   // Add header banner with race country flag, official race name, and F1 logo
   const header = widget.addStack();
   header.backgroundColor = accentColor;
-  header.setPadding(10, 20, 10, 20);
+  header.setPadding(20, 20, 10, 20);
   
   const raceCountryFlag = header.addImage(flag);
   raceCountryFlag.imageSize = new Size(50, 30);
