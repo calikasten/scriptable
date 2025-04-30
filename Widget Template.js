@@ -167,9 +167,11 @@ const widget = await createWidget(data);
 
 // Check where the script is running
 if (config.runsInWidget) {
+  
   // Run inside a widget
   Script.setWidget(widget);
 } else {
+  
   // Otherwise show preview
   widget.presentSmall();
 }
