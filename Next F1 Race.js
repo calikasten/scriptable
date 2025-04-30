@@ -102,7 +102,7 @@ function getCountdown(dateObj) {
   let hour = Math.floor((diff / 60 / 60) % 24);
   let minute = Math.ceil((diff / 60) % 60);
 
-  // Format values iwth leading zeros
+  // Format values with leading zeros
   day = day.toString().padStart(2, "0");
   hour = hour.toString().padStart(2, "0");
   minute = minute.toString().padStart(2, "0");
