@@ -108,13 +108,16 @@ async function createWidget(note) {
 async function displayWidget() {
   let note = loadData();
 
+  // Check where the script is running
   if (config.runsInWidget) {
     const widget = await createWidget(note);
+    // Run inside widget
     Script.setWidget(widget);
   } else {
     note = await editData(note);
     saveData(note);
     const widget = await createWidget(note);
+    // Otherwise show preview
     widget.presentLarge();
   }
 
