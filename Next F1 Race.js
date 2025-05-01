@@ -137,7 +137,7 @@ function getCountdown(dateObj) {
   return [day, hour, minute];
 }
 
-// Helper function to format countdown text
+// Helper function to apply consistent styling to countdown
 function formatCountdownText(widget, value) {
   const countdown = widget.addText(value);
   countdown.textColor = Color.black();
