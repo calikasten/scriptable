@@ -100,7 +100,7 @@ const FONT_SIZE = 10;
 const SPACER = 0.5;
 const FONT = Font.semiboldSystemFont(FONT_SIZE);
 
-// Helper function to apply consistent text styling to widget
+// Helper function to apply consistent text styling to list elements
 function applyTextStyle(textElement) {
   textElement.font = FONT;
   textElement.textColor = TEXT_COLOR;
