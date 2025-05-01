@@ -17,7 +17,7 @@ async function getData() {
     };
     const response = await newRequest.loadJSON();
 
-    // Log and return data
+    // Check if response is valid, log response, and return data
     console.log(response);
     return response;
   } catch (error) {
