@@ -15,14 +15,14 @@ async function getData() {
       apikey: API_KEY,
       locale: LOCALE,
     };
-    const response = await newRequest.loadJSON();
-
-    // Check if response is valid, log response, and return data
+    const response = await newRequest.loadJSON(); 
+    
+    // Check if responsei s valid, log response, and return data
     console.log(response);
     return response;
   } catch (error) {
-    console.error("Failed to fetch data from API.");
-
+    console.error("Failed to fetch data from API."); 
+    
     // Don't return anything if API request fails
     return null;
   }
@@ -70,66 +70,50 @@ const [logo, flag, circuit] = await Promise.all([
 // Function to get next race event
 const events = data.seasonContext.timetables;
 const event = getNextEvent(events);
-const eventTime = event.startTime + event.gmtOffset;
+const eventTime = event ? new Date(Date.parse(event.startTime + "Z")) : null;
 
 function getNextEvent(events) {
-  // Check if the response is valid
-  if (!events || events.length === 0) {
-    return {
-      description: "No upcoming event.",
-      startTime: null,
-      gmtOffset: 0,
-    };
-  }
-
-  // Get next race event
-  events.sort((a, b) => (a.startTime < b.startTime ? -1 : 1));
   const now = new Date();
-  for (let event of events) {
-    const eventDate = new Date(
-      Date.parse(event.startTime) + event.gmtOffset * 1000
-    );
-    if (eventDate > now) return event;
-    return event;
-  }
 
-  return {
-    description: "Race Today",
-    startTime: null,
-    gmtOffset: 0,
-  };
+  const upcomingEvents = events
+    // Filter for events that are in the future
+    .filter((event) => {
+      if (!event.startTime) return false;
+      const utcDate = new Date(event.startTime + "Z");
+      return utcDate > now;
+    })
+    // Sort future events by recency
+    .sort((a, b) => new Date(a.startTime + "Z") - new Date(b.startTime + "Z"));
+
+  return upcomingEvents[0] ?? null;
 }
 
-// Format next event race date/time
-const dateObj = new Date(eventTime);
-const formatDay = {
-  weekday: "long",
-};
-const formatTime = {
-  hour: "numeric",
-  minute: "numeric",
-  hour12: false,
-};
-
-const weekday = Intl.DateTimeFormat("en", formatDay).format(dateObj);
-const timeStr = Intl.DateTimeFormat("en", formatTime).format(dateObj);
-const dateStr = weekday + ", " + timeStr;
-if (!eventTime) dateStr = "";
+// Adjust next race event time for current device time zone
+let dateStr = "";
+if (eventTime && !isNaN(eventTime.getTime())) {
+  eventTime.setHours(eventTime.getHours() + 4);
+  const options = {
+    weekday: "long",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  };
+  dateStr = new Intl.DateTimeFormat("en-US", options).format(eventTime);
+} else {
+  dateStr = "Error";
+}
 
 // Function to calculate countdown until next race event
 function getCountdown(dateObj) {
-  if (!dateObj) {
-    return ["00", "00", "00"];
-  }
-
-  // Calculate time difference
-  const diff = (Date.parse(dateObj) - Date.parse(new Date())) / 1000;
-
+  if (!dateObj) return ["00", "00", "00"];
+  const diff = (dateObj.getTime() - new Date().getTime()) / 1000; 
+  
   // Set difference in days, hours, and minutes
   let day = Math.floor(diff / 60 / 60 / 24);
   let hour = Math.floor((diff / 60 / 60) % 24);
-  let minute = Math.ceil((diff / 60) % 60);
-
+  let minute = Math.ceil((diff / 60) % 60); 
+  
   // Format values with leading zeros
   day = day.toString().padStart(2, "0");
   hour = hour.toString().padStart(2, "0");
@@ -151,13 +135,13 @@ function createWidget(data) {
   widget.setPadding(0, 0, 0, 0);
   widget.backgroundColor = Color.white();
 
-  const accentColor = new Color("E10600");
-
+  const accentColor = new Color("E10600"); 
+  
   // Add header banner
   const header = widget.addStack();
   header.backgroundColor = accentColor;
   header.setPadding(20, 20, 10, 20);
-
+  
   // Add race country flag
   const raceCountryFlag = header.addImage(flag);
   raceCountryFlag.imageSize = new Size(50, 30);
@@ -165,32 +149,32 @@ function createWidget(data) {
   raceCountryFlag.borderColor = Color.white();
   raceCountryFlag.borderWidth = 2;
 
-  header.addSpacer();
-
+  header.addSpacer(); 
+  
   // Add official race name
   const officialRaceName = header.addText(raceName);
   officialRaceName.textColor = Color.white();
   officialRaceName.font = Font.boldSystemFont(13);
-  officialRaceName.centerAlignText();
-
-  header.addSpacer();
-
+  officialRaceName.centerAlignText(); 
+  
   // Add F1 logo
   const F1logo = header.addImage(logo);
-  F1logo.imageSize = new Size(60, 30);
-
+  F1logo.imageSize = new Size(60, 30); 
+  
   // Add next race event details
   const leftColumn = widget.addStack();
   leftColumn.setPadding(5, 35, 5, 35);
 
   const leftColumnTopRow = leftColumn.addStack();
   leftColumnTopRow.layoutVertically();
-  leftColumnTopRow.addSpacer();
+  leftColumnTopRow.addSpacer(15);
 
-  const nextEventName = leftColumnTopRow.addText(event.description);
+  const nextEventName = leftColumnTopRow.addText(
+    event?.description || "No Event"
+  );
   nextEventName.textColor = accentColor;
-  nextEventName.font = Font.boldSystemFont(20);
-
+  nextEventName.font = Font.boldSystemFont(20); 
+  
   // Add countdown until next race event
   const leftColumnBottomRow = leftColumnTopRow.addStack();
   leftColumnBottomRow.bottomAlignContent();
@@ -201,19 +185,19 @@ function createWidget(data) {
   formatCountdownText(leftColumnBottomRow, minute);
 
   leftColumnTopRow.addSpacer(0);
-
+  
   // Add next race event date and time
   const nextEventTime = leftColumnTopRow.addText(dateStr);
   nextEventTime.textColor = Color.black();
   nextEventTime.font = Font.regularSystemFont(12);
 
   leftColumn.addSpacer();
-  leftColumnTopRow.addSpacer();
-
+  leftColumnTopRow.addSpacer(); 
+  
   // Add image of race track circuit
   const raceCircuit = leftColumn.addImage(circuit);
-  raceCircuit.imageSize = new Size(130, 108);
-
+  raceCircuit.imageSize = new Size(130, 108); 
+  
   // Return customized widget UI
   return widget;
 }
