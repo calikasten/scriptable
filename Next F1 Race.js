@@ -17,7 +17,7 @@ const CONFIG = {
 
 // Set country name aliasing for countries with multiple races
 const COUNTRY_ALIAS = {
-  Miami: "United States",
+  "Miami": "United States",
   "Las-Vegas": "United States",
   "Emilia-Romagna": "Italy",
 };
@@ -138,29 +138,29 @@ function createWidget({
   circuit,
   raceName,
   event,
-  eventTime,
+  eventDate,
   eventFormatted,
 }) {
   const widget = new ListWidget();
   widget.setPadding(0, 0, 0, 0);
-  widget.backgroundColor = Color.white();
+  widget.backgroundColor = COLORS.backgroundColor;
 
-  const accentColor = new Color("E10600"); // Add red banner as header
+  // ====== HEADER =====
   const header = widget.addStack();
-  header.backgroundColor = accentColor;
-  header.setPadding(5, 15, 5, 25);
+  header.backgroundColor = COLORS.accentColor;
+  header.setPadding(0, 15, 5, 25);
   header.layoutHorizontally();
 
   // Create left, center, and right sections in header
   const leftStack = header.addStack();
   leftStack.layoutHorizontally();
   leftStack.size = new Size(60, 60);
-  leftStack.setPadding(25, 0, 0, 10);
+  leftStack.setPadding(25, 10, 0, 2.5);
 
   const centerStack = header.addStack();
   centerStack.centerAlignContent();
   centerStack.size = new Size(180, 60);
-  centerStack.setPadding(15, 0, 0, 15);
+  centerStack.setPadding(15, 15, 0, 5);
 
   const rightStack = header.addStack();
   rightStack.layoutHorizontally();
@@ -169,51 +169,58 @@ function createWidget({
 
   // Add race country flag to left stack of header
   const raceCountryFlag = leftStack.addImage(flag);
-  raceCountryFlag.imageSize = new Size(45, 27);
-  raceCountryFlag.cornerRadius = 3;
+  raceCountryFlag.imageSize = SIZES.flag;
+  raceCountryFlag.cornerRadius = 4;
   raceCountryFlag.borderColor = Color.white();
   raceCountryFlag.borderWidth = 3;
 
   // Add race name to center stack of header
   const officialRaceName = centerStack.addText(raceName);
   officialRaceName.textColor = Color.white();
-  officialRaceName.font = Font.boldSystemFont(11);
+  officialRaceName.font = Font.boldSystemFont(12);
   officialRaceName.centerAlignText();
   officialRaceName.minimumScaleFactor = 0.75;
 
   // Add F1 logo to right stack of header
   const F1logo = rightStack.addImage(logo);
-  F1logo.imageSize = new Size(50, 25); // Add next race event name
+  F1logo.imageSize = SIZES.logo;
 
+  // ===== MAIN CONTENT =====
+  
+  // Add next race event name
   const leftColumn = widget.addStack();
-  leftColumn.setPadding(5, 35, 5, 35);
+  leftColumn.setPadding(0, 30, 0, 20);
 
-  const leftColumnTopRow = leftColumn.addStack();
-  leftColumnTopRow.layoutVertically();
-  leftColumnTopRow.addSpacer(15);
+  const eventName = leftColumn.addStack();
+  eventName.layoutVertically();
+  eventName.addSpacer(15);
 
-  const nextEventName = leftColumnTopRow.addText(
-    event?.description || "No Event"
-  );
-  nextEventName.textColor = accentColor;
-  nextEventName.font = Font.boldSystemFont(20); // Add countdown until next race event
-  const leftColumnBottomRow = leftColumnTopRow.addStack();
-  leftColumnBottomRow.bottomAlignContent();
+  const nextEventName = eventName.addText(event?.description || "No Event");
+  nextEventName.textColor = COLORS.accentColor;
+  nextEventName.font = Font.boldSystemFont(20);
 
-  const [day, hour, minute] = getCountdown(eventTime);
-  formatCountdownText(leftColumnBottomRow, day + ":");
-  formatCountdownText(leftColumnBottomRow, hour + ":");
-  formatCountdownText(leftColumnBottomRow, minute);
+  // Add countdown until next race event
+  const eventCountdown = eventName.addStack();
+  eventCountdown.bottomAlignContent();
+  const [day, hour, minute] = getCountdown(eventDate);
+  formatCountdownText(eventCountdown, day + ":");
+  formatCountdownText(eventCountdown, hour + ":");
+  formatCountdownText(eventCountdown, minute);
+  eventCountdown.setPadding(5, 0, 0, 0);
 
-  leftColumnTopRow.addSpacer(0); // Add next race event date and time
-  const nextEventTime = leftColumnTopRow.addText(eventFormatted);
-  nextEventTime.textColor = Color.black();
+  // Add next race event date and time
+  const nextEventTime = eventName.addText(eventFormatted);
+  nextEventTime.textColor = COLORS.textColor;
   nextEventTime.font = Font.regularSystemFont(12);
 
   leftColumn.addSpacer();
-  leftColumnTopRow.addSpacer(); // Add image of race track circuit
+  eventName.addSpacer();
+
+  // Add image of race track circuit
   const raceCircuit = leftColumn.addImage(circuit);
-  raceCircuit.imageSize = new Size(130, 108); // Return customized widget UI
+  raceCircuit.imageSize = SIZES.circuit;
+
+  // Return customized widget UI
   return widget;
 }
 
@@ -223,6 +230,7 @@ function createWidget({
 const data = await getData();
 const events = data.seasonContext.timetables;
 const raceName = data.race.meetingOfficialName;
+//const raceName = data.race.meetingCountryName
 const raceCountryName = aliasCountryName(data.race.meetingCountryName)
   .toLowerCase()
   .replace(/\s/g, "-");
@@ -242,8 +250,8 @@ const [logo, flag, circuit] = await Promise.all([
 
 // Format next event date and time
 const event = getNextEvent(events);
-const eventTime = event.startTime + event.gmtOffset;
-const eventFormatted = formatDateTime(new Date(eventTime));
+const eventDate = new Date(event.startTime + event.gmtOffset);
+const eventFormatted = formatDateTime(eventDate);
 
 // Display widget
 const widget = createWidget({
@@ -252,7 +260,7 @@ const widget = createWidget({
   circuit,
   raceName,
   event,
-  eventTime,
+  eventDate,
   eventFormatted,
 });
 
