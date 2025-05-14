@@ -148,7 +148,7 @@ function createWidget({
   // ====== HEADER =====
   const header = widget.addStack();
   header.backgroundColor = COLORS.accentColor;
-  header.setPadding(0, 15, 5, 25);
+  header.setPadding(0, 15, 5, 30);
   header.layoutHorizontally();
 
   // Create left, center, and right sections in header
@@ -160,12 +160,12 @@ function createWidget({
   const centerStack = header.addStack();
   centerStack.centerAlignContent();
   centerStack.size = new Size(180, 60);
-  centerStack.setPadding(15, 15, 0, 5);
+  centerStack.setPadding(15, 15, 0, 10);
 
   const rightStack = header.addStack();
   rightStack.layoutHorizontally();
   rightStack.size = new Size(60, 60);
-  rightStack.setPadding(25, 2.5, 0, 0);
+  rightStack.setPadding(25, 10, 0, 0);
 
   // Add race country flag to left stack of header
   const raceCountryFlag = leftStack.addImage(flag);
