@@ -7,6 +7,7 @@ Saves a copy of all current Scriptable scripts to iCloud drive. Original author 
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
 A basic widget template for creating a widget by calling an API and displaying the fetched data.
+![Widget Template](https://github.com/user-attachments/assets/c98bc516-3816-4cbb-9f40-767e0227e266)
 
 ## Personal
 [Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) <br>
@@ -15,7 +16,8 @@ View the time since your wiener dog's latest activities like business, food, exe
 
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/Homebridge%20Status.js) <br>
 Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani). <br>
-![Homebridge Status](https://github.com/calikasten/scriptable/assets/91810027/f33d5b72-71e3-4fdf-9872-c41c153c3f98)
+![Homebridge Status](https://github.com/user-attachments/assets/83f37469-e858-4d92-9292-396868705257)
+
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
@@ -24,7 +26,8 @@ View details for the next F1 race and race weekend events. Original author [FeBe
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
 View details for the next rocket launch. <br>
-![Next Rocket Launch](https://github.com/user-attachments/assets/4848277f-742b-4284-bd79-a55caed050c3)
+![Next Rocket Launch](https://github.com/user-attachments/assets/2e7e4477-da45-407f-b6b0-72f8cfe47c11)
+
 
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
