@@ -11,7 +11,7 @@ A basic widget template for creating a widget by calling an API and displaying t
 ## Personal
 [Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) <br>
 View the time since your wiener dog's latest activities like business, food, exercise. Version 2.0 is a Javascript widget that makes requests to the Airtable API to retrieve the latest timestamp for a given activity. <br>
-![dog-days-2 0](https://github.com/user-attachments/assets/97bc23ab-e6ae-46d8-aefe-2ed66c0d0f78)
+![Dog Days 2.0](https://github.com/user-attachments/assets/97bc23ab-e6ae-46d8-aefe-2ed66c0d0f78)
 
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/Homebridge%20Status.js) <br>
 Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani). <br>
@@ -19,7 +19,7 @@ Configured for my home with most comments removed. Original author [lwitzani](ht
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
-![Next F1 Race](https://github.com/calikasten/scriptable/assets/91810027/502e3cd5-3dfc-43a0-b46d-89d8112cf8e8)
+![Next F1 Race Event](https://github.com/user-attachments/assets/0330913c-6321-4fd1-a01d-cbe3f5e43f75)
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
 View details for the next rocket launch. <br>
