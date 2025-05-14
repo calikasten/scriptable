@@ -7,7 +7,7 @@ Saves a copy of all current Scriptable scripts to iCloud drive. Original author 
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
 A basic widget template for creating a widget by calling an API and displaying the fetched data.
-![Widget Template](https://github.com/user-attachments/assets/c98bc516-3816-4cbb-9f40-767e0227e266)
+![Widget Template](https://github.com/user-attachments/assets/388d4fcb-f4fd-470d-b8b7-d20350e71e0a)
 
 ## Personal
 [Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) <br>
