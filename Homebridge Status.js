@@ -1,3 +1,7 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: deep-puprle; icon-glyph: home;
+
 let configurationFileName = "<INSERT CONFIG FILE NAME>";
 const usePersistedConfiguration = true;
 const overwritePersistedConfig = true;
