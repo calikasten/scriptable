@@ -32,4 +32,4 @@ View details for the next rocket launch. <br>
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
 Creates a new folder for saved Sticky Note text files and displays a static note in the widget. Original author [drewkerr](https://github.com/drewkerr). <br>
-![Sticky_Note](https://github.com/user-attachments/assets/c12d98a0-c640-449d-acd1-0708d8042e15)
+https://github.com/user-attachments/assets/ba974cf9-5e3d-458b-bcce-7ba9d98e09bc
