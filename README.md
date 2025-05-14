@@ -6,7 +6,7 @@ Automations in iOS using Javascript via the Scriptable app. Last Updated 5/14/20
 Saves a copy of all current Scriptable scripts to iCloud drive. Original author [mvan231](https://github.com/mvan231).
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
-A basic widget template for creating a widget by calling an API and displaying the fetched data.
+A basic widget template for creating a widget by calling an API and displaying the fetched data. <br>
 ![Widget Template](https://github.com/user-attachments/assets/388d4fcb-f4fd-470d-b8b7-d20350e71e0a)
 
 ## Personal
