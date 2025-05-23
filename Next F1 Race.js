@@ -160,7 +160,7 @@ function createWidget({
   const centerStack = header.addStack();
   centerStack.centerAlignContent();
   centerStack.size = new Size(180, 60);
-  centerStack.setPadding(15, 15, 0, 10);
+  centerStack.setPadding(15, 22.5, 0, 10);
 
   const rightStack = header.addStack();
   rightStack.layoutHorizontally();
