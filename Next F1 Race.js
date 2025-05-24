@@ -165,7 +165,7 @@ function createWidget({
   const rightStack = header.addStack();
   rightStack.layoutHorizontally();
   rightStack.size = new Size(60, 60);
-  rightStack.setPadding(25, 10, 0, 0);
+  rightStack.setPadding(22.5, 10, 0, 0);
 
   // Add race country flag to left stack of header
   const raceCountryFlag = leftStack.addImage(flag);
