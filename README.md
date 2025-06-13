@@ -1,6 +1,5 @@
 # Scriptable
-Widgets and automations via the Scriptable app. 
-Last Updated 06/12/2025.
+Widgets and automations via the Scriptable app. Last Updated 06/12/2025.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
