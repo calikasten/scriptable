@@ -71,7 +71,7 @@ function getNextEvent(events) {
 
   // Select information to include about events
   let nextEvent = {
-    description: "-",
+    description: "Race Day",
     startTime: false,
     gmtOffset: 0,
   };
@@ -251,7 +251,10 @@ const [logo, flag, circuit] = await Promise.all([
 // Format next event date and time
 const event = getNextEvent(events);
 const eventDate = new Date(event.startTime + event.gmtOffset);
-const eventFormatted = formatDateTime(eventDate);
+const eventFormatted =
+    day === "00" && hour === "00" && minute === "00"
+        ? "---"
+        : formatDateTime(eventDate);
 
 // Display widget
 const widget = createWidget({
