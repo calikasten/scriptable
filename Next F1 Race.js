@@ -33,7 +33,7 @@ const COLORS = {
 const SIZES = {
   logo: new Size(50, 25),
   flag: new Size(45, 27),
-  circuit: new Size(130, 108),
+  circuit: new Size(115, 115),
 };
 
 // ===== HELPER FUNCTIONS =====
