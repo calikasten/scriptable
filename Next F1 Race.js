@@ -230,7 +230,6 @@ function createWidget({
 const data = await getData();
 const events = data.seasonContext.timetables;
 const raceName = data.race.meetingOfficialName;
-//const raceName = data.race.meetingCountryName
 const raceCountryName = aliasCountryName(data.race.meetingCountryName)
   .toLowerCase()
   .replace(/\s/g, "-");
