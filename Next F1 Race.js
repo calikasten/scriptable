@@ -148,7 +148,7 @@ function createWidget({
   // ====== HEADER =====
   const header = widget.addStack();
   header.backgroundColor = COLORS.accentColor;
-  header.setPadding(0, 15, 5, 30);
+  header.setPadding(0, 15, 5, 45);
   header.layoutHorizontally();
 
   // Create left, center, and right sections in header
