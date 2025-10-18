@@ -11,7 +11,7 @@ const CONFIGURATION_JSON_VERSION = 3;
 class Configuration {
   hbServiceMachineBaseUrl = "<INSERT HOSTNAME AND PORT";
   userName = "<INSERT HOMEBRIDGE USERNAME>";
-  password = "<INSERT HOMEBRIDGE PASSWORD";
+  password = "<INSERT HOMEBRIDGE PASSWORD>";
   notificationEnabled = true;
   notificationIntervalInDays = 1;
   disableStateBackToNormalNotifications = true;
