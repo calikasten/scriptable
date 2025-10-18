@@ -6,7 +6,7 @@
 
 // Constants
 const CONFIG = {
-  API_KEY: "INSERT API TOKEN HERE",
+  API_KEY: "<INSERT API TOKEN HERE>",
   LOCALE: "en",
   API_URL: "https://api.formula1.com/v1/event-tracker/next",
   LOGO_URL:
