@@ -16,7 +16,7 @@ async function getData() {
     }
 
     // Log and return data from valid response
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error("Failed to fetch data from API.");
