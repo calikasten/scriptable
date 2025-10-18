@@ -3,9 +3,9 @@
 // icon-color: gray; icon-glyph: window-restore;
 
 // Set API variables
-const API_TOKEN = "INSERT API TOKEN HERE";
-const APP_ID = "INSERT APP ID HERE";
-const TABLE_ID = "INSERT TABLE ID HERE";
+const API_TOKEN = "<INSERT API TOKEN HERE>";
+const APP_ID = "<INSERT APP ID HERE>";
+const TABLE_ID = "<INSERT TABLE ID HERE>";
 
 // Set constant for static text used in widget title
 const TITLE_TEXT = "TITLE";
