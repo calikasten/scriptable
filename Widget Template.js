@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: red; icon-glyph: rocket;
+// icon-color: gray; icon-glyph: window-restore;
 
 // Set API variables
 const API_TOKEN = "INSERT API TOKEN HERE";
