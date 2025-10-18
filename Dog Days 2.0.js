@@ -3,9 +3,9 @@
 // icon-color: pink; icon-glyph: paw;
 
 // Set API variables
-const API_TOKEN = "INSERT API TOKEN HERE";
-const APP_ID = "INSERT APP ID HERE";
-const TABLE_ID = "INSERT TABLE ID HERE";
+const API_TOKEN = "<INSERT API TOKEN HERE>";
+const APP_ID = "<INSERT APP ID HERE>";
+const TABLE_ID = "<INSERT TABLE ID HERE>";
 
 const TITLE_TEXT = "Barley 🐶";
 
