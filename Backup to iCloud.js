@@ -5,9 +5,9 @@
 // === CONFIG ===
 
 const CONFIG = {
-  includeTimestamps: false, 
-  overwriteOnlyIfChanged: true, 
-  allowedExtensions: [".js"],
+  includeTimestamps: false, // true = timestamped file names
+  overwriteOnlyIfChanged: true, // false = overwrite all files on backup
+  allowedExtensions: [".js"], // list of allowed file types by extension
   backupFolderName: "Script Backups"
 };
 
