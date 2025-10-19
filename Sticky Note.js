@@ -5,7 +5,8 @@
 // Set constants for file paths
 const FOLDER_NAME = "Sticky Note";
 const FILE_NAME = "stickyNote.txt";
-const IMAGE_URL = "https://static.vecteezy.com/system/resources/previews/013/220/257/original/sticky-note-paper-in-yellow-colors-reminder-square-illustration-png.png";
+const IMAGE_URL =
+  "https://calikasten.wordpress.com/wp-content/uploads/2025/10/sticky-note.png";
 const ZOOM_FACTOR = 1.1; // Image zoom factor
 
 // Initialize iCloud file manager and directory paths
@@ -14,14 +15,41 @@ const directory = iCloud.documentsDirectory();
 const folderLocation = `/${FOLDER_NAME}`;
 const directoryPath = `${directory}${folderLocation}`;
 
+// Function to create designated folder for .txt file if it doens't already exist
+function ensureFolderExists() {
+  if (!iCloud.fileExists(directoryPath)) {
+    try {
+      iCloud.createDirectory(directoryPath, true);
+      console.log(`Created folder: ${directoryPath}`);
+    } catch (error) {
+      console.error(`Failed to create folder: ${error}`);
+    }
+  }
+}
+
+// Function to create designated folder for .txt file if it doens't already exist
+function ensureFileExists() {
+  ensureFolderExists();
+  const filePath = iCloud.joinPath(directoryPath, FILE_NAME);
+  if (!iCloud.fileExists(filePath)) {
+    try {
+      iCloud.writeString(filePath, "");
+      console.log(`Created file: ${filePath}`);
+    } catch (error) {
+      console.error(`Failed to create file: ${error}`);
+    }
+  }
+  return filePath;
+}
+
 // Function to load saved sticky note text
 function loadData() {
   try {
-    const filePath = iCloud.joinPath(directoryPath, FILE_NAME);
-    return iCloud.readString(filePath);
+    const filePath = ensureFileExists(); // Ensures file and folder exist
+    return iCloud.readString(filePath) || "";
   } catch (error) {
-    console.error("Error loading data: ", error);
-    return '';  
+    console.error("Error loading data:", error);
+    return "";
   }
 }
 
@@ -33,37 +61,34 @@ async function editData(existingData) {
   editor.addCancelAction("Cancel");
   editor.addAction("Save");
 
-  const action = await editor.present();
-  
-  // Return updated text unless canceled
+  const action = await editor.present(); // Return updated text unless canceled
+
   if (action === -1) {
-    return existingData;  
+    return existingData;
   } else {
-    return editor.textFieldValue(0);  
+    return editor.textFieldValue(0);
   }
 }
 
 // Function to save entered sticky note text
 function saveData(data) {
-  const filePath = iCloud.joinPath(directoryPath, FILE_NAME);
+  const filePath = ensureFileExists(); // Ensures file and folder exist
   iCloud.writeString(filePath, data);
+  console.log("Sticky note saved.");
 }
 
-// Function to load and process the image
+// Function to load and process the background image
 async function loadImage() {
-  const image = await new Request(IMAGE_URL).loadImage();
+  const image = await new Request(IMAGE_URL).loadImage(); // Define widget dimensions
 
-  // Define widget dimensions
   const widgetWidth = 400;
-  const widgetHeight = 400;
+  const widgetHeight = 400; // Create drawing context
 
-  // Create drawing context for the widget
   const context = new DrawContext();
   context.size = new Size(widgetWidth, widgetHeight);
   context.opaque = false;
-  context.respectScreenScale = true;
+  context.respectScreenScale = true; // Calculate aspect ratio to scale image proportionally
 
-  // Calculate aspect ratio to scale image proportionally
   const imageAspectRatio = image.size.width / image.size.height;
   const widgetAspectRatio = widgetWidth / widgetHeight;
 
@@ -74,26 +99,22 @@ async function loadImage() {
   } else {
     drawWidth = widgetWidth * ZOOM_FACTOR;
     drawHeight = drawWidth / imageAspectRatio;
-  }
+  } // Center the image
 
-  // Center the image within the widget dimensions
   const x = (widgetWidth - drawWidth) / 2;
   const y = (widgetHeight - drawHeight) / 2;
   context.drawImageInRect(image, new Rect(x, y, drawWidth, drawHeight));
-  
-  // Return the modified image to use as the widget background
-  return context.getImage(); 
+
+  return context.getImage();
 }
 
 // Function to create and customize widget UI
 async function createWidget(note) {
-  const widget = new ListWidget();
+  const widget = new ListWidget(); // Set background image
 
-  // Load and set the background image
   const image = await loadImage();
-  widget.backgroundImage = image;
+  widget.backgroundImage = image; // Add sticky note text
 
-  // Add sticky note text to the widget
   widget.addSpacer(20);
   const noteText = widget.addText(note);
   noteText.textColor = Color.black();
@@ -108,20 +129,20 @@ async function createWidget(note) {
 async function displayWidget() {
   let note = loadData();
 
-  // Check where the script is running
   if (config.runsInWidget) {
+    // Running inside widget
     const widget = await createWidget(note);
-    // Run inside widget
     Script.setWidget(widget);
   } else {
+    // Running in the app
     note = await editData(note);
     saveData(note);
     const widget = await createWidget(note);
-    // Otherwise show preview
     widget.presentLarge();
   }
 
   Script.complete();
 }
 
+// Run the widget
 displayWidget();
