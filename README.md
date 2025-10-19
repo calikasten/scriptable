@@ -10,7 +10,7 @@ A basic widget template for creating a widget by calling an API and displaying t
 ![Widget Template](https://github.com/user-attachments/assets/388d4fcb-f4fd-470d-b8b7-d20350e71e0a)
 
 ## Personal
-[Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) <br>
+[Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) **ARCHIVED** <br>
 View the time since your wiener dog's latest activities like business, food, exercise. Version 2.0 is a Javascript widget that makes requests to the Airtable API to retrieve the latest timestamp for a given activity. <br>
 ![Dog Days 2 0](https://github.com/user-attachments/assets/b354492c-a3b6-4942-bfd8-97e09c883984)
 
