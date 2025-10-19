@@ -10,8 +10,8 @@ const IMAGE_URL =
 const ZOOM_FACTOR = 1.1; // Image zoom factor
 
 // Initialize iCloud file manager and directory paths
-const iCloud = FileManager.iCloud();
-const directory = iCloud.documentsDirectory();
+const fileManager = FileManager.iCloud();
+const directory = fileManager.documentsDirectory();
 const folderLocation = `/${FOLDER_NAME}`;
 const directoryPath = `${directory}${folderLocation}`;
 
