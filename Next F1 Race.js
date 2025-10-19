@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: red; icon-glyph: flag-checkered;
 
-// ===== SET UP =====
+// === CONFIGURATION ===
 
 // Constants
 const CONFIG = {
@@ -36,7 +36,7 @@ const SIZES = {
   circuit: new Size(115, 115),
 };
 
-// ===== HELPER FUNCTIONS =====
+// === HELPER FUNCTIONS ===
 
 // Get data
 async function getData() {
@@ -208,7 +208,7 @@ function createWidget({
   return widget;
 }
 
-// ===== SCRIPT EXECUTION =====
+// === SCRIPT EXECUTION ===
 
 // Parse API response for variables
 const data = await getData();
