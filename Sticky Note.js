@@ -2,147 +2,177 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: yellow; icon-glyph: sticky-note;
 
-// Set constants for file paths
-const FOLDER_NAME = "Sticky Note";
-const FILE_NAME = "stickyNote.txt";
-const IMAGE_URL =
-  "https://calikasten.wordpress.com/wp-content/uploads/2025/10/sticky-note.png";
-const ZOOM_FACTOR = 1.1; // Image zoom factor
+// === CONFIG ===
+const CONFIG = {
+  folderName: "Sticky Note",
+  fileName: "stickyNote.txt",
+  imageFileName: "stickyNote.png",
+  imageUrl:
+    "https://calikasten.wordpress.com/wp-content/uploads/2025/10/sticky-note.png",
+  zoomFactor: 1.1,
+  widgetSize: 400,
+  fontSize: 16,
+  spacerTop: 20,
+  textColor: Color.black(),
+  font: Font.mediumRoundedSystemFont(16),
+  // Set to true to re-download image
+  forceImageRefresh: false,
+};
 
-// Initialize iCloud file manager and directory paths
+// === FILE MANAGEMENT ===
 const fileManager = FileManager.iCloud();
-const directory = fileManager.documentsDirectory();
-const folderLocation = `/${FOLDER_NAME}`;
-const directoryPath = `${directory}${folderLocation}`;
+const documentsPath = fileManager.documentsDirectory();
+const folderPath = fileManager.joinPath(documentsPath, CONFIG.folderName);
+const filePath = fileManager.joinPath(folderPath, CONFIG.fileName);
+const cachedImagePath = fileManager.joinPath(folderPath, CONFIG.imageFileName);
 
-// Function to create designated folder for .txt file if it doens't already exist
-function ensureFolderExists() {
-  if (!fileManager.fileExists(directoryPath)) {
+const ensureEnvironment = () => {
+  if (!fileManager.fileExists(folderPath)) {
     try {
-      fileManager.createDirectory(directoryPath, true);
-      console.log(`Created folder: ${directoryPath}`);
+      fileManager.createDirectory(folderPath, true);
+      console.log(`Created folder: ${folderPath}`);
     } catch (error) {
-      console.error("Failed to create folder.");
+      console.error("Failed to create folder:", error);
     }
   }
-}
 
-// Function to create designated folder for .txt file if it doens't already exist
-function ensureFileExists() {
-  ensureFolderExists();
-  const filePath = fileManager.joinPath(directoryPath, FILE_NAME);
   if (!fileManager.fileExists(filePath)) {
     try {
       fileManager.writeString(filePath, "");
       console.log(`Created file: ${filePath}`);
     } catch (error) {
-      console.error("Failed to create file.");
+      console.error("Failed to create file:", error);
     }
   }
-  return filePath;
-}
 
-// Function to load saved sticky note text
-function loadData() {
+  return filePath;
+};
+
+const loadData = () => {
   try {
-    const filePath = ensureFileExists(); // Ensures file and folder exist
+    ensureEnvironment();
     return fileManager.readString(filePath) || "";
   } catch (error) {
     console.error("Error loading data:", error);
     return "";
   }
-}
+};
 
-// Function to enter new text for sticky note
-async function editData(existingData) {
+const saveData = (data) => {
+  try {
+    ensureEnvironment();
+    fileManager.writeString(filePath, data);
+    console.log("Sticky note saved.");
+  } catch (error) {
+    console.error("Error saving data:", error);
+  }
+};
+
+// === USER INPUT ===
+const editData = async (existingData) => {
   const editor = new Alert();
   editor.title = "Enter Sticky Note Text";
-  editor.addTextField(existingData);
+  editor.addTextField(existingData || "");
   editor.addCancelAction("Cancel");
   editor.addAction("Save");
 
-  const action = await editor.present(); // Return updated text unless canceled
+  const response = await editor.present();
+  return response === -1 ? existingData : editor.textFieldValue(0);
+};
 
-  if (action === -1) {
-    return existingData;
-  } else {
-    return editor.textFieldValue(0);
+// === IMAGE HANDLING ===
+
+// Returns the image, loading from cache or downloading and caching if needed
+const getCachedImage = async () => {
+  try {
+    ensureEnvironment();
+
+    const exists = fileManager.fileExists(cachedImagePath);
+
+    if (CONFIG.forceImageRefresh || !exists) {
+      console.log("Downloading and caching new image...");
+      const req = new Request(CONFIG.imageUrl);
+      const img = await req.load();
+      fileManager.write(cachedImagePath, img);
+    } else {
+      console.log("Using cached image.");
+    }
+
+    return fileManager.readImage(cachedImagePath);
+  } catch (error) {
+    console.error("Failed to load image:", error);
+    return null;
   }
-}
+};
 
-// Function to save entered sticky note text
-function saveData(data) {
-  const filePath = ensureFileExists(); // Ensures file and folder exist
-  fileManager.writeString(filePath, data);
-  console.log("Sticky note saved.");
-}
-
-// Function to load and process the background image
-async function loadImage() {
-  const image = await new Request(IMAGE_URL).loadImage(); // Define widget dimensions
-
-  const widgetWidth = 400;
-  const widgetHeight = 400; // Create drawing context
+const loadImage = async () => {
+  const image = await getCachedImage();
 
   const context = new DrawContext();
-  context.size = new Size(widgetWidth, widgetHeight);
+  const size = CONFIG.widgetSize;
+  context.size = new Size(size, size);
   context.opaque = false;
-  context.respectScreenScale = true; // Calculate aspect ratio to scale image proportionally
+  context.respectScreenScale = true;
 
-  const imageAspectRatio = image.size.width / image.size.height;
-  const widgetAspectRatio = widgetWidth / widgetHeight;
+  if (!image) {
+    console.warn("No image found. Using transparent background.");
+    // Return transparent image as fallback
+    return context.getImage();
+  }
+
+  const imageAspect = image.size.width / image.size.height;
+  const widgetAspect = size / size;
 
   let drawWidth, drawHeight;
-  if (imageAspectRatio > widgetAspectRatio) {
-    drawHeight = widgetHeight * ZOOM_FACTOR;
-    drawWidth = drawHeight * imageAspectRatio;
+
+  if (imageAspect > widgetAspect) {
+    drawHeight = size * CONFIG.zoomFactor;
+    drawWidth = drawHeight * imageAspect;
   } else {
-    drawWidth = widgetWidth * ZOOM_FACTOR;
-    drawHeight = drawWidth / imageAspectRatio;
-  } // Center the image
+    drawWidth = size * CONFIG.zoomFactor;
+    drawHeight = drawWidth / imageAspect;
+  }
 
-  const x = (widgetWidth - drawWidth) / 2;
-  const y = (widgetHeight - drawHeight) / 2;
+  const x = (size - drawWidth) / 2;
+  const y = (size - drawHeight) / 2;
+
   context.drawImageInRect(image, new Rect(x, y, drawWidth, drawHeight));
-
   return context.getImage();
-}
+};
 
-// Function to create and customize widget UI
-async function createWidget(note) {
-  const widget = new ListWidget(); // Set background image
+// === CREATE WIDGET ===
+const createWidget = async (note) => {
+  const widget = new ListWidget();
+  widget.backgroundImage = await loadImage();
 
-  const image = await loadImage();
-  widget.backgroundImage = image; // Add sticky note text
+  widget.addSpacer(CONFIG.spacerTop);
 
-  widget.addSpacer(20);
   const noteText = widget.addText(note);
-  noteText.textColor = Color.black();
-  noteText.font = Font.mediumRoundedSystemFont(16);
+  noteText.textColor = CONFIG.textColor;
+  noteText.font = CONFIG.font;
   noteText.centerAlignText();
+
   widget.addSpacer();
 
   return widget;
-}
+};
 
-// Load data and display widget
-async function displayWidget() {
+// === EXECUTE SCRIPT ===
+const displayWidget = async () => {
   let note = loadData();
 
   if (config.runsInWidget) {
-    // Running inside widget
     const widget = await createWidget(note);
     Script.setWidget(widget);
   } else {
-    // Running in the app
     note = await editData(note);
     saveData(note);
+
     const widget = await createWidget(note);
-    widget.presentLarge();
+    await widget.presentLarge();
   }
 
   Script.complete();
-}
+};
 
-// Run the widget
-displayWidget();
+await displayWidget();
