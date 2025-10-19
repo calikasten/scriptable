@@ -2,170 +2,143 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: window-restore;
 
-// Set API variables
-const API_TOKEN = "<INSERT API TOKEN HERE>";
-const APP_ID = "<INSERT APP ID HERE>";
-const TABLE_ID = "<INSERT TABLE ID HERE>";
+// === CONFIG ===
 
-// Set constant for static text used in widget title
+// Store API key in Scriptable keychain
+Keychain.set(
+  "AirtableApiKey",
+  "<INSERT API KEY HERE>"
+);
+
+// Airtable details
+const API_KEY = Keychain.get("AirtableApiKey");
+const APP_ID = "appHEaSiBocpIp1Yw";
+const TABLE_ID = "tblaiUHCIOq3LZiDy";
+
+// Validate API key
+if (!API_KEY) {
+  throw new Error("Missing Airtable API Key in Keychain.");
+}
+
+// Define UI components
 const TITLE_TEXT = "TITLE";
+const TITLE_FONT_SIZE = 16;
+const BODY_FONT_SIZE = 10;
+const DATE_FORMAT = "MM-dd-yyyy";
+
+// Define colors & fonts
+const TEXT_COLOR = new Color("#FFFF00");
+const TITLE_COLOR = new Color("#FFFFFF");
+const ERROR_COLOR = new Color("#FF3B30");
+const FONT = Font.semiboldSystemFont(BODY_FONT_SIZE);
+const TITLE_FONT = Font.boldSystemFont(TITLE_FONT_SIZE);
+
+// Use date formatter
+const dateFormatter = new DateFormatter();
+dateFormatter.dateFormat = DATE_FORMAT;
+
+// === RETRIVE DATA ===
 
 // Function to get data from API
 async function getData() {
-  
   // API URL
-  const url = `https://api.airtable.com/v0/${APP_ID}/${TABLE_ID}/?maxRecords=1`;
+  const url = `https://api.airtable.com/v0/${APP_ID}/${TABLE_ID}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`;
 
-  // Try/catch for error handling
+  // Create new API request
+  const request = new Request(url);
+
+  // Authentication for API request
+  request.headers = { Authorization: `Bearer ${API_KEY}` };
+
+  // Try/catch for error handling of loading API response
   try {
-    
-    // Create new API request
-    const request = new Request(url);
-
-    // Authentication for API request
-    request.headers = { Authorization: `Bearer ${API_TOKEN}` };
-
-    // Parameters for API request
-    request.body = { field: "Timestamp", direction: "desc" };
-
-    // Make API request and load JSON response
+    // Make API request and load response
     const response = await request.loadJSON();
 
-    // Check if the response is valid
-    if (!response || !response.records || response.records.length === 0) {
-      throw new Error("No data returned from API.");
-    }
-
-    // Log and return data from valid response
-    console.log(response);
-    return response;
+    // Return data from response
+    return response?.records?.length ? response.records : null;
   } catch (error) {
-    console.error("Error fetching data from API.");
+    console.error("API Error: " + error.message);
 
-    // Don't return anything if API request fails
-    return { records: [] };
+    // Don't return anything if API request errors
+    return null;
   }
 }
 
-// Fetch data from API response
-const data = await getData();
-const records = data["records"];
+// === UTILS ===
 
-// Helper function to extract fields from the response
-function extractField(records, fieldName) {
-  return records.length > 0 ? records[0].fields[fieldName] : null;
+// Format date
+function formatDateTime(date) {
+  return isNaN(date.getTime()) ? "N/A" : dateFormatter.string(date);
 }
 
-// Helper function to format date
-function formatDateTime(rawTimestamp) {
-  const timestamp = new Date(rawTimestamp);
-  if (isNaN(timestamp.getTime())) return "Invalid Date.";
-  const formatDate = new DateFormatter();
-  formatDate.dateFormat = DATE_FORMAT;
-  return formatDate.string(timestamp);
+// Calculate time difference in days
+function calculateTimeDifference(date) {
+  const diff = Date.now() - date.getTime();
+  return isNaN(diff) ? "N/A" : Math.round(diff / 86400000);
 }
 
-// Helper function to calculate time difference in days
-function calculateTimeDifference(timestamp) {
-  const apiTimestamp = new Date(timestamp);
-  const now = new Date();
-  const timeDiffMS = now - apiTimestamp;
-
-  // Convert from milliseconds to days
-  return (timeDiffMS / (1000 * 60 * 60 * 24)).toFixed(0);
+// Convert boolean to string
+function determineBoolean(value) {
+  return value ? "true" : "false";
 }
 
-// Helper function to calculate time duration in minutes
-function calcuateDuration(duration) {
-  return duration ? duration / 60 : 0;
+// Convert array to comma separated string
+function formatArrayField(value) {
+  return Array.isArray(value) ? value.join(", ") : value ?? "N/A";
 }
 
-// Helper function for handling boolean response
-function determineBoolean(boolean) {
-  if (boolean === undefined) return "false";
-  return boolean;
-}
+// === CREATE WIDGET ===
 
-// Helper function to dynamically add a new list element
-function addNewListElement(widget, prefix, fieldValue) {
-  const fieldText = widget.addText(`${prefix} ${fieldValue}`);
-  applyTextStyle(fieldText);
-  widget.addSpacer(SPACER);
-}
-
-// Set style constants for UI
-const DATE_FORMAT = "MM-dd-YYYY";
-const TEXT_COLOR = new Color("#FFFF00");
-const FONT_SIZE = 10;
-const SPACER = 0.5;
-const FONT = Font.semiboldSystemFont(FONT_SIZE);
-
-// Helper function to apply consistent text styling to list elements
-function applyTextStyle(textElement) {
-  textElement.font = FONT;
-  textElement.textColor = TEXT_COLOR;
-  textElement.leftAlignText();
-}
-
-// Function to create and customize widget UI
-async function createWidget() {
+function createWidget(records) {
   const widget = new ListWidget();
 
-  // Add widget title
+  // Title
   const title = widget.addText(TITLE_TEXT);
-  title.font = Font.semiboldSystemFont(16);
-  title.textColor = new Color("#FFFFFF");
+  title.font = TITLE_FONT;
+  title.textColor = TITLE_COLOR;
   title.centerAlignText();
   widget.addSpacer(5);
 
-  // Add "timestamp" from API response to widget list
-  const timestamp = extractField(records, "Timestamp");
-  const displayDateTime = widget.addText("1. " + formatDateTime(timestamp));
-  applyTextStyle(displayDateTime);
-  widget.addSpacer(SPACER);
+  // Extract fields from data
+  const fields = records?.[0]?.fields ?? {};
+  const timestampRaw = fields.Timestamp;
+  const timestamp = timestampRaw ? new Date(timestampRaw) : null;
+  const duration = fields.Duration;
+  const stringField = fields.String;
+  const numberField = fields.Number;
+  const booleanValue = fields.Boolean;
+  const singleSelectArray = fields["Single-Select Array"];
+  const multiSelectArray = fields["Multi-Select Array"];
 
-  // Add calculated time difference in days to widget list
-  const timeDifference = calculateTimeDifference(timestamp);
-  const displayTimeDiff = widget.addText(`2. ${timeDifference} days`);
-  applyTextStyle(displayTimeDiff);
-  widget.addSpacer(SPACER);
+  // Display data as new lines in widget
+  const lines = [
+    "1. " + (timestamp ? formatDateTime(timestamp) : "N/A"),
+    "2. " + (timestamp ? calculateTimeDifference(timestamp) + " days" : "N/A"),
+    "3. " + (stringField ?? "N/A"),
+    "4. " + (numberField ?? "N/A"),
+    "5. " + determineBoolean(booleanValue),
+    "6. " + formatArrayField(singleSelectArray),
+    "7. " + formatArrayField(multiSelectArray),
+  ];
 
-  // Add calculated duration in minutes to widget list
-  const duration = extractField(records, "Duration");
-  const durationMins = calcuateDuration(duration);
-  const displayDuration = widget.addText(`3. ${durationMins} minutes`);
-  applyTextStyle(displayDuration);
-  widget.addSpacer(SPACER);
+  const textBlock = widget.addText(lines.join("\n"));
+  textBlock.font = FONT;
+  textBlock.textColor = TEXT_COLOR;
+  textBlock.leftAlignText();
 
-  // Add "string" from API response to widget list
-  addNewListElement(widget, "4.", extractField(records, "String"));
-
-  // Add "number" from API response to widget list
-  addNewListElement(widget, "5.", extractField(records, "Number"));
-
-  // Add "boolean" from API response to widget list
-  const boolean = extractField(records, "Boolean");
-  const trueFalse = determineBoolean(boolean);
-  const displayBoolean = widget.addText(`6. ${trueFalse}`);
-  applyTextStyle(displayBoolean);
-  widget.addSpacer(SPACER);
-
-  // Add "single-select array" from API response to widget list
-  const singleSelectArray = extractField(records, "Single-Select Array");
-  addNewListElement(widget, "7.", singleSelectArray);
-
-  // Add "multi-select array" from API response to widget list
-  const multiSelectArray = extractField(records, "Multi-Select Array");
-  addNewListElement(widget, "8.", multiSelectArray);
-
-  // Return customized widget UI
   return widget;
 }
 
-// Display widget
-const widget = await createWidget(data);
+// === EXECUTE SCRIPT  ===
 
-// Check where the script is running
+// Use data retrieved from API response
+const records = await getData();
+const widget = records
+  ? createWidget(records)
+  : createErrorWidget("Unable to load data");
+
+// Check where script is running
 if (config.runsInWidget) {
   // Run inside a widget
   Script.setWidget(widget);
@@ -173,4 +146,5 @@ if (config.runsInWidget) {
   // Otherwise show preview
   widget.presentSmall();
 }
+
 Script.complete();
