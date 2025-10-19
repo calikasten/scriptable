@@ -31,6 +31,6 @@ Displays a list of plants that should be watered today. Plant watering is logged
 
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
-Displays a static note in the widget (requires manual creation of a new folder on set up for saved Sticky Note .txt file). Original author [drewkerr](https://github.com/drewkerr). <br>
+Displays text as a "sticky note". Original author [drewkerr](https://github.com/drewkerr). <br>
 
 https://github.com/user-attachments/assets/aece2705-6318-458c-a710-420a11744366
