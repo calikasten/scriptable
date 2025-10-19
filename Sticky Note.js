@@ -3,6 +3,7 @@
 // icon-color: yellow; icon-glyph: sticky-note;
 
 // === CONFIG ===
+
 const CONFIG = {
   folderName: "Sticky Note",
   fileName: "stickyNote.txt",
@@ -20,6 +21,7 @@ const CONFIG = {
 };
 
 // === FILE MANAGEMENT ===
+
 const fileManager = FileManager.iCloud();
 const documentsPath = fileManager.documentsDirectory();
 const folderPath = fileManager.joinPath(documentsPath, CONFIG.folderName);
@@ -69,6 +71,7 @@ const saveData = (data) => {
 };
 
 // === USER INPUT ===
+
 const editData = async (existingData) => {
   const editor = new Alert();
   editor.title = "Enter Sticky Note Text";
@@ -141,6 +144,7 @@ const loadImage = async () => {
 };
 
 // === CREATE WIDGET ===
+
 const createWidget = async (note) => {
   const widget = new ListWidget();
   widget.backgroundImage = await loadImage();
@@ -158,6 +162,7 @@ const createWidget = async (note) => {
 };
 
 // === EXECUTE SCRIPT ===
+
 const displayWidget = async () => {
   let note = loadData();
 
