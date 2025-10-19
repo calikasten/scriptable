@@ -9,6 +9,7 @@ const CONFIGURATION_JSON_VERSION = 3;
 
 // Begin configuration setup
 class Configuration {
+  // Don't forget 'http://' prefix to IP address
   hbServiceMachineBaseUrl = "<INSERT HOSTNAME AND PORT";
   userName = "<INSERT HOMEBRIDGE USERNAME>";
   password = "<INSERT HOMEBRIDGE PASSWORD>";
