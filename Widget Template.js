@@ -65,7 +65,7 @@ async function getData() {
   }
 }
 
-// === UTILS ===
+// === HELPER FUNCTIONS ===
 
 // Format date
 function formatDateTime(date) {
