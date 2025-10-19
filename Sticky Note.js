@@ -4,7 +4,7 @@
 
 // Set constants for file paths
 const FOLDER_NAME = "Sticky Note";
-const FILE_NAME = "sticky-note.txt";
+const FILE_NAME = "stickyNote.txt";
 const IMAGE_URL = "https://static.vecteezy.com/system/resources/previews/013/220/257/original/sticky-note-paper-in-yellow-colors-reminder-square-illustration-png.png";
 const ZOOM_FACTOR = 1.1; // Image zoom factor
 
