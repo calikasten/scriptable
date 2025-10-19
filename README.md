@@ -26,6 +26,9 @@ View details for the next F1 race and race weekend events. Original author [FeBe
 View details for the next rocket launch. <br>
 ![Next Rocket Launch](https://github.com/user-attachments/assets/2e7e4477-da45-407f-b6b0-72f8cfe47c11)
 
+[Plants To Water Today]() <br>
+Displays a list of plants that should be watered today based on the number of days between waterings for each plant and the time passed since that plant was last watered (all values stored in DataJar).
+
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
 Displays a static note in the widget (requires manual creation of a new folder on set up for saved Sticky Note .txt file). Original author [drewkerr](https://github.com/drewkerr). <br>
