@@ -27,7 +27,7 @@ View details for the next rocket launch. <br>
 ![Next Rocket Launch](https://github.com/user-attachments/assets/2e7e4477-da45-407f-b6b0-72f8cfe47c11)
 
 [Plants To Water Today]() <br>
-Displays a list of plants that should be watered today based on the number of days between waterings for each plant and the time passed since that plant was last watered (all values stored in DataJar).
+Displays a list of plants that should be watered today. Plant watering is logged via the [Log Plant Watering](https://github.com/calikasten/siri-shortcuts/blob/main/Log%20Plant%20Watering.shortcut) Shortcut.
 
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
