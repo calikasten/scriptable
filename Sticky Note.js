@@ -85,7 +85,7 @@ const editData = async (existingData) => {
 
 // === IMAGE HANDLING ===
 
-// Returns the image, loading from cache or downloading and caching if needed
+// Return image (either from cache or downloading nad caching)
 const getCachedImage = async () => {
   try {
     ensureEnvironment();
