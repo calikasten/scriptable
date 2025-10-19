@@ -22,7 +22,7 @@ if (!fileManager.fileExists(backupDirectory)) {
   fileManager.createDirectory(backupDirectory, true);
 }
 
-// === UTILS ===
+// === HELPER FUNCTIONS ===
 function isValidScript(fileName) {
   return CONFIG.allowedExtensions.some((ext) => fileName.endsWith(ext));
 }
