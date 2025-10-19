@@ -17,12 +17,12 @@ const directoryPath = `${directory}${folderLocation}`;
 
 // Function to create designated folder for .txt file if it doens't already exist
 function ensureFolderExists() {
-  if (!iCloud.fileExists(directoryPath)) {
+  if (!fileManager.fileExists(directoryPath)) {
     try {
-      iCloud.createDirectory(directoryPath, true);
+      fileManager.createDirectory(directoryPath, true);
       console.log(`Created folder: ${directoryPath}`);
     } catch (error) {
-      console.error(`Failed to create folder: ${error}`);
+      console.error("Failed to create folder.");
     }
   }
 }
@@ -30,13 +30,13 @@ function ensureFolderExists() {
 // Function to create designated folder for .txt file if it doens't already exist
 function ensureFileExists() {
   ensureFolderExists();
-  const filePath = iCloud.joinPath(directoryPath, FILE_NAME);
-  if (!iCloud.fileExists(filePath)) {
+  const filePath = fileManager.joinPath(directoryPath, FILE_NAME);
+  if (!fileManager.fileExists(filePath)) {
     try {
-      iCloud.writeString(filePath, "");
+      fileManager.writeString(filePath, "");
       console.log(`Created file: ${filePath}`);
     } catch (error) {
-      console.error(`Failed to create file: ${error}`);
+      console.error("Failed to create file.");
     }
   }
   return filePath;
@@ -46,7 +46,7 @@ function ensureFileExists() {
 function loadData() {
   try {
     const filePath = ensureFileExists(); // Ensures file and folder exist
-    return iCloud.readString(filePath) || "";
+    return fileManager.readString(filePath) || "";
   } catch (error) {
     console.error("Error loading data:", error);
     return "";
@@ -73,7 +73,7 @@ async function editData(existingData) {
 // Function to save entered sticky note text
 function saveData(data) {
   const filePath = ensureFileExists(); // Ensures file and folder exist
-  iCloud.writeString(filePath, data);
+  fileManager.writeString(filePath, data);
   console.log("Sticky note saved.");
 }
 
