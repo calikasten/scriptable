@@ -35,10 +35,6 @@ function isHiddenOrSystemFile(fileName) {
   );
 }
 
-function sanitizeFilename(name) {
-  return name.replace(/[^\w.-]/g, "_");
-}
-
 function getTimestampedFilename(fileName) {
   // Remove file extension
   const baseName = fileName.replace(/\.[^/.]+$/, "");
@@ -80,7 +76,7 @@ function backupScript(fileName) {
 
   const backupName = CONFIG.includeTimestamps
     ? getTimestampedFilename(fileName)
-    : sanitizeFilename(fileName);
+    : fileName;
 
   const destPath = fileManager.joinPath(backupDirectory, backupName);
 
