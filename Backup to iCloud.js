@@ -2,20 +2,20 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: gray; icon-glyph: cloud;
 
-// === CONFIG ===
+// === CONFIGURATION ===
 
 const CONFIG = {
-  includeTimestamps: false, // true = timestamped file names
-  overwriteOnlyIfChanged: true, // false = overwrite all files on backup
-  allowedExtensions: [".js"], // list of allowed file types by extension
-  backupFolderName: "Script Backups"
+  overwriteOnlyIfChanged: true,
+  backupFolderName: "Script Backups",
 };
 
-// === FILE MANAGEMENT ===
-
+// === SETUP ===
 const fileManager = FileManager.iCloud();
 const rootDirectory = fileManager.documentsDirectory();
-const backupDirectory = fileManager.joinPath(rootDirectory, CONFIG.backupFolderName);
+const backupDirectory = fileManager.joinPath(
+  rootDirectory,
+  CONFIG.backupFolderName
+);
 
 // Ensure backup folder exists
 if (!fileManager.fileExists(backupDirectory)) {
@@ -23,10 +23,8 @@ if (!fileManager.fileExists(backupDirectory)) {
 }
 
 // === HELPER FUNCTIONS ===
-function isValidScript(fileName) {
-  return CONFIG.allowedExtensions.some((ext) => fileName.endsWith(ext));
-}
 
+// Ignore hidden files and system files
 function isHiddenOrSystemFile(fileName) {
   return (
     fileName.startsWith(".") ||
@@ -35,87 +33,88 @@ function isHiddenOrSystemFile(fileName) {
   );
 }
 
-function getTimestampedFilename(fileName) {
-  // Remove file extension
-  const baseName = fileName.replace(/\.[^/.]+$/, "");
-  const extension = fileName.slice(fileName.lastIndexOf("."));
-  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  return `${baseName}_${timestamp}${extension}`;
-}
-
-function log(msg) {
-  console.log(`[Backup] ${msg}`);
-}
-
-// === BACK UP SCRIPTS ===
-
-let scriptBackupCount = 0;
-let skippedCount = 0;
-const logMessages = [];
-
-function backupScript(fileName) {
-  if (!isValidScript(fileName) || isHiddenOrSystemFile(fileName)) {
-    return;
+// Ignore unchanged scripts
+function filesAreEqual(filePath, content) {
+  try {
+    return fileManager.readString(filePath) === content;
+  } catch {
+    return false;
   }
+}
 
-  const sourcePath = fileManager.joinPath(rootDirectory, fileName);
+// Get all scripts (with .js extension)
+let scriptFiles;
+try {
+  scriptFiles = fileManager
+    .listContents(rootDirectory)
+    .filter(
+      (fileName) =>
+        fileName.endsWith(".js") &&
+        fileName !== CONFIG.backupFolderName &&
+        !isHiddenOrSystemFile(fileName)
+    );
+} catch (err) {
+  console.error(
+    `[Backup][ERROR] Unable to list root directory: ${err.message}`
+  );
+  throw err;
+}
+
+// === BACKUP SCRIPTS ===
+
+let scriptsBackedUp = 0;
+let scriptsSkipped = 0;
+const backedUpFileNames = [];
+
+for (const scriptFileName of scriptFiles) {
+  const sourcePath = fileManager.joinPath(rootDirectory, scriptFileName);
+
   if (!fileManager.isFileDownloaded(sourcePath)) {
-    log(`Skipping (not downloaded): ${fileName}`);
-    skippedCount++;
-    return;
+    scriptsSkipped++;
+    continue;
   }
 
   let content;
   try {
     content = fileManager.readString(sourcePath);
-  } catch (err) {
-    log(`Error reading: ${fileName} – ${err.message}`);
-    skippedCount++;
-    return;
+  } catch {
+    scriptsSkipped++;
+    continue;
   }
 
-  const backupName = CONFIG.includeTimestamps
-    ? getTimestampedFilename(fileName)
-    : fileName;
-
-  const destPath = fileManager.joinPath(backupDirectory, backupName);
-
-  let shouldWrite = true;
-
-  if (CONFIG.overwriteOnlyIfChanged && fileManager.fileExists(destPath)) {
-    const existing = fileManager.readString(destPath);
-    shouldWrite = content !== existing;
-  }
+  const backupPath = fileManager.joinPath(backupDirectory, scriptFileName);
+  const backupExists = fileManager.fileExists(backupPath);
+  const shouldWrite =
+    !CONFIG.overwriteOnlyIfChanged ||
+    !backupExists ||
+    !filesAreEqual(backupPath, content);
 
   if (shouldWrite) {
     try {
-        fileManager.writeString(destPath, content);
-      scriptBackupCount++;
-      logMessages.push(`Backed up: ${fileName}`);
-    } catch (err) {
-      log(`Failed to write: ${fileName}`);
+      fileManager.writeString(backupPath, content);
+      scriptsBackedUp++;
+      backedUpFileNames.push(scriptFileName);
+    } catch {
+      scriptsSkipped++;
     }
   } else {
-    skippedCount++;
-    log(`Skipped (unchanged): ${fileName}`);
+    scriptsSkipped++;
   }
 }
 
-// === EXECUTE SCRIPT ===
-
-const allFiles = fileManager.listContents(rootDirectory);
-allFiles.forEach(backupScript);
-
 // === CONFIRMATION ===
 
-const message = [
-  `${scriptBackupCount} script(s) backed up`, `${skippedCount} skipped`
-].join("\n");
-const alert = new Alert();
-alert.title = "Script Backup Complete";
-alert.message = message;
-alert.addAction("OK");
-await alert.present();
+// Display alert summary
+const summaryAlert = new Alert();
+summaryAlert.title = "Backup Complete";
+summaryAlert.message = `${scriptsBackedUp} script(s) backed up\n${scriptsSkipped} skipped`;
+summaryAlert.addAction("OK");
+await summaryAlert.present();
 
-logMessages.forEach(log);
+// Log names of backed-up scripts
+if (backedUpFileNames.length) {
+  console.log("Backed up scripts:");
+  backedUpFileNames.forEach((fileName) => console.log(fileName));
+}
+
 Script.complete();
