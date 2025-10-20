@@ -9,7 +9,7 @@ const CONFIG = {
   backupFolderName: "Script Backups",
 };
 
-// === SETUP ===
+// === FILE MANAGEMENT ===
 const fileManager = FileManager.iCloud();
 const rootDirectory = fileManager.documentsDirectory();
 const backupDirectory = fileManager.joinPath(
