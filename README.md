@@ -28,7 +28,7 @@ View details for the next rocket launch. <br>
 ![Next Rocket Launch](https://github.com/user-attachments/assets/5e07a066-408d-40a8-8377-cb24b5648c71)
 
 
-[Plants To Water Today]() <br>
+[Plants That Need Watering](https://github.com/calikasten/scriptable/blob/main/Plants%20That%20Need%20Watering.js) <br>
 Displays a list of plants that should be watered today. Plant watering is logged via the [Log Plant Watering](https://github.com/calikasten/siri-shortcuts/blob/main/Log%20Plant%20Watering.shortcut) Shortcut.
 
 ## Productivity
