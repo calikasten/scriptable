@@ -19,7 +19,7 @@ dateFormatter.dateFormat = "MM-dd-yyyy";
 const daysSince = (date) =>
   date instanceof Date ? Math.round((Date.now() - date) / 86400000) : "N/A";
 
-// Convert array to comma separted string
+// Convert array to comma separated string
 const arrayToString = (array) =>
   Array.isArray(array) ? array.join(", ") : array ?? "N/A";
 
