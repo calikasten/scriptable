@@ -1,5 +1,5 @@
 # Scriptable
-Widgets and automations via the Scriptable app. Last Updated 10/19/2025.
+Widgets and automations via the Scriptable app. Last Updated 10/20/2025.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
@@ -21,11 +21,11 @@ Configured for my home with most comments removed. Original author [lwitzani](ht
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
-![Next F1 Race Event](https://github.com/user-attachments/assets/89dc39cb-8783-4c6e-8153-93cdf4089e75)
+![Next F1 Race](https://github.com/user-attachments/assets/89dc39cb-8783-4c6e-8153-93cdf4089e75)
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
 View details for the next rocket launch. <br>
-![Next Rocket Launch](https://github.com/user-attachments/assets/2e7e4477-da45-407f-b6b0-72f8cfe47c11)
+![Next Rocket Launch](https://github.com/user-attachments/assets/5656ed2e-c86b-4e28-994f-a734abd573fa)
 
 [Plants To Water Today]() <br>
 Displays a list of plants that should be watered today. Plant watering is logged via the [Log Plant Watering](https://github.com/calikasten/siri-shortcuts/blob/main/Log%20Plant%20Watering.shortcut) Shortcut.
