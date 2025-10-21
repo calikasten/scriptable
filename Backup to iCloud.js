@@ -3,7 +3,6 @@
 // icon-color: gray; icon-glyph: cloud;
 
 // === CONFIGURATION ===
-
 const CONFIG = {
   overwriteOnlyIfChanged: true,
   backupFolderName: "Script Backups",
@@ -23,79 +22,72 @@ if (!fileManager.fileExists(backupDirectory)) {
 }
 
 // === HELPER FUNCTIONS ===
-
 // Ignore hidden files and system files
-function isHiddenOrSystemFile(fileName) {
+const isHiddenOrSystemFile = (fileName) => {
+  const lower = fileName.toLowerCase();
   return (
     fileName.startsWith(".") ||
-    fileName.includes("__MACOSX") ||
-    fileName === ".DS_Store"
+    lower.includes("__macosx") ||
+    lower === ".ds_store"
   );
-}
+};
 
 // Ignore unchanged scripts
-function filesAreEqual(filePath, content) {
+const filesAreEqual = (path, content) => {
   try {
-    return fileManager.readString(filePath) === content;
+    return fileManager.readString(path) === content;
   } catch {
     return false;
   }
-}
+};
 
 // Get all scripts (with .js extension)
-let scriptFiles;
+let scriptFiles = [];
 try {
   scriptFiles = fileManager
     .listContents(rootDirectory)
-    .filter(
-      (fileName) =>
-        fileName.endsWith(".js") &&
-        fileName !== CONFIG.backupFolderName &&
-        !isHiddenOrSystemFile(fileName)
-    );
+    .filter((name) => name.endsWith(".js") && !isHiddenOrSystemFile(name));
 } catch (err) {
-  console.error(
-    `[Backup][ERROR] Unable to list root directory: ${err.message}`
-  );
+  console.error(`[Backup][ERROR] Unable to list root directory: ${err}`);
   throw err;
 }
 
 // === BACKUP SCRIPTS ===
-
-let scriptsBackedUp = 0;
-let scriptsSkipped = 0;
+let scriptsBackedUp = 0,
+  scriptsSkipped = 0;
 const backedUpFileNames = [];
 
-for (const scriptFileName of scriptFiles) {
-  const sourcePath = fileManager.joinPath(rootDirectory, scriptFileName);
+for (const fileName of scriptFiles) {
+  const sourcePath = fileManager.joinPath(rootDirectory, fileName);
 
   if (!fileManager.isFileDownloaded(sourcePath)) {
     scriptsSkipped++;
+    console.warn(`[Backup][SKIP] File not downloaded: ${fileName}`);
     continue;
   }
 
   let content;
   try {
     content = fileManager.readString(sourcePath);
-  } catch {
+  } catch (err) {
     scriptsSkipped++;
+    console.error(`[Backup][SKIP] Failed to read ${fileName}: ${err}`);
     continue;
   }
 
-  const backupPath = fileManager.joinPath(backupDirectory, scriptFileName);
-  const backupExists = fileManager.fileExists(backupPath);
-  const shouldWrite =
+  const backupPath = fileManager.joinPath(backupDirectory, fileName);
+  if (
     !CONFIG.overwriteOnlyIfChanged ||
-    !backupExists ||
-    !filesAreEqual(backupPath, content);
-
-  if (shouldWrite) {
+    !fileManager.fileExists(backupPath) ||
+    !filesAreEqual(backupPath, content)
+  ) {
     try {
       fileManager.writeString(backupPath, content);
       scriptsBackedUp++;
-      backedUpFileNames.push(scriptFileName);
-    } catch {
+      backedUpFileNames.push(fileName);
+    } catch (err) {
       scriptsSkipped++;
+      console.error(`[Backup][ERROR] Failed to write ${fileName}: ${err}`);
     }
   } else {
     scriptsSkipped++;
@@ -103,7 +95,6 @@ for (const scriptFileName of scriptFiles) {
 }
 
 // === CONFIRMATION ===
-
 // Display alert summary
 const summaryAlert = new Alert();
 summaryAlert.title = "Backup Complete";
@@ -111,10 +102,10 @@ summaryAlert.message = `${scriptsBackedUp} script(s) backed up\n${scriptsSkipped
 summaryAlert.addAction("OK");
 await summaryAlert.present();
 
-// Log names of backed-up scripts
+// Log names of scripts that were backed up
 if (backedUpFileNames.length) {
   console.log("Backed up scripts:");
-  backedUpFileNames.forEach((fileName) => console.log(fileName));
+  backedUpFileNames.forEach(console.log);
 }
 
 Script.complete();
