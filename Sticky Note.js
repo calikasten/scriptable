@@ -3,7 +3,6 @@
 // icon-color: yellow; icon-glyph: sticky-note;
 
 // === CONFIGURATION ===
-
 const CONFIG = {
   folderName: "Sticky Note",
   fileName: "stickyNote.txt",
@@ -19,7 +18,7 @@ const CONFIG = {
 };
 
 // === FILE MANAGEMENT ===
-
+// Initialize iCloud file manager and set up paths
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
@@ -38,7 +37,7 @@ const loadData = () => fileManager.readString(filePath) || "";
 const saveData = (data) => fileManager.writeString(filePath, data);
 
 // === USER INPUT ===
-
+// Ask user for text to display
 const editData = async (existing) => {
   const alert = new Alert();
   alert.title = "Enter Sticky Note Text";
@@ -51,7 +50,7 @@ const editData = async (existing) => {
 };
 
 // === IMAGE HANDLING ===
-
+// Load sticky note background image
 const getImage = async () => {
   let image = fileManager.readImage(cachedImagePath);
 
@@ -60,18 +59,19 @@ const getImage = async () => {
     fileManager.writeImage(cachedImagePath, image);
   }
 
-  if (!image) return null;
-
+  if (!image) return null; 
+  
+  // Resize and draw image to maintain aspect ratio and zoom factor
   const size = CONFIG.widgetSize;
   const aspect = image.size.width / image.size.height;
   const drawWidth = size * CONFIG.zoomFactor * (aspect > 1 ? aspect : 1);
   const drawHeight = size * CONFIG.zoomFactor * (aspect > 1 ? 1 : 1 / aspect);
 
-  const ctx = new DrawContext();
-  ctx.size = new Size(size, size);
-  ctx.opaque = false;
-  ctx.respectScreenScale = true;
-  ctx.drawImageInRect(
+  const context = new DrawContext();
+  context.size = new Size(size, size);
+  context.opaque = false;
+  context.respectScreenScale = true;
+  context.drawImageInRect(
     image,
     new Rect(
       (size - drawWidth) / 2,
@@ -81,11 +81,10 @@ const getImage = async () => {
     )
   );
 
-  return ctx.getImage();
+  return context.getImage();
 };
 
 // === CREATE WIDGET ===
-
 const createWidget = async (note) => {
   const widget = new ListWidget();
   widget.backgroundImage = await getImage();
@@ -101,10 +100,11 @@ const createWidget = async (note) => {
 };
 
 // === EXECUTE SCRIPT ===
-
 const display = async () => {
+  // Load data
   let note = loadData();
 
+  // Allow for text to be edited if running in app
   if (!config.runsInWidget) {
     note = await editData(note);
     saveData(note);
