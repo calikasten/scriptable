@@ -31,6 +31,8 @@ View details for the next rocket launch. <br>
 [Plants That Need Watering](https://github.com/calikasten/scriptable/blob/main/Plants%20That%20Need%20Watering.js) <br>
 Displays a list of plants that should be watered today. Plant watering is logged via the [Log Plant Watering](https://github.com/calikasten/siri-shortcuts/blob/main/Log%20Plant%20Watering.shortcut) Shortcut.
 
+https://github.com/user-attachments/assets/3f0b987c-60d6-4040-93d0-8d3170efdfc1
+
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
 Displays text as a "sticky note". Original author [drewkerr](https://github.com/drewkerr). <br>
