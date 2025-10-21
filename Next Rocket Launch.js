@@ -43,7 +43,7 @@ function getCountdown(timestamp) {
 }
 
 // === FETCH DATA ===
-// Retrieve data from cache if  valid; otherwise, fetch from API and cache it
+// Retrieve data from cache if  valid; otherwise, fetch from API and update cache
 async function getCachedData() {
   const fileManager = FileManager.local();
   const file = fileManager.joinPath(fileManager.cacheDirectory(), "launch_api_cache.json");
@@ -68,7 +68,7 @@ async function getCachedData() {
   }
 }
 
-// Load image from cache if available, otherwise, fetch from URL, cache it, and return it
+// Load image from cache if available, otherwise, fetch from URL and cache it before returning the image
 async function cacheImage(url, filename) {
   const fileManager = FileManager.local();
   const path = fileManager.joinPath(fileManager.cacheDirectory(), filename);
