@@ -25,7 +25,8 @@ View details for the next F1 race and race weekend events. Original author [FeBe
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
 View details for the next rocket launch. <br>
-![Next Rocket Launch](https://github.com/user-attachments/assets/5656ed2e-c86b-4e28-994f-a734abd573fa)
+![Next Rocket Launch](https://github.com/user-attachments/assets/5e07a066-408d-40a8-8377-cb24b5648c71)
+
 
 [Plants To Water Today]() <br>
 Displays a list of plants that should be watered today. Plant watering is logged via the [Log Plant Watering](https://github.com/calikasten/siri-shortcuts/blob/main/Log%20Plant%20Watering.shortcut) Shortcut.
