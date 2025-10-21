@@ -45,6 +45,7 @@ const editData = async (existing) => {
   alert.addTextField(existing || "");
   alert.addCancelAction("Cancel");
   alert.addAction("Save");
+
   const res = await alert.present();
   return res === -1 ? existing : alert.textFieldValue(0);
 };
@@ -52,24 +53,24 @@ const editData = async (existing) => {
 // === IMAGE HANDLING ===
 
 const getImage = async () => {
-  if (CONFIG.forceImageRefresh || !fileManager.fileExists(cachedImagePath)) {
-    const img = await new Request(CONFIG.imageUrl).load();
-    fileManager.write(cachedImagePath, img);
+  let img = fileManager.readImage(cachedImagePath);
+
+  if (CONFIG.forceImageRefresh || !img) {
+    img = await new Request(CONFIG.imageUrl).loadImage();
+    fileManager.writeImage(cachedImagePath, img);
   }
-  const img = fileManager.readImage(cachedImagePath);
+
   if (!img) return null;
 
   const size = CONFIG.widgetSize;
+  const aspect = img.size.width / img.size.height;
+  const drawWidth = size * CONFIG.zoomFactor * (aspect > 1 ? aspect : 1);
+  const drawHeight = size * CONFIG.zoomFactor * (aspect > 1 ? 1 : 1 / aspect);
+
   const ctx = new DrawContext();
   ctx.size = new Size(size, size);
   ctx.opaque = false;
   ctx.respectScreenScale = true;
-
-  const aspect = img.size.width / img.size.height;
-  const drawWidth =
-    aspect > 1 ? size * CONFIG.zoomFactor * aspect : size * CONFIG.zoomFactor;
-  const drawHeight =
-    aspect > 1 ? size * CONFIG.zoomFactor : (size * CONFIG.zoomFactor) / aspect;
   ctx.drawImageInRect(
     img,
     new Rect(
@@ -107,10 +108,13 @@ const display = async () => {
   if (!config.runsInWidget) {
     note = await editData(note);
     saveData(note);
-    const widget = await createWidget(note);
+  }
+
+  const widget = await createWidget(note);
+
+  if (!config.runsInWidget) {
     await widget.presentLarge();
   } else {
-    const widget = await createWidget(note);
     Script.setWidget(widget);
   }
 
