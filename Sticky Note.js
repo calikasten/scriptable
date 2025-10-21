@@ -5,8 +5,8 @@
 // === CONFIGURATION ===
 const CONFIG = {
   folderName: "Sticky Note",
-  fileName: "stickyNote.txt",
-  imageFileName: "stickyNote.png",
+  fileName: "sticky-note.txt",
+  imageFileName: "sticky-note.png",
   imageUrl:
     "https://calikasten.wordpress.com/wp-content/uploads/2025/10/sticky-note.png",
   zoomFactor: 1.1,
