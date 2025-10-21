@@ -53,17 +53,17 @@ const editData = async (existing) => {
 // === IMAGE HANDLING ===
 
 const getImage = async () => {
-  let img = fileManager.readImage(cachedImagePath);
+  let image = fileManager.readImage(cachedImagePath);
 
-  if (CONFIG.forceImageRefresh || !img) {
-    img = await new Request(CONFIG.imageUrl).loadImage();
-    fileManager.writeImage(cachedImagePath, img);
+  if (CONFIG.forceImageRefresh || !image) {
+    image = await new Request(CONFIG.imageUrl).loadImage();
+    fileManager.writeImage(cachedImagePath, image);
   }
 
-  if (!img) return null;
+  if (!image) return null;
 
   const size = CONFIG.widgetSize;
-  const aspect = img.size.width / img.size.height;
+  const aspect = image.size.width / image.size.height;
   const drawWidth = size * CONFIG.zoomFactor * (aspect > 1 ? aspect : 1);
   const drawHeight = size * CONFIG.zoomFactor * (aspect > 1 ? 1 : 1 / aspect);
 
@@ -72,7 +72,7 @@ const getImage = async () => {
   ctx.opaque = false;
   ctx.respectScreenScale = true;
   ctx.drawImageInRect(
-    img,
+    image,
     new Rect(
       (size - drawWidth) / 2,
       (size - drawHeight) / 2,
