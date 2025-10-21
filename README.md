@@ -17,7 +17,7 @@ View the time since your wiener dog's latest activities like business, food, exe
 
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/Homebridge%20Status.js) <br>
 Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani). <br>
-![Homebridge Status](https://github.com/user-attachments/assets/83f37469-e858-4d92-9292-396868705257)
+![Homebridge Status](https://github.com/user-attachments/assets/46de81fa-9641-489a-8ba4-9b0d182f60fa)
 
 [Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
