@@ -9,6 +9,7 @@ const CONFIG = {
 };
 
 // === FILE MANAGEMENT ===
+// Initialize iCloud file manager and set up paths
 const fileManager = FileManager.iCloud();
 const rootDirectory = fileManager.documentsDirectory();
 const backupDirectory = fileManager.joinPath(
@@ -16,13 +17,13 @@ const backupDirectory = fileManager.joinPath(
   CONFIG.backupFolderName
 );
 
-// Ensure backup folder exists
+// Create backup folder if it doesn't exist
 if (!fileManager.fileExists(backupDirectory)) {
   fileManager.createDirectory(backupDirectory, true);
 }
 
 // === HELPER FUNCTIONS ===
-// Ignore hidden files and system files
+// Check if a file is a hidden file or system file
 const isHiddenOrSystemFile = (fileName) => {
   const lower = fileName.toLowerCase();
   return (
@@ -32,7 +33,7 @@ const isHiddenOrSystemFile = (fileName) => {
   );
 };
 
-// Ignore unchanged scripts
+// Check if a file's content matches existing content
 const filesAreEqual = (path, content) => {
   try {
     return fileManager.readString(path) === content;
@@ -60,12 +61,7 @@ const backedUpFileNames = [];
 for (const fileName of scriptFiles) {
   const sourcePath = fileManager.joinPath(rootDirectory, fileName);
 
-  if (!fileManager.isFileDownloaded(sourcePath)) {
-    scriptsSkipped++;
-    console.warn(`[Backup][SKIP] File not downloaded: ${fileName}`);
-    continue;
-  }
-
+  // Read script content
   let content;
   try {
     content = fileManager.readString(sourcePath);
@@ -76,12 +72,15 @@ for (const fileName of scriptFiles) {
   }
 
   const backupPath = fileManager.joinPath(backupDirectory, fileName);
+
+  // Determine whether to write backup
   if (
     !CONFIG.overwriteOnlyIfChanged ||
     !fileManager.fileExists(backupPath) ||
     !filesAreEqual(backupPath, content)
   ) {
     try {
+      // Write or overwrite backup
       fileManager.writeString(backupPath, content);
       scriptsBackedUp++;
       backedUpFileNames.push(fileName);
@@ -90,19 +89,20 @@ for (const fileName of scriptFiles) {
       console.error(`[Backup][ERROR] Failed to write ${fileName}: ${err}`);
     }
   } else {
+    // Otherwise skip backup
     scriptsSkipped++;
   }
 }
 
 // === CONFIRMATION ===
-// Display alert summary
+// Display summary alert with counts of backups or skipped scripts
 const summaryAlert = new Alert();
 summaryAlert.title = "Backup Complete";
 summaryAlert.message = `${scriptsBackedUp} script(s) backed up\n${scriptsSkipped} skipped`;
 summaryAlert.addAction("OK");
 await summaryAlert.present();
 
-// Log names of scripts that were backed up
+// Log names of scripts that were successfully  backed up
 if (backedUpFileNames.length) {
   console.log("Backed up scripts:");
   backedUpFileNames.forEach(console.log);
