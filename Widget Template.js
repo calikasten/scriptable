@@ -93,7 +93,7 @@ function createWidget(fields) {
     arrayToString(fields?.["Multi-Select Array"]),
   ]; 
   
-  // Number each line of the data fields
+  // Number each line of text
   const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   const text = widget.addText(lines.join("\n"));
   text.font = Font.semiboldSystemFont(10);
