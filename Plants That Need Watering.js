@@ -15,7 +15,7 @@ const CONFIG = {
 };
 
 // === FILE MANAGEMENT ===
-// Set up iCloud file paths to ensure folder exists
+// Initialize iCloud file manager and set up paths
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
