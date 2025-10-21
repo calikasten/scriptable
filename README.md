@@ -4,6 +4,7 @@ Widgets and automations via the Scriptable app. Last Updated 10/20/2025.
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
 Saves a copy of all current Scriptable scripts to iCloud drive. Original author [mvan231](https://github.com/mvan231).
+![Script Backup Confirmation Message](https://github.com/user-attachments/assets/809d84e1-2fa6-4b44-baea-d979e7f292a4)
 
 [Widget Template](https://github.com/calikasten/scriptable-scripts/blob/main/Widget%20Template.js) <br>
 A basic widget template for creating a widget by calling an API and displaying the fetched data. <br>
