@@ -168,11 +168,17 @@ async function createWidget(launch) {
 }
 
 // === EXECUTE SCRIPT ===
+// Load cached data
 const data = await getCachedData();
 if (!data) return console.error("No launch data available.");
 
 const widget = await createWidget(data.results[0]);
-if (config.runsInWidget) Script.setWidget(widget);
-else widget.presentSmall();
+
+// Display widget
+if (config.runsInWidget) {
+  Script.setWidget(widget);
+} else {
+  widget.presentSmall();
+}
 
 Script.complete();
