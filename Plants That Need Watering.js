@@ -144,7 +144,7 @@ else data = loadData();
 // Analyze plants that need watering
 const widget = createWidget(analyzeWatering(data));
 
-// Display the widget
+// Display widget
 if (config.runsInWidget) {
   Script.setWidget(widget);
 } else {
