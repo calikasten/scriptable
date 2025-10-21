@@ -110,9 +110,11 @@ function createWidget(fields) {
   
   // Check where script is running
   if (config.runsInWidget) {
+    
     // Run inside a widget
     Script.setWidget(widget);
   } else {
+    
     // Otherwise show widget preview
     widget.presentSmall();
   }
