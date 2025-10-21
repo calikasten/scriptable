@@ -11,7 +11,7 @@ A basic widget template for creating a widget by calling an API and displaying t
 
 
 ## Personal
-[Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js)           **[ARCHIVED]** <br>
+[Dog Days 2.0](https://github.com/calikasten/scriptable-scripts/blob/main/Dog%20Days%202.0.js) **[ARCHIVED]** <br>
 View the time since your wiener dog's latest activities like business, food, exercise. Activities are logged via the [Ween Watch 2.0](https://github.com/calikasten/siri-shortcuts/blob/main/Ween%20Watch%202.0.shortcut) Shortcut. <br>
 ![Dog Days 2 0](https://github.com/user-attachments/assets/b354492c-a3b6-4942-bfd8-97e09c883984)
 
