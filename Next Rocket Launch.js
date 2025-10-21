@@ -3,7 +3,6 @@
 // icon-color: deep-blue; icon-glyph: space-shuttle;
 
 // === CONFIGURATION ===
-
 const API_URL = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming";
 const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 minutes
 const BACKGROUND_IMAGE_URL =
@@ -11,7 +10,6 @@ const BACKGROUND_IMAGE_URL =
 const REFRESH_INTERVAL_MS = 15 * 60 * 1000; // 15 minutes
 
 // === HELPER FUNCTIONS ===
-
 function formatDateTime(timestamp) {
   if (!timestamp) return "Launch time TBD";
   const date = new Date(timestamp);
@@ -87,7 +85,6 @@ async function cacheImage(url, filename) {
 }
 
 // === CREATE WIDGET ===
-
 async function createWidget(launch) {
   const widget = new ListWidget();
 
@@ -171,7 +168,6 @@ async function createWidget(launch) {
 }
 
 // === EXECUTE SCRIPT ===
-
 const data = await getCachedData();
 if (!data) return console.error("No launch data available.");
 
