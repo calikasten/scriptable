@@ -1,5 +1,5 @@
 # Scriptable
-Widgets and automations via the Scriptable app. Last Updated 10/20/2025.
+Widgets and automations via the Scriptable app. Last Updated 10/27/2025.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
@@ -19,7 +19,7 @@ View the time since your wiener dog's latest activities like business, food, exe
 Configured for my home with most comments removed. Original author [lwitzani](https://github.com/lwitzani). <br>
 ![Homebridge Status](https://github.com/user-attachments/assets/46de81fa-9641-489a-8ba4-9b0d182f60fa)
 
-[Next F1 Race](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
+[Next F1 Race Event](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
 ![Next F1 Race](https://github.com/user-attachments/assets/89dc39cb-8783-4c6e-8153-93cdf4089e75)
 
