@@ -21,7 +21,7 @@ Configured for my home with most comments removed. Original author [lwitzani](ht
 
 [Next F1 Race Event](https://github.com/calikasten/scriptable/blob/main/Next%20F1%20Race%20Event.js) <br>
 View details for the next F1 race and race weekend events. Original author [FeBe95](https://gist.github.com/FeBe95). <br>
-![Next F1 Race](https://github.com/user-attachments/assets/89dc39cb-8783-4c6e-8153-93cdf4089e75)
+![Next F1 Race Event](https://github.com/user-attachments/assets/58280f7b-0658-45b2-8700-b6804a239577)
 
 [Next Rocket Launch](https://github.com/calikasten/scriptable/blob/main/Next%20Rocket%20Launch.js) <br>
 View details for the next rocket launch. <br>
