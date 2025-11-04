@@ -139,16 +139,16 @@ const addStatusInfo = (stack, status, text) => {
 // === LINE GRAPH ===
 class LineChart {
   constructor(widgth, height, values) {
-    this.ctx = new DrawContext();
-    this.ctx.size = new Size(widgth, height);
+    this.context = new DrawContext();
+    this.context.size = new Size(widgth, height);
     this.values = values || [0];
   }
   
   // Generate a smooth path for the line chart based on values
   _path() {
     const v = this.values;
-    const w = this.ctx.size.width;
-    const h = this.ctx.size.height;
+    const w = this.context.size.width;
+    const h = this.context.size.height;
     const max = Math.max(...v),
       min = Math.min(...v);
     const r = max === min ? 1 : max - min;
@@ -178,11 +178,11 @@ class LineChart {
   // Render the chart as an image
   getImage(colorHex) {
     const path = this._path();
-    this.ctx.opaque = false;
-    this.ctx.setFillColor(new Color(colorHex || CONFIG.chartColor));
-    this.ctx.addPath(path);
-    this.ctx.fillPath();
-    return this.ctx.getImage();
+    this.context.opaque = false;
+    this.context.setFillColor(new Color(colorHex || CONFIG.chartColor));
+    this.context.addPath(path);
+    this.context.fillPath();
+    return this.context.getImage();
   }
 }
 
@@ -364,20 +364,20 @@ const buildStatusPanelInHeader = (status, homebridgeStatus) => {
   const statusInfo = status.addStack();
 
   // Column 1: Overall status and Plugins status
-  const col1 = statusInfo.addStack();
-  col1.layoutVertically();
-  addStatusInfo(col1, homebridgeStatus.overallStatus, "Running");
-  col1.addSpacer(CONFIG.verticalSpacerInfoPanel);
-  addStatusInfo(col1, homebridgeStatus.pluginsUpToDate, "Plugins UTD");
+  const statusColumn1 = statusInfo.addStack();
+  statusColumn1.layoutVertically();
+  addStatusInfo(statusColumn1, homebridgeStatus.overallStatus, "Running");
+  statusColumn1.addSpacer(CONFIG.verticalSpacerInfoPanel);
+  addStatusInfo(statusColumn1, homebridgeStatus.pluginsUpToDate, "Plugins UTD");
 
   statusInfo.addSpacer(CONFIG.spacer_betweenStatusColumns);
 
   // Column 2: Homebridge UI status and Node.js status
-  const col2 = statusInfo.addStack();
-  col2.layoutVertically();
-  addStatusInfo(col2, homebridgeStatus.hbUpToDate, "UI UTD");
-  col2.addSpacer(CONFIG.verticalSpacerInfoPanel);
-  addStatusInfo(col2, homebridgeStatus.nodeJsUpToDate, "Node.js UTD");
+  const statusColumn2 = statusInfo.addStack();
+  statusColumn2.layoutVertically();
+  addStatusInfo(statusColumn2, homebridgeStatus.hbUpToDate, "UI UTD");
+  statusColumn2.addSpacer(CONFIG.verticalSpacerInfoPanel);
+  addStatusInfo(statusColumn2, homebridgeStatus.nodeJsUpToDate, "Node.js UTD");
 
   status.addSpacer(CONFIG.spacer_afterSecondColumn);
 };
@@ -386,9 +386,9 @@ const buildStatusPanelInHeader = (status, homebridgeStatus) => {
 const addChartToWidget = (col, data) => {
   if (!data) return;
 
-  const hS = col.addStack();
-  hS.addSpacer(5);
-  const yLabels = hS.addStack();
+  const headerStack = col.addStack();
+  headerStack.addSpacer(5);
+  const yLabels = headerStack.addStack();
   yLabels.layoutVertically();
 
   const maxV = Math.max(...data);
@@ -399,12 +399,12 @@ const addChartToWidget = (col, data) => {
   addText(yLabels, `${getAsRoundedString(minV, 2)}%`, chartAxisFont);
   yLabels.addSpacer(6);
 
-  hS.addSpacer(2);
+  headerStack.addSpacer(2);
 
-  const chartImg = new LineChart(500, 100, data).getImage(CONFIG.chartColor);
-  const vChart = hS.addStack();
+  const chartImage = new LineChart(500, 100, data).getImage(CONFIG.chartColor);
+  const vChart = headerStack.addStack();
   vChart.layoutVertically();
-  vChart.addImage(chartImg).imageSize = new Size(100, 25);
+  vChart.addImage(chartImage).imageSize = new Size(100, 25);
 
   const xAxis = vChart.addStack();
   xAxis.size = new Size(100, 10);
@@ -438,58 +438,58 @@ const buildFullWidget = async (widget, homebridgeStatus, now) => {
     return;
   }
 
-  const mainCols = widget.addStack();
-  mainCols.size = new Size(CONFIG.maxLineWidth, 77);
-  mainCols.addSpacer(4);
+  const mainColumns = widget.addStack();
+  mainColumns.size = new Size(CONFIG.maxLineWidth, 77);
+  mainColumns.addSpacer(4);
 
   // CPU Column
-  const cpuCol = mainCols.addStack();
-  cpuCol.layoutVertically();
+  const cpuColumn = mainColumns.addStack();
+  cpuColumn.layoutVertically();
   addText(
-    cpuCol,
+    cpuColumn,
     `${CONFIG.title_cpuLoad}${getAsRoundedString(homebridgeStatus.cpuData.currentLoad, 1)}%`,
     infoFont
   );
-  addChartToWidget(cpuCol, homebridgeStatus.cpuData.cpuLoadHistory);
-  cpuCol.addSpacer(7);
+  addChartToWidget(cpuColumn, homebridgeStatus.cpuData.cpuLoadHistory);
+  cpuColumn.addSpacer(7);
 
-  const tStr = homebridgeStatus.cpuData?.cpuTemperature?.main
+  const textString = homebridgeStatus.cpuData?.cpuTemperature?.main
     ? getTemperatureString(homebridgeStatus.cpuData.cpuTemperature.main)
     : null;
-  if (tStr) {
-    const t = addText(cpuCol, `${CONFIG.title_cpuTemp}${tStr}`, infoFont);
-    t.size = new Size(150, 30);
-    setTextColor(t);
+  if (textString) {
+    const temperatureText = addText(cpuColumn, `${CONFIG.title_cpuTemp}${textString}`, infoFont);
+    temperatureText.size = new Size(150, 30);
+    setTextColor(temperatureText);
   }
 
-  mainCols.addSpacer(11);
+  mainColumns.addSpacer(11);
 
   // RAM Column
-  const ramCol = mainCols.addStack();
-  ramCol.layoutVertically();
+  const ramColumn = mainColumns.addStack();
+  ramColumn.layoutVertically();
   addText(
-    ramCol,
+    ramColumn,
     `${CONFIG.title_ramUsage}${getUsedRamString(homebridgeStatus.ramData)}%`,
     infoFont
   );
-  addChartToWidget(ramCol, homebridgeStatus.ramData.memoryUsageHistory);
-  ramCol.addSpacer(7);
+  addChartToWidget(ramColumn, homebridgeStatus.ramData.memoryUsageHistory);
+  ramColumn.addSpacer(7);
 
   // Uptime info
   if (homebridgeStatus.uptimesArray) {
-    const upStack = ramCol.addStack();
-    const upCol = upStack.addStack();
-    addText(upCol, CONFIG.title_uptimes, infoFont);
+    const upTimeStack = ramColumn.addStack();
+    const upTimeColumn = upTimeStack.addStack();
+    addText(upTimeColumn, CONFIG.title_uptimes, infoFont);
 
-    const vPts = upCol.addStack();
-    vPts.layoutVertically();
+    const valuePoints = upTimeColumn.addStack();
+    valuePoints.layoutVertically();
     addText(
-      vPts,
+      valuePoints,
       `${CONFIG.bulletPointIcon}${CONFIG.title_systemGuiName}${homebridgeStatus.uptimesArray[0]}`,
       infoFont
     );
     addText(
-        vPts,
+        valuePoints,
         `${CONFIG.bulletPointIcon}${CONFIG.title_uiService}${homebridgeStatus.uptimesArray[1]}`,
         infoFont
       );
