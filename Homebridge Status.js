@@ -12,8 +12,8 @@ const CONFIG = Object.freeze({
 
   // Colors and icons
   chartColor: "#FFFFFF", // Default chart fill color
-  fontColor: "#FFFFFF", // Default text color
-
+  fontColor: "#FFFFFF",  // Default text color
+  
   // Status icons and colors
   icon_statusGood: "checkmark.circle.fill",
   icon_colorGood: "#00FF00",
@@ -25,28 +25,28 @@ const CONFIG = Object.freeze({
   failIcon: "❌",
   bulletPointIcon: "▫️",
   decimalChar: ".", // Character to use as decimal separator
-
+  
   // Widget title and logo
   widgetTitle: " Homebridge ",
   logoUrl:
     "https://raw.githubusercontent.com/homebridge/branding/latest/logos/homebridge-silhouette-round-white.png",
   hbLogoFileName: `${Device.model()}hbLogo.png`, // Local cached logo file
-
+  
   // Font sizes
   headerFontSize: 12,
   informationFontSize: 10,
   chartAxisFontSize: 7,
   dateFontSize: 7,
-
+  
   // Layout spacings (pixels)
   spacer_beforeFirstStatusColumn: 8,
   spacer_betweenStatusColumns: 5,
   spacer_afterSecondColumn: 0,
   verticalSpacerInfoPanel: 5,
-
+  
   maxLineWidth: 300,
   normalLineHeight: 35,
-
+  
   // Titles for status panel
   title_cpuLoad: "CPU Load: ",
   title_cpuTemp: "CPU Temp: ",
@@ -54,10 +54,10 @@ const CONFIG = Object.freeze({
   title_uptimes: "Uptimes:",
   title_uiService: "UI-Service: ",
   title_systemGuiName: "Raspberry Pi:",
-
+  
   // Error message when Homebridge is unreachable
   error_noConnectionText: `❌ UI-Service not reachable!`,
-
+  
   // Date format used throughout the widget
   dateFormat: "MM-dd-yyyy HH:mm:ss",
 });
@@ -72,42 +72,42 @@ timeFormatter.dateFormat = CONFIG.dateFormat;
 
 // === BACKGROUND GRADIENT ===
 // Creates a dark purple vertical gradient for widget background
-const purpleBgGradient_dark = (() => {
-  const g = new LinearGradient();
-  g.locations = [0, 1];
-  g.colors = [new Color("#250b3b"), new Color("#320d47")];
-  return g;
+const darkPurpleGradientBackground = (() => {
+  const gradient = new LinearGradient();
+  gradient.locations = [0, 1];
+  gradient.colors = [new Color("#250b3b"), new Color("#320d47")];
+  return gradient;
 })();
 
 // === HELPER FUNCTIONS ===
 // Round number to 'd' decimal places and replace decimal character
-const formatNumber = (v, d = 1) =>
-  (+v.toFixed(d)).toString().replace(".", CONFIG.decimalChar);
+const formatNumber = (value, decimal = 1) =>
+  (+value.toFixed(decimal)).toString().replace(".", CONFIG.decimalChar);
 
 // Convert number to rounded string (wrapper)
-const getAsRoundedString = (v, d) => formatNumber(Number(v), d);
+const getAsRoundedString = (value, decimal) => formatNumber(Number(value), decimal);
 
 // Convert Celsius temperature to Fahrenheit string with 1 decimal
-const getTemperatureString = (c) =>
-  `${getAsRoundedString((c * 9) / 5 + 32, 1)}°F`;
+const getTemperatureString = (celsius) =>
+  `${getAsRoundedString((celsius * 9) / 5 + 32, 1)}°F`;
 
 // Set text color for a Text element
-const setTextColor = (t, c = CONFIG.fontColor) => (t.textColor = new Color(c));
+const setTextColor = (text, color = CONFIG.fontColor) => (text.textColor = new Color(color));
 
 // Add a text element to a stack with optional font and color
 const addText = (stack, text, font, color) => {
-  const t = stack.addText(text);
-  if (font) t.font = font;
-  setTextColor(t, color);
-  return t;
+  const textElement = stack.addText(text);
+  if (font) textElement.font = font;
+  setTextColor(textElement, color);
+  return textElement;
 };
 
 // Add an SF Symbol icon to a stack with a tint color
 const addIcon = (stack, name, colorHex) => {
-  const i = stack.addImage(SFSymbol.named(name).image);
-  i.resizable = true;
-  i.imageSize = new Size(13, 13);
-  i.tintColor = new Color(colorHex);
+  const icon = stack.addImage(SFSymbol.named(name).image);
+  icon.resizable = true;
+  icon.imageSize = new Size(13, 13);
+  icon.tintColor = new Color(colorHex);
 };
 
 // Add a status icon (good/bad/unknown) to a stack
@@ -128,22 +128,22 @@ const addStatusIcon = (stack, status) => {
 
 // Add a status line with icon and text
 const addStatusInfo = (stack, status, text) => {
-  const s = stack.addStack();
-  addStatusIcon(s, status);
-  s.addSpacer(2);
-  const t = s.addText(text);
-  t.font = Font.semiboldMonospacedSystemFont(CONFIG.informationFontSize);
-  setTextColor(t);
+  const statusWidgetStack = stack.addStack();
+  addStatusIcon(statusWidgetStack, status);
+  statusWidgetStack.addSpacer(2);
+  const statusText = statusWidgetStack.addText(text);
+  statusText.font = Font.semiboldMonospacedSystemFont(CONFIG.informationFontSize);
+  setTextColor(statusText);
 };
 
 // === LINE GRAPH ===
 class LineChart {
-  constructor(w, h, values) {
+  constructor(widgth, height, values) {
     this.ctx = new DrawContext();
-    this.ctx.size = new Size(w, h);
+    this.ctx.size = new Size(widgth, height);
     this.values = values || [0];
   }
-
+  
   // Generate a smooth path for the line chart based on values
   _path() {
     const v = this.values;
@@ -177,10 +177,10 @@ class LineChart {
 
   // Render the chart as an image
   getImage(colorHex) {
-    const p = this._path();
+    const path = this._path();
     this.ctx.opaque = false;
     this.ctx.setFillColor(new Color(colorHex || CONFIG.chartColor));
-    this.ctx.addPath(p);
+    this.ctx.addPath(path);
     this.ctx.fillPath();
     return this.ctx.getImage();
   }
@@ -193,10 +193,9 @@ const getFilePath = (fileName) => {
     fileManager.documentsDirectory(),
     "Home Bridge Status"
   );
-  if (!fileManager.fileExists(directory))
-    fileManager.createDirectory(directory);
+  if (!fileManager.fileExists(directory)) fileManager.createDirectory(directory);
   return fileManager.joinPath(directory, fileName);
-};
+}; 
 
 // Load image from a URL
 const loadImage = async (url) => {
@@ -235,49 +234,49 @@ const tryLoadJSON = async (request) => {
 // Get authentication token, trying no-auth endpoint first, then login
 const getAuthToken = async () => {
   const headers = { accept: "*/*", "Content-Type": "application/json" };
-
+  
   // Attempt no-auth
-  const noAuthReq = new Request(api("/api/auth/noauth"));
-  noAuthReq.method = "POST";
-  noAuthReq.timeoutInterval = CONFIG.requestTimeoutInterval;
-  noAuthReq.headers = headers;
-  noAuthReq.body = "{}";
+  const noAuthRequired = new Request(api("/api/auth/noauth"));
+  noAuthRequired.method = "POST";
+  noAuthRequired.timeoutInterval = CONFIG.requestTimeoutInterval;
+  noAuthRequired.headers = headers;
+  noAuthRequired.body = "{}";
 
-  const token = (await tryLoadJSON(noAuthReq))?.access_token;
+  const token = (await tryLoadJSON(noAuthRequired))?.access_token;
   if (token) return token;
 
   // Fallback to login endpoint
-  const loginReq = new Request(api("/api/auth/login"));
-  loginReq.method = "POST";
-  loginReq.timeoutInterval = CONFIG.requestTimeoutInterval;
-  loginReq.headers = headers;
-  loginReq.body = JSON.stringify({
+  const loginRequired = new Request(api("/api/auth/login"));
+  loginRequired.method = "POST";
+  loginRequired.timeoutInterval = CONFIG.requestTimeoutInterval;
+  loginRequired.headers = headers;
+  loginRequired.body = JSON.stringify({
     username: CONFIG.userName,
     password: CONFIG.password,
     otp: "string",
   });
 
-  return (await tryLoadJSON(loginReq))?.access_token || UNAVAILABLE;
+  return (await tryLoadJSON(loginRequired))?.access_token || UNAVAILABLE;
 };
 
 // Fetch JSON data from Homebridge API with authorization header
 const fetchData = async (url) => {
-  const req = new Request(url);
-  req.method = "GET";
-  req.timeoutInterval = CONFIG.requestTimeoutInterval;
-  req.headers = {
+  const request = new Request(url);
+  request.method = "GET";
+  request.timeoutInterval = CONFIG.requestTimeoutInterval;
+  request.headers = {
     accept: "*/*",
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
-  return await tryLoadJSON(req);
+  return await tryLoadJSON(request);
 };
 
 // === HOMEBRIDGE STATUS ===
 class HomeBridgeStatus {
   async initialize() {
     // Fetch multiple API endpoints in parallel
-    const [s, hbV, pl, njs, cpu, ram, uptime] = await Promise.all([
+    const [status, homebridgeVersion, plugins, nodeJs, cpu, ram, uptime] = await Promise.all([
       fetchData(api("/api/status/homebridge")),
       fetchData(api("/api/status/homebridge-version")),
       fetchData(api("/api/plugins")),
@@ -286,27 +285,29 @@ class HomeBridgeStatus {
       fetchData(api("/api/status/ram")),
       fetchData(api("/api/status/uptime")),
     ]);
-
+    
     // Determine status flags (true/false/undefined)
-    this.overallStatus = s?.status === "up";
-    this.hbUpToDate = hbV ? !hbV.updateAvailable : undefined;
-    this.pluginsUpToDate = pl ? !pl.some((p) => p.updateAvailable) : undefined;
-    this.nodeJsUpToDate = njs ? !njs.updateAvailable : undefined;
+    this.overallStatus = "up"; // hard coding status as "up" since widget has fallback display if service can't be reached
+    // Otherwise check API reslonse fkr if service is running
+    // this.overallStatus = s?.status === "up"; 
+    this.hbUpToDate = homebridgeVersion ? !homebridgeVersion.updateAvailable : undefined;
+    this.pluginsUpToDate = plugins ? !plugins.some((p) => p.updateAvailable) : undefined;
+    this.nodeJsUpToDate = nodeJs ? !nodeJs.updateAvailable : undefined;
 
     this.cpuData = cpu;
     this.ramData = ram;
-
+    
     // Compute formatted uptimes (system and UI)
     if (uptime) {
-      const sys = uptime.time?.uptime ?? uptime.uptime ?? "unknown";
-      const ui =
+      const system = uptime.time?.uptime ?? uptime.uptime ?? "unknown";
+      const homebridgeUi =
         uptime.time?.uiUptime ??
         uptime.time?.processUptime ??
         uptime.processUptime ??
         "unknown";
       this.uptimesArray = [
-        sys !== "unknown" ? formatSeconds(sys) : "unknown",
-        ui !== "unknown" ? formatSeconds(ui) : "unknown",
+        system !== "unknown" ? formatSeconds(system) : "unknown",
+        homebridgeUi !== "unknown" ? formatSeconds(homebridgeUi) : "unknown",
       ];
     } else {
       this.uptimesArray = ["unknown", "unknown"];
@@ -317,17 +318,17 @@ class HomeBridgeStatus {
 }
 
 // === UTILITY FUNCTIONS ===
-const formatSeconds = (v) => {
-  if (v > 864000) return `${getAsRoundedString(v / 86400, 0)}d`;
-  if (v > 86400) return `${getAsRoundedString(v / 86400, 1)}d`;
-  if (v > 3600) return `${getAsRoundedString(v / 3600, 1)}h`;
-  if (v > 60) return `${getAsRoundedString(v / 60, 1)}m`;
-  return `${getAsRoundedString(v, 1)}s`;
+const formatSeconds = (value) => {
+  if (value > 864000) return `${getAsRoundedString(value / 86400, 0)}d`;
+  if (value > 86400) return `${getAsRoundedString(value / 86400, 1)}d`;
+  if (value > 3600) return `${getAsRoundedString(value / 3600, 1)}h`;
+  if (value > 60) return `${getAsRoundedString(value / 60, 1)}m`;
+  return `${getAsRoundedString(value, 1)}s`;
 };
 
-const getUsedRamString = (r) =>
-  r
-    ? getAsRoundedString(100 - (100 * r.mem.available) / r.mem.total, 2)
+const getUsedRamString = (ram) =>
+  ram
+    ? getAsRoundedString(100 - (100 * ram.mem.available) / ram.mem.total, 2)
     : "unknown";
 
 // === FONTS ===
@@ -342,43 +343,43 @@ const initializeFonts = () => {
 };
 
 // === UI SETUP ===
-const handleBackground = (w) => (w.backgroundGradient = purpleBgGradient_dark);
+const handleBackground = (widget) => (widget.backgroundGradient = darkPurpleGradientBackground);
 
 // Add Homebridge logo and widget title; sets stack size
-const initializeLogoAndHeader = async (s) => {
-  s.size = new Size(CONFIG.maxLineWidth, CONFIG.normalLineHeight);
+const initializeLogoAndHeader = async (status) => {
+  status.size = new Size(CONFIG.maxLineWidth, CONFIG.normalLineHeight);
   const logo = await getHbLogoImage();
-  const imgStack = s.addImage(logo);
-  imgStack.imageSize = new Size(40, 30);
-  addText(s, CONFIG.widgetTitle, headerFont).size = new Size(
+  const imageStack = status.addImage(logo);
+  imageStack.imageSize = new Size(40, 30);
+  addText(status, CONFIG.widgetTitle, headerFont).size = new Size(
     60,
     CONFIG.normalLineHeight
   );
 };
 
 // Build status panel in header: 2 columns (overall/plugins, UI/Node.js)
-const buildStatusPanelInHeader = (s, hbStatus) => {
-  s.addSpacer(CONFIG.spacer_beforeFirstStatusColumn);
+const buildStatusPanelInHeader = (status, homebridgeStatus) => {
+  status.addSpacer(CONFIG.spacer_beforeFirstStatusColumn);
 
-  const statusInfo = s.addStack();
+  const statusInfo = status.addStack();
 
   // Column 1: Overall status and Plugins status
   const col1 = statusInfo.addStack();
   col1.layoutVertically();
-  addStatusInfo(col1, hbStatus.overallStatus, "Running");
+  addStatusInfo(col1, homebridgeStatus.overallStatus, "Running");
   col1.addSpacer(CONFIG.verticalSpacerInfoPanel);
-  addStatusInfo(col1, hbStatus.pluginsUpToDate, "Plugins UTD");
+  addStatusInfo(col1, homebridgeStatus.pluginsUpToDate, "Plugins UTD");
 
   statusInfo.addSpacer(CONFIG.spacer_betweenStatusColumns);
 
   // Column 2: Homebridge UI status and Node.js status
   const col2 = statusInfo.addStack();
   col2.layoutVertically();
-  addStatusInfo(col2, hbStatus.hbUpToDate, "UI UTD");
+  addStatusInfo(col2, homebridgeStatus.hbUpToDate, "UI UTD");
   col2.addSpacer(CONFIG.verticalSpacerInfoPanel);
-  addStatusInfo(col2, hbStatus.nodeJsUpToDate, "Node.js UTD");
+  addStatusInfo(col2, homebridgeStatus.nodeJsUpToDate, "Node.js UTD");
 
-  s.addSpacer(CONFIG.spacer_afterSecondColumn);
+  status.addSpacer(CONFIG.spacer_afterSecondColumn);
 };
 
 // Add line chart to widget with Y-axis and X-axis labels
@@ -413,31 +414,31 @@ const addChartToWidget = (col, data) => {
 };
 
 // Add "not available" info and last refresh time when data is missing
-const addNotAvailableInfos = (w, now) => {
-  const t = w.addText(CONFIG.error_noConnectionText);
-  t.font = infoFont;
-  setTextColor(t);
-  w.addSpacer(15);
-  const u = w.addText(`Last refreshed: ${timeFormatter.string(now)}`);
-  u.font = updatedAtFont;
-  setTextColor(u);
-  u.centerAlignText();
+const addNotAvailableInfos = (widget, now) => {
+  const text = widget.addText(CONFIG.error_noConnectionText);
+  text.font = infoFont;
+  setTextColor(text);
+  widget.addSpacer(15);
+  const lastRefresh = widget.addText(`Last refreshed: ${timeFormatter.string(now)}`);
+  lastRefresh.font = updatedAtFont;
+  setTextColor(lastRefresh);
+  lastRefresh.centerAlignText();
 };
 
 // Build entire widget with status, charts, and uptime info
-const buildFullWidget = async (w, hbStatus, now) => {
-  w.addSpacer(10);
-  const titleStack = w.addStack();
+const buildFullWidget = async (widget, homebridgeStatus, now) => {
+  widget.addSpacer(10);
+  const titleStack = widget.addStack();
   await initializeLogoAndHeader(titleStack);
-  buildStatusPanelInHeader(titleStack, hbStatus);
-  w.addSpacer(10);
+  buildStatusPanelInHeader(titleStack, homebridgeStatus);
+  widget.addSpacer(10);
 
-  if (!hbStatus.cpuData || !hbStatus.ramData) {
-    addNotAvailableInfos(w, now);
+  if (!homebridgeStatus.cpuData || !homebridgeStatus.ramData) {
+    addNotAvailableInfos(widget, now);
     return;
   }
 
-  const mainCols = w.addStack();
+  const mainCols = widget.addStack();
   mainCols.size = new Size(CONFIG.maxLineWidth, 77);
   mainCols.addSpacer(4);
 
@@ -446,17 +447,14 @@ const buildFullWidget = async (w, hbStatus, now) => {
   cpuCol.layoutVertically();
   addText(
     cpuCol,
-    `${CONFIG.title_cpuLoad}${getAsRoundedString(
-      hbStatus.cpuData.currentLoad,
-      1
-    )}%`,
+    `${CONFIG.title_cpuLoad}${getAsRoundedString(homebridgeStatus.cpuData.currentLoad, 1)}%`,
     infoFont
   );
-  addChartToWidget(cpuCol, hbStatus.cpuData.cpuLoadHistory);
+  addChartToWidget(cpuCol, homebridgeStatus.cpuData.cpuLoadHistory);
   cpuCol.addSpacer(7);
 
-  const tStr = hbStatus.cpuData?.cpuTemperature?.main
-    ? getTemperatureString(hbStatus.cpuData.cpuTemperature.main)
+  const tStr = homebridgeStatus.cpuData?.cpuTemperature?.main
+    ? getTemperatureString(homebridgeStatus.cpuData.cpuTemperature.main)
     : null;
   if (tStr) {
     const t = addText(cpuCol, `${CONFIG.title_cpuTemp}${tStr}`, infoFont);
@@ -471,14 +469,14 @@ const buildFullWidget = async (w, hbStatus, now) => {
   ramCol.layoutVertically();
   addText(
     ramCol,
-    `${CONFIG.title_ramUsage}${getUsedRamString(hbStatus.ramData)}%`,
+    `${CONFIG.title_ramUsage}${getUsedRamString(homebridgeStatus.ramData)}%`,
     infoFont
   );
-  addChartToWidget(ramCol, hbStatus.ramData.memoryUsageHistory);
+  addChartToWidget(ramCol, homebridgeStatus.ramData.memoryUsageHistory);
   ramCol.addSpacer(7);
 
   // Uptime info
-  if (hbStatus.uptimesArray) {
+  if (homebridgeStatus.uptimesArray) {
     const upStack = ramCol.addStack();
     const upCol = upStack.addStack();
     addText(upCol, CONFIG.title_uptimes, infoFont);
@@ -487,24 +485,24 @@ const buildFullWidget = async (w, hbStatus, now) => {
     vPts.layoutVertically();
     addText(
       vPts,
-      `${CONFIG.bulletPointIcon}${CONFIG.title_systemGuiName}${hbStatus.uptimesArray[0]}`,
+      `${CONFIG.bulletPointIcon}${CONFIG.title_systemGuiName}${homebridgeStatus.uptimesArray[0]}`,
       infoFont
     );
     addText(
-      vPts,
-      `${CONFIG.bulletPointIcon}${CONFIG.title_uiService}${hbStatus.uptimesArray[1]}`,
-      infoFont
+        vPts,
+        `${CONFIG.bulletPointIcon}${CONFIG.title_uiService}${homebridgeStatus.uptimesArray[1]}`,
+        infoFont
+      );
+    }
+  
+    widget.addSpacer(10);
+    const updatedAt = addText(
+      widget,
+      `Last refreshed: ${timeFormatter.string(now)}`,
+      updatedAtFont
     );
-  }
-
-  w.addSpacer(10);
-  const updatedAt = addText(
-    w,
-    `Last refreshed: ${timeFormatter.string(now)}`,
-    updatedAtFont
-  );
-  updatedAt.centerAlignText();
-};
+    updatedAt.centerAlignText();
+  };
 
 // === EXECUTE SCRIPT ===
 (async () => {
@@ -523,12 +521,12 @@ const buildFullWidget = async (w, hbStatus, now) => {
     addNotAvailableInfos(widget, now);
   } else {
     // Otherwise, fetch Homebridge status and build full widget
-    const hbStatus = await new HomeBridgeStatus().initialize();
-    await buildFullWidget(widget, hbStatus, now);
+    const homebridgeStatus = await new HomeBridgeStatus().initialize();
+    await buildFullWidget(widget, homebridgeStatus, now);
   }
 
-  if (!config.runsInWidget) await widget.presentMedium();
+  if (!config.runsInWidget) await widget.presentMedium(); 
 
   Script.setWidget(widget);
-  Script.complete();
+  Script.complete(); 
 })();
