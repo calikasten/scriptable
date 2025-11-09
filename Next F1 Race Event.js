@@ -14,8 +14,8 @@ const CONFIG = {
 // Aliases for countries hosting multiple races
 const COUNTRY_ALIAS = {
   "Miami": "United States",
-  "Las-Vegas": "United States",
-  "Emilia-Romagna": "Italy"
+  "Las Vegas": "United States",
+  "Emilia Romagna": "Italy"
 };
 
 // === UI STYLING ===
