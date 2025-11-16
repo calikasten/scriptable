@@ -69,7 +69,7 @@ async function getData(useCache = true) {
   }
 }
 
-// === WIDGET CREATION ===
+// === CREATE WIDGET ===
 function createWidget(fields) {
   const widget = new ListWidget(); 
   
