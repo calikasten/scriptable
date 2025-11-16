@@ -213,7 +213,6 @@ return widget;
 }
 
 // === EXECUTE SCRIPT ===
-
 // Fetch event tracker data
 const data = await getData();
 if (!data) {
