@@ -218,7 +218,6 @@ const getHbLogoImage = async () => {
 };
 
 // === NETWORK ===
-
 // Construct full API endpoint URL
 const api = (path) => CONFIG.hbServiceMachineBaseUrl.replace(/\/$/, "") + path;
 
@@ -331,10 +330,10 @@ const getUsedRamString = (ram) =>
     ? getAsRoundedString(100 - (100 * ram.mem.available) / ram.mem.total, 2)
     : "unknown";
 
-// === FONTS ===
+// === UI SETUP ===
+// Set up fonts
 let headerFont, infoFont, chartAxisFont, updatedAtFont;
 
-// Initialize fonts once for consistent use
 const initializeFonts = () => {
   headerFont = Font.boldMonospacedSystemFont(CONFIG.headerFontSize);
   infoFont = Font.systemFont(CONFIG.informationFontSize);
@@ -342,7 +341,7 @@ const initializeFonts = () => {
   updatedAtFont = Font.systemFont(CONFIG.dateFontSize);
 };
 
-// === UI SETUP ===
+// Add background
 const handleBackground = (widget) => (widget.backgroundGradient = darkPurpleGradientBackground);
 
 // Add Homebridge logo and widget title; sets stack size
