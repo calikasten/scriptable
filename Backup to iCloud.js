@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: gray; icon-glyph: cloud;
+// icon-color: cyan; icon-glyph: cloud;
 
 const main = async () => {
   // === CONFIGURATION ===
