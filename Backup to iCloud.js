@@ -42,7 +42,6 @@ const main = async () => {
     }
   };
 
-  // === LOAD SCRIPTS ===
   // Get all scripts from root directory (with .js extension)
   let scriptFiles = [];
   try {
@@ -54,7 +53,7 @@ const main = async () => {
     throw error;
   }
 
-  // === BACKUP FILES LOGIC ===
+  // === CORE LOGIC / WORKFLOW FUNCTIONS ===
   let scriptsBackedUp = 0;
   let scriptsSkipped = 0;
   const backedUpFileNames = [];
