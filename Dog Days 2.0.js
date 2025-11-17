@@ -114,9 +114,12 @@ async function createWidget() {
 // === MAIN EXECUTION ===
 let widget = await createWidget();
 
+// Check if script is running inside a widget
 if (config.runsInWidget) {
+  // Run inside a widget
   Script.setWidget(widget);
 } else {
+  // Otherwise show widget preview
   widget.presentSmall();
 }
 Script.complete();
