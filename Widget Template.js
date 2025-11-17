@@ -106,6 +106,7 @@ function createWidget(fields) {
   text.textColor = textColor;
   text.leftAlignText();
 
+  // Return the assembled widget
   return widget;
 }
 
