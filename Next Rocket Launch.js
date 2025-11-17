@@ -12,18 +12,19 @@ const CONFIG = {
 };
 
 // === STYLES ===
+// Define colors and fonts
 const STYLES = {
-  fonts: {
-    titleFont: Font.semiboldSystemFont(14),
-    textFont: Font.semiboldSystemFont(12),
-    countdownFont: Font.semiboldSystemFont(16),
-    dividerFont: Font.lightSystemFont(10),
-  },
   colors: {
     textColor: Color.white(),
     launchedColor: Color.green(),
     dividerColor: new Color("FFFFFF", 0.5),
     gradientColors: [new Color("#000000", 0.7), new Color("#000000", 0.2)],
+  },
+  fonts: {
+    titleFont: Font.semiboldSystemFont(14),
+    textFont: Font.semiboldSystemFont(12),
+    countdownFont: Font.semiboldSystemFont(16),
+    dividerFont: Font.lightSystemFont(10),
   }
 };
 
