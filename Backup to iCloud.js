@@ -95,7 +95,7 @@ const main = async () => {
     }
   }
 
-  // === USER INTERFACE (ALERT) ===
+  // === UI COMPONENTS ===
   // Display summary alert with counts of backups or scripped skips
   const summaryAlert = new Alert();
   summaryAlert.title = "Backup Complete";
