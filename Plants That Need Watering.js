@@ -26,19 +26,20 @@ if (!fileManager.fileExists(folderPath)) {
   }
 }
 
-// STYLES
+// === STYLES ===
+// Define font size, color, and layout spacing
 const STYLES = {
+  fonts: {
+    titleFont: Font.systemFont(12),
+    alertFont: Font.boldSystemFont(12),
+    plantFont: Font.boldSystemFont(10),
+    countFont: Font.boldSystemFont(42)
+  },
   colors: {
     bgAlert: new Color("#B00020"),
     bgNeutral: new Color("#001F3F"),
     bgEnd: new Color("#1C1C1E"),
     text: Color.white()
-  },
-  fonts: {
-    titleFont: Font.systemFont(12),
-    alertFont: Font.boldSystemFont(12),
-    plantFont: Font.boldSystemFont(10),
-    countFont: Font.boldSystemFont(42),
   },
   spacing: {
     widgetPadding: [0, 10, 10, 10],
