@@ -189,7 +189,6 @@ async function createWidget(launch) {
 }
 
 // === MAIN EXECUTION ===
-// Load cached launch data
 const data = await getCachedData();
 if (!data) return console.error("No launch data available.");
 
