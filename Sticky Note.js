@@ -40,7 +40,7 @@ if (!fileManager.fileExists(filePath)) fileManager.writeString(filePath, "");
 const loadData = () => fileManager.readString(filePath) || "";
 const saveData = (data) => fileManager.writeString(filePath, data);
 
-// === API CLIENT ===
+// === NETWORK & API CLIENT ===
 // Load sticky note background image
 const getImage = async () => {
   let image = fileManager.readImage(cachedImagePath);
