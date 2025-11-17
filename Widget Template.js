@@ -16,7 +16,7 @@ const CONFIG = {
 const dateFormatter = new DateFormatter();
 dateFormatter.dateFormat = "MM-dd-yyyy";
 
-// Format font size and color
+// Define font size and color
 const STYLES = {
   fonts: {
     titleFont: Font.boldSystemFont(16),
