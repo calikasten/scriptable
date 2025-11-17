@@ -7,7 +7,7 @@ const CONFIG = {
 	apiKey: "<INSERT API KEY HERE>",
 	appId: "appHEaSiBocpIp1Yw",
 	tableId: "tblaiUHCIOq3LZiDy",
-	cacheFile: "airtable_cache.json",
+	cacheFile: "airtable-cache.json",
 	cacheDurationMs: 5 * 60 * 1000 // 5 minutes
 };
 
@@ -39,7 +39,7 @@ async function getData(useCache = true) {
   const fileManager = FileManager.local();
   const cachePath = fileManager.joinPath(
     fileManager.documentsDirectory(),
-    CONFIG.cache_file
+    CONFIG.cacheFile
   ); 
   
   // Read cached data
@@ -79,7 +79,7 @@ async function getData(useCache = true) {
   }
 }
 
-// === UI COMPONENTS ===
+// === WIDGET ASSEMBLY ===
 function createWidget(fields) {
   const widget = new ListWidget();
     
@@ -106,7 +106,7 @@ function createWidget(fields) {
   // Number each line of widget data
   const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   const text = widget.addText(lines.join("\n"));
-  text.font = STYLES.textfont;
+  text.font = STYLES.textFont;
   text.textColor = STYLES.textColor;
   text.leftAlignText();
 
@@ -114,20 +114,17 @@ function createWidget(fields) {
   return widget;
 }
 
-// === WIDGET ASSEMBLY & MAIN EXECUTION ===
-// Async IIFE to fetch data and render the widget
-(async () => {
-  const data = await getData(true);
-  const widget = createWidget(data); 
-  
-  // Check if script is running inside a widget
-  if (config.runsInWidget) {
-    // Run inside a widget
-    Script.setWidget(widget);
-  } else {
-    // Otherwise show widget preview
-    widget.presentSmall();
-  }
+// === MAIN EXECUTION ===
+const data = await getData(true);
+const widget = createWidget(data);
 
-  Script.complete();
-})();
+// Check if script is running inside a widget
+if (config.runsInWidget) {
+  // Run inside a widget
+  Script.setWidget(widget);
+} else {
+  // Otherwise show widget preview
+  widget.presentSmall();
+}
+
+Script.complete();
