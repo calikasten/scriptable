@@ -100,6 +100,8 @@ const createWidget = async (note) => {
   text.centerAlignText();
 
   widget.addSpacer();
+
+  // Return widget with its constructed UI elements
   return widget;
 };
 
