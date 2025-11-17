@@ -112,5 +112,5 @@ const main = async () => {
   Script.complete();
 };
 
-// === RUN MAIN ===
+// === MAIN EXECUTION ===
 await main();
