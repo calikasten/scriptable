@@ -14,7 +14,7 @@ const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 const dateFormatter = new DateFormatter();
 dateFormatter.dateFormat = "MM-dd-yyyy";
 
-// Format widget UI font size and color
+// Format font size and color
 const titleFont = Font.boldSystemFont(16);
 const titleColor = new Color("#FFFFFF");
 const textFont = Font.semiboldSystemFont(10);
