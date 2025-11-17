@@ -16,16 +16,16 @@ const CONFIG = {
 const dateFormatter = new DateFormatter();
 dateFormatter.dateFormat = "MM-dd-yyyy";
 
-// Define font size and color
+// Define colors and fonts
 const STYLES = {
-  fonts: {
-    titleFont: Font.boldSystemFont(16),
-	textFont: Font.semiboldSystemFont(10),
-  },
   colors: {
     titleColor: new Color("#FFFFFF"),
 	textColor: new Color("FFFF00")
-	}
+	},
+	fonts: {
+    titleFont: Font.boldSystemFont(16),
+	textFont: Font.semiboldSystemFont(10),
+  }
 };
 
 // === HELPERS ===
