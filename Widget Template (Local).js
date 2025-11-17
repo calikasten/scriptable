@@ -38,7 +38,7 @@ function createWidget() {
 // === MAIN EXECUTION ===
 const widget = await createWidget();
 
-// Check where script is running
+// Check if script is running inside a widget
 if (config.runsInWidget) {
   // Run inside a widget
   Script.setWidget(widget);
