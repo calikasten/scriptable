@@ -79,7 +79,7 @@ async function getData(useCache = true) {
 function createWidget(fields) {
   const widget = new ListWidget();
     
-  // Add title
+  // Widget title
   const title = widget.addText("TITLE");
   title.font = titleFont;
   title.textColor = titleColor;
@@ -88,7 +88,7 @@ function createWidget(fields) {
 
   const timestamp = fields?.Timestamp ? new Date(fields.Timestamp) : null; 
   
-  // Format data fields to display in widget UI  
+  // Data to display in widget
   const widgetData = [
     timestamp ? dateFormatter.string(timestamp) : "N/A",
     daysSince(timestamp),
@@ -99,7 +99,7 @@ function createWidget(fields) {
     arrayToString(fields?.["Multi-Select Array"]),
   ]; 
   
-  // Add number for each line of data
+  // Number each line of widget data
   const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   const text = widget.addText(lines.join("\n"));
   text.font = textFont;
@@ -110,7 +110,7 @@ function createWidget(fields) {
 }
 
 // === ASSEMBLE & EXECUTE SCRIPT ===
-// IIFE to fetch data async, build the widget, and execute as widget or preview
+// Async IIFe to fetch data and render the widget
 (async () => {
   const data = await getData(true);
   const widget = createWidget(data); 
