@@ -10,7 +10,7 @@ const STYLES = {
 	textColor: new Color("FFFF00")
 };
 
-// === UI COMPONENTS ===
+// === WIDGET ASSEMBLY ===
 function createWidget() {
   const widget = new ListWidget();
 
@@ -35,10 +35,9 @@ function createWidget() {
   return widget;
 }
 
-// === WIDGET ASSEMBLY  ===
+// === MAIN EXECUTION ===
 const widget = await createWidget();
 
-// === MAIN EXECUTION ===
 // Check where script is running
 if (config.runsInWidget) {
   // Run inside a widget
