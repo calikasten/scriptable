@@ -27,7 +27,7 @@ if (!fileManager.fileExists(folderPath)) {
 }
 
 // === STYLES ===
-// Define color, fonts, and layout spacing
+// Define colors, fonts, and layout spacing
 const STYLES = {
   fonts: {
     titleFont: Font.systemFont(12),
