@@ -11,13 +11,17 @@ const CONFIG = {
     "https://calikasten.wordpress.com/wp-content/uploads/2025/10/sticky-note.png",
   zoomFactor: 1.1,
   widgetSize: 400,
-  font: Font.mediumRoundedSystemFont(16),
-  spacerTop: 20,
-  textColor: Color.black(),
   forceImageRefresh: false,
 };
 
-// === FILE MANAGEMENT ===
+// === STYLES ===
+const STYLE = {
+  font: Font.mediumRoundedSystemFont(16),
+  spacerTop: 20,
+  textColor: Color.black(),
+};
+
+// === HELPERS ===
 // Initialize iCloud file manager and set up paths
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
@@ -36,20 +40,7 @@ if (!fileManager.fileExists(filePath)) fileManager.writeString(filePath, "");
 const loadData = () => fileManager.readString(filePath) || "";
 const saveData = (data) => fileManager.writeString(filePath, data);
 
-// === USER INPUT ===
-// Ask user for text to display
-const editData = async (existing) => {
-  const alert = new Alert();
-  alert.title = "Enter Sticky Note Text";
-  alert.addTextField(existing || "");
-  alert.addCancelAction("Cancel");
-  alert.addAction("Save");
-
-  const res = await alert.present();
-  return res === -1 ? existing : alert.textFieldValue(0);
-};
-
-// === IMAGE HANDLING ===
+// === API CLIENT ===
 // Load sticky note background image
 const getImage = async () => {
   let image = fileManager.readImage(cachedImagePath);
@@ -59,8 +50,8 @@ const getImage = async () => {
     fileManager.writeImage(cachedImagePath, image);
   }
 
-  if (!image) return null; 
-  
+  if (!image) return null;
+
   // Resize and draw image to maintain aspect ratio and zoom factor
   const size = CONFIG.widgetSize;
   const aspect = image.size.width / image.size.height;
@@ -84,22 +75,35 @@ const getImage = async () => {
   return context.getImage();
 };
 
-// === CREATE WIDGET ===
+// === UI COMPONENTS ===
+// Prompt user for sticky note text to display
+const editData = async (existing) => {
+  const alert = new Alert();
+  alert.title = "Enter Sticky Note Text";
+  alert.addTextField(existing || "");
+  alert.addCancelAction("Cancel");
+  alert.addAction("Save");
+
+  const res = await alert.present();
+  return res === -1 ? existing : alert.textFieldValue(0);
+};
+
+// === WIDGET ASSEMBLY ===
 const createWidget = async (note) => {
   const widget = new ListWidget();
   widget.backgroundImage = await getImage();
-  widget.addSpacer(CONFIG.spacerTop);
+  widget.addSpacer(STYLE.spacerTop);
 
   const text = widget.addText(note);
-  text.font = CONFIG.font;
-  text.textColor = CONFIG.textColor;
+  text.font = STYLE.font;
+  text.textColor = STYLE.textColor;
   text.centerAlignText();
 
   widget.addSpacer();
   return widget;
 };
 
-// === EXECUTE SCRIPT ===
+// === MAIN EXECUTION ===
 const display = async () => {
   // Load data
   let note = loadData();
@@ -121,4 +125,5 @@ const display = async () => {
   Script.complete();
 };
 
+// Run the script
 await display();
