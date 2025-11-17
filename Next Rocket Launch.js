@@ -13,15 +13,18 @@ const CONFIG = {
 
 // === STYLES ===
 const STYLES = {
-  missionFont: Font.semiboldSystemFont(14),
-  rocketFont: Font.semiboldSystemFont(12),
-  dateFont: Font.semiboldSystemFont(12),
-  countdownFont: Font.semiboldSystemFont(16),
-  dividerFont: Font.lightSystemFont(10),
-  textColor: Color.white(),
-  launchedColor: Color.green(),
-  dividerColor: new Color("FFFFFF", 0.5),
-  gradientColors: [new Color("#000000", 0.7), new Color("#000000", 0.2)],
+  fonts: {
+    titleFont: Font.semiboldSystemFont(14),
+    textFont: Font.semiboldSystemFont(12),
+    countdownFont: Font.semiboldSystemFont(16),
+    dividerFont: Font.lightSystemFont(10),
+  },
+  colors: {
+    textColor: Color.white(),
+    launchedColor: Color.green(),
+    dividerColor: new Color("FFFFFF", 0.5),
+    gradientColors: [new Color("#000000", 0.7), new Color("#000000", 0.2)],
+  }
 };
 
 // === HELPER FUNCTIONS ===
@@ -118,7 +121,7 @@ async function createWidget(launch) {
     widget.backgroundImage = background;
     const gradient = new LinearGradient();
     gradient.locations = [0, 1];
-    gradient.colors = STYLES.gradientColors;
+    gradient.colors = STYLES.colors.gradientColors;
     widget.backgroundGradient = gradient;
   } else {
     widget.backgroundColor = new Color("#000000");
@@ -133,8 +136,8 @@ async function createWidget(launch) {
   const missionText = mainStack.addText(
     launch.mission?.name || "Unknown Mission"
   );
-  missionText.font = STYLES.missionFont;
-  missionText.textColor = STYLES.missionColor;
+  missionText.font = STYLES.fonts.titleFont;
+  missionText.textColor = STYLES.colors.textColor;
   missionText.centerAlignText();
 
   mainStack.addSpacer(6); 
@@ -143,23 +146,23 @@ async function createWidget(launch) {
   const rocketText = mainStack.addText(
     launch.rocket?.configuration?.name || "Unknown Rocket"
   );
-  rocketText.font = STYLES.rocketFont;
-  rocketText.textColor = STYLES.rocketColor;
+  rocketText.font = STYLES.fonts.textFont;
+  rocketText.textColor = STYLES.colors.textColor;
   rocketText.centerAlignText();
 
   mainStack.addSpacer(4); 
   
   // Launch date/time
   const dateText = mainStack.addText(formatDateTime(launch.net));
-  dateText.font = STYLES.dateFont;
-  dateText.textColor = STYLES.dateColor;
+  dateText.font = STYLES.fonts.textFont;
+  dateText.textColor = STYLES.colors.textColor;
   dateText.centerAlignText(); 
   
   // Divider before countdown
   mainStack.addSpacer(8);
   const divider = mainStack.addText("─".repeat(12));
-  divider.font = STYLES.dividerFont;
-  divider.textColor = STYLES.dividerColor;
+  divider.font = STYLES.fonts.dividerFont;
+  divider.textColor = STYLES.colors.dividerColor;
   divider.centerAlignText();
   mainStack.addSpacer(6); 
   
@@ -171,9 +174,9 @@ async function createWidget(launch) {
   // Countdown text
   const countdownString = getCountdown(launch.net);
   const countdownText = countdownStack.addText(countdownString);
-  countdownText.font = STYLES.countdownFont;
+  countdownText.font = STYLES.fonts.countdownFont;
   countdownText.textColor =
-    countdownString === "Launched" ? STYLES.launchedColor : STYLES.textColor;
+    countdownString === "Launched" ? STYLES.colors.launchedColor : STYLES.colors.textColor;
   countdownText.centerAlignText();
 
   countdownStack.addSpacer(); // Flexible spacer on right 
