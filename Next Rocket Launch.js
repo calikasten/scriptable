@@ -196,9 +196,12 @@ if (!data) return console.error("No launch data available.");
 
 const widget = await createWidget(data.results[0]);
 
+// Check if script is running inside a widget
 if (config.runsInWidget) {
+  // Run inside a widget
   Script.setWidget(widget);
 } else {
+  // Otherwise show widget preview
   widget.presentSmall();
 }
 
