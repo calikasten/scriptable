@@ -14,13 +14,13 @@ const CONFIG = {
 };
 
 // === STYLES ===
+// Define colors and image sizes
 const STYLES = {
   colors: {
     background: Color.white(),
     accent: new Color("E10600"), // Official F1 red
     text: Color.black()
   },
-  // Image sizes
   sizes: {
     logo: new Size(50, 25),
     flag: new Size(45, 27),
