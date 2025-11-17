@@ -109,7 +109,7 @@ function createWidget(fields) {
   return widget;
 }
 
-// === ASSEMBLE & EXECUTE SCRIPT ===
+// === WIDGET ASSEMBLY & MAIN EXECUTION ===
 // Async IIFE to fetch data and render the widget
 (async () => {
   const data = await getData(true);
