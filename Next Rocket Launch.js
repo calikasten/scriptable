@@ -183,12 +183,14 @@ async function createWidget(launch) {
   const launchMs = launch.net ? new Date(launch.net).getTime() : now;
   widget.refreshAfterDate = new Date(
     Math.min(now + CONFIG.refreshIntervalMs, launchMs)
-  ); // Return widget with its constructed UI elements
-
+  ); 
+  
+  // Return widget with its constructed UI elements
   return widget;
 }
 
 // === MAIN EXECUTION ===
+// Load cached data
 const data = await getCachedData();
 if (!data) return console.error("No launch data available.");
 
