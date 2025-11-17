@@ -236,8 +236,9 @@ function createWidget({
   if (circuit) {
     const imageCircuit = mainStack.addImage(circuit);
     imageCircuit.imageSize = SIZES.circuit;
-  } // Return widget with its constructed UI elements
-
+  } 
+  
+  // Return widget with its constructed UI elements
   return widget;
 }
 
