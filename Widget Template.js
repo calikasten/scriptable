@@ -3,11 +3,13 @@
 // icon-color: gray; icon-glyph: window-restore;
 
 // === CONFIGURATION ===
-const API_KEY = "<INSERT API KEY HERE>";
-const APP_ID = "appHEaSiBocpIp1Yw";
-const TABLE_ID = "tblaiUHCIOq3LZiDy";
-const CACHE_FILE = "airtable_cache.json";
-const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+const CONFIG = {
+	API_KEY: "<INSERT API KEY HERE>",
+	APP_ID: "appHEaSiBocpIp1Yw",
+	TABLE_ID: "tblaiUHCIOq3LZiDy",
+	CACHE_FILE: "airtable_cache.json",
+	CACHE_DURATION_MS: 5 * 60 * 1000 // 5 minutes
+};
 
 // === STYLES ===
 // Format date in MM-dd-yyyy
@@ -15,10 +17,12 @@ const dateFormatter = new DateFormatter();
 dateFormatter.dateFormat = "MM-dd-yyyy";
 
 // Format font size and color
-const titleFont = Font.boldSystemFont(16);
-const titleColor = new Color("#FFFFFF");
-const textFont = Font.semiboldSystemFont(10);
-const textColor = new Color("FFFF00");
+const STYLES = {
+	TITLE_FONT: Font.boldSystemFont(16),
+	TITLE_COLOR: new Color("#FFFFFF"),
+	TEXT_FONT: Font.semiboldSystemFont(10),
+	TEXT_COLOR: new Color("FFFF00")
+};
 
 // === HELPERS ===
 // Calculate time difference (in days)
@@ -81,8 +85,8 @@ function createWidget(fields) {
     
   // Widget title
   const title = widget.addText("TITLE");
-  title.font = titleFont;
-  title.textColor = titleColor;
+  title.font = STYLES.TITLE_FONT;
+  title.textColor = STYLES.TITLE_COLOR;
   title.centerAlignText();
   widget.addSpacer(5);
 
@@ -102,8 +106,8 @@ function createWidget(fields) {
   // Number each line of widget data
   const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   const text = widget.addText(lines.join("\n"));
-  text.font = textFont;
-  text.textColor = textColor;
+  text.font = STYLES.TEXT_FONT;
+  text.textColor = STYLES.TEXT_COLOR;
   text.leftAlignText();
 
   // Return widget with its constructed UI elements
