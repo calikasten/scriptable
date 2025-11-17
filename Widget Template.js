@@ -4,11 +4,11 @@
 
 // === CONFIGURATION ===
 const CONFIG = {
-	API_KEY: "<INSERT API KEY HERE>",
-	APP_ID: "appHEaSiBocpIp1Yw",
-	TABLE_ID: "tblaiUHCIOq3LZiDy",
-	CACHE_FILE: "airtable_cache.json",
-	CACHE_DURATION_MS: 5 * 60 * 1000 // 5 minutes
+	apiKey: "<INSERT API KEY HERE>",
+	appId: "appHEaSiBocpIp1Yw",
+	tableId: "tblaiUHCIOq3LZiDy",
+	cacheFile: "airtable_cache.json",
+	cacheDurationMs: 5 * 60 * 1000 // 5 minutes
 };
 
 // === STYLES ===
@@ -18,10 +18,10 @@ dateFormatter.dateFormat = "MM-dd-yyyy";
 
 // Format font size and color
 const STYLES = {
-	TITLE_FONT: Font.boldSystemFont(16),
-	TITLE_COLOR: new Color("#FFFFFF"),
-	TEXT_FONT: Font.semiboldSystemFont(10),
-	TEXT_COLOR: new Color("FFFF00")
+	tileFont: Font.boldSystemFont(16),
+	titleColor: new Color("#FFFFFF"),
+	textFont: Font.semiboldSystemFont(10),
+	textColor: new Color("FFFF00")
 };
 
 // === HELPERS ===
@@ -39,7 +39,7 @@ async function getData(useCache = true) {
   const fileManager = FileManager.local();
   const cachePath = fileManager.joinPath(
     fileManager.documentsDirectory(),
-    CACHE_FILE
+    CONFIG.cache_file
   ); 
   
   // Read cached data
@@ -54,15 +54,15 @@ async function getData(useCache = true) {
   const cached = useCache ? readCache() : null; 
   
   // Return cached fields if cached data is valid
-  if (cached && Date.now() - cached._fetched < CACHE_DURATION_MS)
+  if (cached && Date.now() - cached._fetched < CONFIG.cacheDurationMs)
         return cached.fields;
     
   // Otherwise, fetch data from API
   try {
     const request = new Request(
-      `https://api.airtable.com/v0/${APP_ID}/${TABLE_ID}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
+      `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
     );
-    request.headers = { Authorization: `Bearer ${API_KEY}` };
+    request.headers = { Authorization: `Bearer ${CONFIG.apiKey}` };
     const response = await request.loadJSON();
     const fields = response.records?.[0]?.fields || null; 
     
@@ -85,8 +85,8 @@ function createWidget(fields) {
     
   // Widget title
   const title = widget.addText("TITLE");
-  title.font = STYLES.TITLE_FONT;
-  title.textColor = STYLES.TITLE_COLOR;
+  title.font = STYLES.titleFont;
+  title.textColor = STYLES.titleColor;
   title.centerAlignText();
   widget.addSpacer(5);
 
@@ -106,8 +106,8 @@ function createWidget(fields) {
   // Number each line of widget data
   const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   const text = widget.addText(lines.join("\n"));
-  text.font = STYLES.TEXT_FONT;
-  text.textColor = STYLES.TEXT_COLOR;
+  text.font = STYLES.textfont;
+  text.textColor = STYLES.textColor;
   text.leftAlignText();
 
   // Return widget with its constructed UI elements
