@@ -20,12 +20,16 @@ const views = [
 // === STYLES ===
 // Format font size and color
 const STYLES = {
-  titleFont: Font.semiboldSystemFont(20),
-  textColor: Color.white(),
-  textFont: Font.semiboldSystemFont(14),
-  suffixFont: Font.systemFont(8),
-  suffixColor: Color.gray(),
-  backgroundColor: new Color("1C1B1D"),
+  fonts: {
+    titleFont: Font.semiboldSystemFont(20),
+    textFont: Font.semiboldSystemFont(14),
+    suffixFont: Font.systemFont(8)
+  },
+  colors: {
+    textColor: Color.white(),
+    suffixColor: Color.gray(),
+    backgroundColor: new Color("1C1B1D")
+  }
 };
 
 // === HELPERS ===
@@ -46,20 +50,20 @@ function applyTextStyle(widget, emoji, timeDiff) {
   
   // Style emoji
   const emojiText = listElements.addText(`${emoji} `);
-  emojiText.font = STYLES.textFont; 
+  emojiText.font = STYLES.fonts.textFont; 
   
   // Style time difference text
   const timeDiffText = listElements.addText(`${timeDiff} `);
-  timeDiffText.font = STYLES.textFont;
-  timeDiffText.textColor = STYLES.textColor; 
+  timeDiffText.font = STYLES.fonts.textFont;
+  timeDiffText.textColor = STYLES.colors.textColor; 
   
   // Style "hours ago" suffix text
   const suffixStack = listElements.addStack();
   suffixStack.layoutVertically();
   suffixStack.addSpacer(4);
   const suffixText = suffixStack.addText("hours ago");
-  suffixText.font = STYLES.suffixFont;
-  suffixText.textColor = STYLES.suffixColor;
+  suffixText.font = STYLES.fonts.suffixFont;
+  suffixText.textColor = STYLES.colors.suffixColor;
   return listElements;
 }
 
@@ -91,13 +95,13 @@ async function fetchLatestTimestamp(viewName) {
 // === WIDGET ASSEMBLY ===
 async function createWidget() {
   const widget = new ListWidget();
-  widget.backgroundColor = STYLES.backgroundColor; 
+  widget.backgroundColor = STYLES.colors.backgroundColor; 
   
   // Widget title
   const title = widget.addText("Barley 🐶");
   title.centerAlignText();
-  title.font = STYLES.titleFont;
-  title.textColor = STYLES.textColor;
+  title.font = STYLES.fonts.titleFont;
+  title.textColor = STYLES.colors.textColor;
   widget.addSpacer(); 
   
   // Add a list entry for each activity with its most recent timestamp
