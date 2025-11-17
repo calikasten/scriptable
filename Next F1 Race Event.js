@@ -14,18 +14,18 @@ const CONFIG = {
 };
 
 // === STYLES ===
-// Colors
-const COLORS = {
-  background: Color.white(),
-  accent: new Color("E10600"), // Official F1 red
-  text: Color.black(),
-};
-
-// Image sizing
-const SIZES = {
-  logo: new Size(50, 25),
-  flag: new Size(45, 27),
-  circuit: new Size(115, 115),
+const STYLES = {
+  COLORS: {
+    background: Color.white(),
+    accent: new Color("E10600"), // Official F1 red
+    text: Color.black()
+  },
+  // Image sizes
+  SIZES: {
+    logo: new Size(50, 25),
+    flag: new Size(45, 27),
+    circuit: new Size(115, 115)
+  }
 };
 
 // === HELPERS ===
@@ -101,7 +101,7 @@ function addCountdownText(stack, days, hours, minutes) {
   display.push(`${minutes}m`);
 
   const text = stack.addText(display.join(" "));
-  text.textColor = COLORS.text;
+  text.textColor = STYLES.COLORS.text;
   text.font = Font.semiboldSystemFont(18);
   return text;
 }
@@ -140,11 +140,11 @@ function createWidget({
 }) {
   const widget = new ListWidget();
   widget.setPadding(0, 0, 0, 0);
-  widget.backgroundColor = COLORS.background; 
+  widget.backgroundColor = STYLES.COLORS.background; 
   
   // Add header
   const header = addStack(widget, "horizontal");
-  header.backgroundColor = COLORS.accent;
+  header.backgroundColor = STYLES.COLORS.accent;
   header.setPadding(0, 15, 5, 45); 
   
   // Split header into three regions: left (flag), center (race name), right (F1 logo)
@@ -171,7 +171,7 @@ function createWidget({
   // Add country flag
   if (flag) {
     const imageFlag = left.addImage(flag);
-    imageFlag.imageSize = SIZES.flag;
+    imageFlag.imageSize = STYLES.SIZES.flag;
     imageFlag.cornerRadius = 4;
     imageFlag.borderColor = Color.white();
     imageFlag.borderWidth = 3;
@@ -187,7 +187,7 @@ function createWidget({
   // Add F1 logo
   if (logo) {
     const imageLogo = right.addImage(logo);
-    imageLogo.imageSize = SIZES.logo;
+    imageLogo.imageSize = STYLES.SIZES.logo;
   } 
   
   // Add main content
@@ -200,20 +200,20 @@ function createWidget({
   // If no upcoming event, show placeholder text and dashes
   if (!event) {
     const textEvent = eventStack.addText("Race");
-    textEvent.textColor = COLORS.accent;
+    textEvent.textColor = STYLES.STYLES.COLORS.accent;
     textEvent.font = Font.boldSystemFont(20);
 
     const textCountdown = eventStack.addText("---");
-    textCountdown.textColor = COLORS.text;
+    textCountdown.textColor = STYLES.COLORS.text;
     textCountdown.font = Font.semiboldSystemFont(18);
 
     const textDate = eventStack.addText("In Progress");
-    textDate.textColor = COLORS.text;
+    textDate.textColor = STYLES.COLORS.text;
     textDate.font = Font.regularSystemFont(12);
   } else {
     // Add event (session) name
     const textEvent = eventStack.addText(event?.description || "No Event");
-    textEvent.textColor = COLORS.accent;
+    textEvent.textColor = STYLES.COLORS.accent;
     textEvent.font = Font.boldSystemFont(20); 
     
     // Add countdown timer below the event name
@@ -225,7 +225,7 @@ function createWidget({
     
     // Add formatted event date/time text
     const textDate = eventStack.addText(eventFormatted);
-    textDate.textColor = COLORS.text;
+    textDate.textColor = STYLES.COLORS.text;
     textDate.font = Font.regularSystemFont(12);
   }
 
@@ -235,7 +235,7 @@ function createWidget({
   // Add circuit image to the right side
   if (circuit) {
     const imageCircuit = mainStack.addImage(circuit);
-    imageCircuit.imageSize = SIZES.circuit;
+    imageCircuit.imageSize = STYLES.SIZES.circuit;
   } 
   
   // Return widget with its constructed UI elements
