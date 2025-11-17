@@ -106,7 +106,7 @@ const createWidget = async (note) => {
 };
 
 // === MAIN EXECUTION ===
-const display = async () => {
+const main = async () => {
   // Load data
   let note = loadData();
 
@@ -118,9 +118,12 @@ const display = async () => {
 
   const widget = await createWidget(note);
 
+  // Check if script is running inside a widget
   if (!config.runsInWidget) {
+    // Show widget preview
     await widget.presentLarge();
   } else {
+    // Otherwise run inside a widget
     Script.setWidget(widget);
   }
 
@@ -128,4 +131,4 @@ const display = async () => {
 };
 
 // Run the script
-await display();
+await main();
