@@ -18,7 +18,7 @@ dateFormatter.dateFormat = "MM-dd-yyyy";
 
 // Format font size and color
 const STYLES = {
-	tileFont: Font.boldSystemFont(16),
+	titleFont: Font.boldSystemFont(16),
 	titleColor: new Color("#FFFFFF"),
 	textFont: Font.semiboldSystemFont(10),
 	textColor: new Color("FFFF00")
