@@ -4,10 +4,10 @@ const DATE_FORMAT = "MM-dd-yyyy";
 
 // Format font size and color
 const STYLES = {
-	TITLE_FONT: Font.boldSystemFont(16),
-	TITLE_COLOR: new Color("#FFFFFF"),
-	TEXT_FONT: Font.semiboldSystemFont(10),
-	TEXT_COLOR: new Color("FFFF00")
+	titleFont: Font.boldSystemFont(16),
+	titleColor: new Color("#FFFFFF"),
+	textFont: Font.semiboldSystemFont(10),
+	textColor: new Color("FFFF00")
 };
 
 // === UI COMPONENTS ===
@@ -16,8 +16,8 @@ function createWidget() {
 
   // Widget title
   const title = widget.addText("TITLE");
-  title.font = STYLES.TITLE_FONT;
-  title.textColor = STYLES.TITLE_COLOR;
+  title.font = STYLES.titleFont;
+  title.textColor = STYLES.titleColor;
   title.centerAlignText();
   widget.addSpacer(5);
 
@@ -27,8 +27,8 @@ function createWidget() {
   // Number each line of widget data
   const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   const textBlock = widget.addText(lines.join("\n"));
-  textBlock.font = STYLES.TEXT_FONT;
-  textBlock.textColor = STYLES.TEXT_COLOR;
+  textBlock.font = STYLES.textFont;
+  textBlock.textColor = STYLES.textColor;
   textBlock.leftAlignText();
 
   // Return widget with its constructed UI elements
