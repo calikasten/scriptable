@@ -33,7 +33,7 @@ const daysSince = (date) =>
 const arrayToString = (array) =>
   Array.isArray(array) ? array.join(", ") : array ?? "N/A";
 
-// === API CLIENT ===
+// === NETWORK & API CLIENT ===
 // Retrieve data from cache if valid, otherwise fetch from API
 async function getData(useCache = true) {
   const fileManager = FileManager.local();
