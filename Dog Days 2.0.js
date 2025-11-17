@@ -88,7 +88,7 @@ async function fetchLatestTimestamp(viewName) {
   }
 }
 
-// === UI COMPONENTS ===
+// === WIDGET ASSEMBLY ===
 async function createWidget() {
   const widget = new ListWidget();
   widget.backgroundColor = STYLES.backgroundColor; 
@@ -111,10 +111,9 @@ async function createWidget() {
   return widget;
 }
 
-// === WIDGET ASSEMBLY ===
+// === MAIN EXECUTION ===
 let widget = await createWidget();
 
-// === MAIN EXECUTION ===
 if (config.runsInWidget) {
   Script.setWidget(widget);
 } else {
