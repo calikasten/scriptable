@@ -34,6 +34,7 @@ function createWidget() {
   textBlock.textColor = TEXT_COLOR;
   textBlock.leftAlignText();
 
+  // Return widget with its constructed UI elements
   return widget;
 }
 
