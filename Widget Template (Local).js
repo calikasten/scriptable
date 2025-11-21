@@ -1,3 +1,7 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: deep-gray; icon-glyph: window-maximize;
+
 // === CONFIGURATION ===
 // This section stores all "settings", nothing here should change during execution
 
