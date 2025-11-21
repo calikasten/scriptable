@@ -21,14 +21,14 @@ const views = [
 // Format font size and color
 const STYLES = {
   fonts: {
-    titleFont: Font.semiboldSystemFont(20),
-    textFont: Font.semiboldSystemFont(14),
-    suffixFont: Font.systemFont(8)
+    title: Font.semiboldSystemFont(20),
+    text: Font.semiboldSystemFont(14),
+    suffix: Font.systemFont(8)
   },
   colors: {
-    textColor: Color.white(),
-    suffixColor: Color.gray(),
-    backgroundColor: new Color("1C1B1D")
+    text: Color.white(),
+    suffix: Color.gray(),
+  		background: new Color ("1C1B1D")
   }
 };
 
@@ -50,29 +50,27 @@ function applyTextStyle(widget, emoji, timeDiff) {
   
   // Style emoji
   const emojiText = listElements.addText(`${emoji} `);
-  emojiText.font = STYLES.fonts.textFont; 
+  emojiText.font = STYLES.fonts.text;
   
   // Style time difference text
   const timeDiffText = listElements.addText(`${timeDiff} `);
-  timeDiffText.font = STYLES.fonts.textFont;
-  timeDiffText.textColor = STYLES.colors.textColor; 
+  timeDiffText.font = STYLES.fonts.text;
+  timeDiffText.textColor = STYLES.colors.text;
   
   // Style "hours ago" suffix text
   const suffixStack = listElements.addStack();
   suffixStack.layoutVertically();
   suffixStack.addSpacer(4);
   const suffixText = suffixStack.addText("hours ago");
-  suffixText.font = STYLES.fonts.suffixFont;
-  suffixText.textColor = STYLES.colors.suffixColor;
+  suffixText.font = STYLES.fonts.suffix;
+  suffixText.textColor = STYLES.colors.suffix;
   return listElements;
 }
 
 // === API CLIENT ===
 // Function to get data from API
 async function fetchLatestTimestamp(viewName) {
-  const url = `https://api.airtable.com/v0/${CONFIG.appId}/${
-    CONFIG.tableId
-  }?maxRecords=1&view=${encodeURIComponent(
+  const url = `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}?maxRecords=1&view=${encodeURIComponent(
     viewName
   )}&sort[0][field]=Timestamp&sort[0][direction]=desc`;
   try {
@@ -95,13 +93,13 @@ async function fetchLatestTimestamp(viewName) {
 // === WIDGET ASSEMBLY ===
 async function createWidget() {
   const widget = new ListWidget();
-  widget.backgroundColor = STYLES.colors.backgroundColor; 
+  widget.backgroundColor = STYLES.colors.background;
   
   // Widget title
   const title = widget.addText("Barley 🐶");
   title.centerAlignText();
-  title.font = STYLES.fonts.titleFont;
-  title.textColor = STYLES.colors.textColor;
+  title.font = STYLES.fonts.title;
+  title.textColor = STYLES.colors.text;
   widget.addSpacer(); 
   
   // Add a list entry for each activity with its most recent timestamp
@@ -110,7 +108,7 @@ async function createWidget() {
     applyTextStyle(widget, view.emoji, timeDiff(timestamp));
   }
   widget.addSpacer(); 
-  
+
   // Return widget with its constructed UI elements
   return widget;
 }
