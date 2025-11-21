@@ -26,20 +26,20 @@ if (!fileManager.fileExists(folderPath)) {
   }
 }
 
-// === STYLES ===
+// === STYLES === 
 // Define colors, fonts, and layout spacing
 const STYLES = {
-  fonts: {
-    titleFont: Font.systemFont(12),
-    alertFont: Font.boldSystemFont(12),
-    plantFont: Font.boldSystemFont(10),
-    countFont: Font.boldSystemFont(42)
-  },
   colors: {
-    bgAlert: new Color("#B00020"),
-    bgNeutral: new Color("#001F3F"),
-    bgEnd: new Color("#1C1C1E"),
+    backgroundAlert: new Color("#B00020"),
+    backgroundNeutral: new Color("#001F3F"),
+    gradientEnd: new Color("#1C1C1E"),
     text: Color.white()
+  },
+  fonts: {
+    title: Font.systemFont(12),
+    alert: Font.boldSystemFont(12),
+    plant: Font.boldSystemFont(10),
+    count: Font.boldSystemFont(42),
   },
   spacing: {
     widgetPadding: [0, 10, 10, 10],
@@ -114,8 +114,8 @@ const createWidget = (plants) => {
   // Gradient background
   const gradient = new LinearGradient();
   gradient.colors = [
-    plants.length ? STYLES.colors.bgAlert : STYLES.colors.bgNeutral,
-    STYLES.colors.bgEnd,
+    plants.length ? STYLES.colors.backgroundAlert : STYLES.colors.backgroundNeutral,
+    STYLES.colors.gradientEnd,
   ];
   gradient.locations = [0, 0.9];
   gradient.startPoint = new Point(0, 0);
@@ -127,7 +127,7 @@ const createWidget = (plants) => {
     createText(
       widget,
       "No plants need water today.",
-      STYLES.fonts.alertFont,
+      STYLES.fonts.alert,
       STYLES.colors.text,
       "center"
     );
@@ -140,14 +140,14 @@ const createWidget = (plants) => {
     createText(
       topStack,
       `${plants.length}`,
-      STYLES.fonts.countFont,
+      STYLES.fonts.count,
       STYLES.colors.text,
       "center"
     );
     createText(
       topStack,
       plants.length === 1 ? "plant needs watering." : "plants need watering.",
-      STYLES.fonts.titleFont,
+      STYLES.fonts.title,
       STYLES.colors.text,
       "center"
     );
@@ -158,7 +158,7 @@ const createWidget = (plants) => {
   // List of plants that need watering
   for (const name of plants) {
     const plantName = widget.addText(`• ${name}`);
-    plantName.font = STYLES.fonts.plantFont;
+    plantName.font = STYLES.fonts.plant;
     plantName.textColor = Color.white();
     plantName.leftAlignText();
     widget.addSpacer(1); // small space between plant names
