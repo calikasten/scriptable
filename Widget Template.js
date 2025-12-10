@@ -10,7 +10,7 @@ const CONFIG = {
 	appId: "appHEaSiBocpIp1Yw",
 	tableId: "tblaiUHCIOq3LZiDy",
 	cacheFile: "airtable-cache.json",
-	cacheDurationMs: 5 * 60 * 1000 // 5 minutes
+	cacheDurationMs: 5 * 60 * 1000, // 5 minutes
 };
 
 // === STYLES ===
