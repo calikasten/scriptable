@@ -50,9 +50,8 @@ const getImage = async () => {
     fileManager.writeImage(cachedImagePath, image);
   }
 
-  if (!image) return null;
+  if (!image) return null; // Resize and draw image to maintain aspect ratio and zoom factor
 
-  // Resize and draw image to maintain aspect ratio and zoom factor
   const size = CONFIG.widgetSize;
   const aspect = image.size.width / image.size.height;
   const drawWidth = size * CONFIG.zoomFactor * (aspect > 1 ? aspect : 1);
@@ -88,37 +87,65 @@ const editData = async (existing) => {
   return res === -1 ? existing : alert.textFieldValue(0);
 };
 
+// Generic text element
+function createText(
+  stack,
+  text,
+  font = STYLE.font,
+  color = STYLE.textColor,
+  align = "center"
+) {
+  const line = stack.addText(text);
+  line.font = font;
+  line.textColor = color;
+  switch (align) {
+    case "center":
+      line.centerAlignText();
+      break;
+    case "left":
+      line.leftAlignText();
+      break;
+    case "right":
+      line.rightAlignText();
+      break;
+  }
+  return line;
+}
+
+// Main text
+function addStickyNoteText(stack, note) {
+  return createText(stack, note, STYLE.font, STYLE.textColor, "center");
+}
+
+// Spacer
+function addSpacer(stack, size) {
+  stack.addSpacer(size);
+}
+
 // === WIDGET ASSEMBLY ===
 const createWidget = async (note) => {
   const widget = new ListWidget();
   widget.backgroundImage = await getImage();
-  widget.addSpacer(STYLE.spacerTop);
 
-  const text = widget.addText(note);
-  text.font = STYLE.font;
-  text.textColor = STYLE.textColor;
-  text.centerAlignText();
+  addSpacer(widget, STYLE.spacerTop);
+  addStickyNoteText(widget, note);
+  addSpacer(widget); // Return widget with its constructed UI elements
 
-  widget.addSpacer();
-
-  // Return widget with its constructed UI elements
   return widget;
 };
 
 // === MAIN EXECUTION ===
 const main = async () => {
   // Load data
-  let note = loadData();
+  let note = loadData(); // Allow for text to be edited if running in app
 
-  // Allow for text to be edited if running in app
   if (!config.runsInWidget) {
     note = await editData(note);
     saveData(note);
   }
 
-  const widget = await createWidget(note);
+  const widget = await createWidget(note); // Check if script is running inside a widget
 
-  // Check if script is running inside a widget
   if (!config.runsInWidget) {
     // Show widget preview
     await widget.presentLarge();
