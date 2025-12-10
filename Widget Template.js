@@ -84,20 +84,51 @@ async function getData(useCache = true) {
 }
 
 // === UI COMPONENTS ===
-function addTitle(widget, text) {
-  const title = widget.addText(text);
-  title.font = STYLES.fonts.title;
-  title.textColor = STYLES.colors.title;
-  title.centerAlignText();
-
-  widget.addSpacer(5);
+// Generic text element
+function createText(
+  stack,
+  text,
+  font = STYLE.font,
+  color = STYLE.color,
+  align = "center"
+) {
+  const line = stack.addText(text);
+  line.font = font;
+  line.textColor = color;
+  switch (align) {
+    case "center":
+      line.centerAlignText();
+      break;
+    case "left":
+      line.leftAlignText();
+      break;
+    case "right":
+      line.rightAlignText();
+      break;
+  }
+  return line;
 }
 
+// Title text
+function addTitle(widget, text) {
+  return createText(
+    widget,
+    text,
+    STYLES.fonts.title,
+    STYLES.colors.title,
+    "center"
+  );
+}
+
+// Add text rows
 function addTextRow(widget, numberedLines) {
-  const text = widget.addText(numberedLines.join("\n"));
-  text.font = STYLES.fonts.text;
-  text.textColor = STYLES.colors.text;
-  text.leftAlignText();
+  return createText(
+    widget,
+    numberedLines.join("\n"),
+    STYLES.fonts.text,
+    STYLES.colors.text,
+    "left"
+  );
 }
 
 // === WIDGET ASSEMBLY  ===
@@ -106,6 +137,7 @@ function addTextRow(widget, numberedLines) {
 function createWidget(fields) {
   const widget = new ListWidget(); // Widget title
   addTitle(widget, "TITLE");
+  widget.addSpacer(5);
 
   const timestamp = fields?.Timestamp ? new Date(fields.Timestamp) : null; // Data to display
   const widgetData = [
