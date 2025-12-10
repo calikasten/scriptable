@@ -90,6 +90,7 @@ const analyzeWatering = (data) =>
     : [];
 
 // === UI COMPONENTS ===
+// Generic text element
 function createText(widget, text, font, color, align = "left") {
   const line = widget.addText(text);
   line.font = font;
