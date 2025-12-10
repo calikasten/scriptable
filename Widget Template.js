@@ -93,8 +93,8 @@ function addTitle(widget, text) {
   widget.addSpacer(5);
 }
 
-function addTextRow(widget, lines) {
-  const text = widget.addText(lines.join("\n"));
+function addTextRow(widget, numberedLines) {
+  const text = widget.addText(numberedLines.join("\n"));
   text.font = STYLES.fonts.text;
   text.textColor = STYLES.colors.text;
   text.leftAlignText();
@@ -117,8 +117,8 @@ function createWidget(fields) {
     arrayToString(fields?.["Single-Select Array"]),
     arrayToString(fields?.["Multi-Select Array"]),
   ]; // Number each line of widget data
-  const lines = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, lines); // Return widget with its constructed UI elements
+  const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
+  addTextRow(widget, numberedLines); // Return widget with its constructed UI elements
 
   return widget;
 }
