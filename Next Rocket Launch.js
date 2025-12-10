@@ -100,11 +100,11 @@ async function cacheImage(url, filename) {
 
   try {
     if (fileManager.fileExists(path)) return fileManager.readImage(path);
-    const img = await new Request(url).loadImage();
-    fileManager.writeImage(path, img);
-    return img;
-  } catch (err) {
-    console.error("Failed to cache/load image:", err);
+    const image = await new Request(url).loadImage();
+    fileManager.writeImage(path, image);
+    return image;
+  } catch (error) {
+    console.error("Failed to cache/load image:", error);
     return null;
   }
 }
