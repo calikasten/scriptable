@@ -120,7 +120,7 @@ function addTitle(widget, text) {
   );
 }
 
-// Add text rows
+// Text rows
 function addTextRow(widget, numberedLines) {
   return createText(
     widget,
