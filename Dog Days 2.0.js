@@ -6,7 +6,7 @@
 const CONFIG = {
   apiKey: "<INSERT API TOKEN HERE>",
   appId: "app1PnYsdLk3i0N6S",
-  tableId: "tbl4cXnZhwuW1TBj4"
+  tableId: "tbl4cXnZhwuW1TBj4",
 };
 
 // List of activities as Airtable views to surface as list elements
