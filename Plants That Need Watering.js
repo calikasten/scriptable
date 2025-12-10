@@ -26,14 +26,14 @@ if (!fileManager.fileExists(folderPath)) {
   }
 }
 
-// === STYLES === 
+// === STYLES ===
 // Define colors, fonts, and layout spacing
 const STYLES = {
   colors: {
     backgroundAlert: new Color("#B00020"),
     backgroundNeutral: new Color("#001F3F"),
     gradientEnd: new Color("#1C1C1E"),
-    text: Color.white()
+    text: Color.white(),
   },
   fonts: {
     title: Font.systemFont(12),
@@ -90,7 +90,7 @@ const analyzeWatering = (data) =>
     : [];
 
 // === UI COMPONENTS ===
-const createText = (widget, text, font, color, align = "left") => {
+function createText(widget, text, font, color, align = "left") {
   const line = widget.addText(text);
   line.font = font;
   line.textColor = color;
@@ -103,7 +103,43 @@ const createText = (widget, text, font, color, align = "left") => {
       break;
   }
   return line;
-};
+}
+
+// Count number at top of widget
+function addCountText(stack, count) {
+  return createText(
+    stack,
+    `${count}`,
+    STYLES.fonts.count,
+    STYLES.colors.text,
+    "center"
+  );
+}
+
+// Status text under count
+function addStatusText(stack, count) {
+  const text = count === 1 ? "plant needs watering." : "plants need watering.";
+  return createText(
+    stack,
+    text,
+    STYLES.fonts.title,
+    STYLES.colors.text,
+    "center"
+  );
+}
+
+// Individual plant name in the list
+function addPlantName(stack, name) {
+  const text = createText(
+    stack,
+    `• ${name}`,
+    STYLES.fonts.plant,
+    STYLES.colors.text,
+    "left"
+  );
+  stack.addSpacer(STYLES.spacing.spacerSmall);
+  return text;
+}
 
 // === WIDGET ASSEMBLY ===
 const createWidget = (plants) => {
@@ -114,7 +150,9 @@ const createWidget = (plants) => {
   // Gradient background
   const gradient = new LinearGradient();
   gradient.colors = [
-    plants.length ? STYLES.colors.backgroundAlert : STYLES.colors.backgroundNeutral,
+    plants.length
+      ? STYLES.colors.backgroundAlert
+      : STYLES.colors.backgroundNeutral,
     STYLES.colors.gradientEnd,
   ];
   gradient.locations = [0, 0.9];
@@ -137,33 +175,16 @@ const createWidget = (plants) => {
     topStack.centerAlignContent();
     topStack.addSpacer(STYLES.spacing.spacerTop);
 
-    createText(
-      topStack,
-      `${plants.length}`,
-      STYLES.fonts.count,
-      STYLES.colors.text,
-      "center"
-    );
-    createText(
-      topStack,
-      plants.length === 1 ? "plant needs watering." : "plants need watering.",
-      STYLES.fonts.title,
-      STYLES.colors.text,
-      "center"
-    );
+    addCountText(topStack, plants.length);
+    addStatusText(topStack, plants.length);
+
+    widget.addSpacer(STYLES.spacing.spacerMedium);
+
+    // List of plants that need watering
+    for (const name of plants) {
+      addPlantName(widget, name);
+    }
   }
-
-  widget.addSpacer(STYLES.spacing.spacerMedium);
-
-  // List of plants that need watering
-  for (const name of plants) {
-    const plantName = widget.addText(`• ${name}`);
-    plantName.font = STYLES.fonts.plant;
-    plantName.textColor = Color.white();
-    plantName.leftAlignText();
-    widget.addSpacer(1); // small space between plant names
-  }
-
   // Return widget with its constructed UI elements
   return widget;
 };
