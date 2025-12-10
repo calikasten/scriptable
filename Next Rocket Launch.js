@@ -110,6 +110,7 @@ async function cacheImage(url, filename) {
 }
 
 // === UI COMPONENTS ===
+// Generic text element
 function createText(stack, text, font, color, align = "center") {
   const line = stack.addText(text);
   line.font = font;
