@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-gray; icon-glyph: window-maximize;
 
-/// === CONFIGURATION ===
+// === CONFIGURATION ===
 // This section stores all "settings", nothing here should change during execution
 
 const CONFIG = {
@@ -49,20 +49,51 @@ async function fetchImage(url) {
 }
 
 // === UI COMPONENTS ===
-function addTitle(widget, text) {
-  const title = widget.addText(text);
-  title.font = STYLES.fonts.title;
-  title.textColor = STYLES.colors.title;
-  title.centerAlignText();
-
-  widget.addSpacer(5);
+// Generic text element
+function createText(
+  stack,
+  text,
+  font = STYLE.font,
+  color = STYLE.color,
+  align = "center"
+) {
+  const line = stack.addText(text);
+  line.font = font;
+  line.textColor = color;
+  switch (align) {
+    case "center":
+      line.centerAlignText();
+      break;
+    case "left":
+      line.leftAlignText();
+      break;
+    case "right":
+      line.rightAlignText();
+      break;
+  }
+  return line;
 }
 
+// Title text
+function addTitle(widget, text) {
+  return createText(
+    widget,
+    text,
+    STYLES.fonts.title,
+    STYLES.colors.title,
+    "center"
+  );
+}
+
+// Add text rows
 function addTextRow(widget, numberedLines) {
-  const text = widget.addText(numberedLines.join("\n"));
-  text.font = STYLES.fonts.text;
-  text.textColor = STYLES.colors.text;
-  text.leftAlignText();
+  return createText(
+    widget,
+    numberedLines.join("\n"),
+    STYLES.fonts.text,
+    STYLES.colors.text,
+    "left"
+  );
 }
 
 // === WIDGET ASSEMBLY  ===
@@ -72,6 +103,7 @@ function createWidget() {
   const widget = new ListWidget(); // Widget title
 
   addTitle(widget, "TITLE"); // Data to display in widget
+  widget.addSpacer(5);
 
   const widgetData = ["text", "or", "other", "data", "types"]; // Number each line of widget data
 
