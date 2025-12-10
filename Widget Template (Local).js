@@ -82,7 +82,7 @@ function createWidget() {
 }
 
 // === MAIN EXECUTION ===
-// This section is where the prgram actually runs (fetches all required data, builds the widget, and displays the widget)
+// This section is where the program actually runs (fetches all required data, builds the widget, and displays the widget)
 const data = await fetchData(); // Get data
 const widget = await createWidget(); // Build widget
 
