@@ -23,13 +23,13 @@ const STYLES = {
   fonts: {
     title: Font.semiboldSystemFont(20),
     text: Font.semiboldSystemFont(14),
-    suffix: Font.systemFont(8)
+    suffix: Font.systemFont(8),
   },
   colors: {
     text: Color.white(),
     suffix: Color.gray(),
-  		background: new Color ("1C1B1D")
-  }
+    background: new Color("1C1B1D"),
+  },
 };
 
 // === HELPERS ===
@@ -41,36 +41,12 @@ function timeDiff(timestampStr) {
   return (diffMS / (1000 * 60 * 60)).toFixed(1);
 }
 
-// Apply consistent styling to list elements
-function applyTextStyle(widget, emoji, timeDiff) {
-  const listElements = widget.addStack();
-  listElements.centerAlignContent();
-  listElements.layoutHorizontally();
-  listElements.setPadding(5, 6, 0, 0); 
-  
-  // Style emoji
-  const emojiText = listElements.addText(`${emoji} `);
-  emojiText.font = STYLES.fonts.text;
-  
-  // Style time difference text
-  const timeDiffText = listElements.addText(`${timeDiff} `);
-  timeDiffText.font = STYLES.fonts.text;
-  timeDiffText.textColor = STYLES.colors.text;
-  
-  // Style "hours ago" suffix text
-  const suffixStack = listElements.addStack();
-  suffixStack.layoutVertically();
-  suffixStack.addSpacer(4);
-  const suffixText = suffixStack.addText("hours ago");
-  suffixText.font = STYLES.fonts.suffix;
-  suffixText.textColor = STYLES.colors.suffix;
-  return listElements;
-}
-
 // === API CLIENT ===
 // Function to get data from API
 async function fetchLatestTimestamp(viewName) {
-  const url = `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}?maxRecords=1&view=${encodeURIComponent(
+  const url = `https://api.airtable.com/v0/${CONFIG.appId}/${
+    CONFIG.tableId
+  }?maxRecords=1&view=${encodeURIComponent(
     viewName
   )}&sort[0][field]=Timestamp&sort[0][direction]=desc`;
   try {
@@ -78,9 +54,7 @@ async function fetchLatestTimestamp(viewName) {
     request.headers = {
       Authorization: `Bearer ${CONFIG.apiKey}`,
     };
-    const response = await request.loadJSON(); 
-    
-    // Check if the response is valid, log response, and return data
+    const response = await request.loadJSON(); // Check if the response is valid, log response, and return data
     if (response.records.length === 0) return null;
     console.log(response.records[0].fields["Timestamp"]);
     return response.records[0].fields["Timestamp"];
@@ -90,26 +64,80 @@ async function fetchLatestTimestamp(viewName) {
   }
 }
 
+// === UI COMPONENTS ===
+// Generic text helper
+function createText(
+  stack,
+  text,
+  font = STYLES.fonts.text,
+  color = STYLES.colors.text,
+  align = "left"
+) {
+  const line = stack.addText(text);
+  line.font = font;
+  line.textColor = color;
+  switch (align) {
+    case "center":
+      line.centerAlignText();
+      break;
+    case "right":
+      line.rightAlignText();
+      break;
+    case "left":
+    default:
+      line.leftAlignText();
+  }
+  return line;
+}
+
+// Title text
+function addTitle(stack, text) {
+  return createText(
+    stack,
+    text,
+    STYLES.fonts.title,
+    STYLES.colors.title,
+    "center"
+  );
+}
+
+// Individual "activity" lines
+function addActivityLine(stack, emoji, timestampStr) {
+  const activityLine = stack.addStack();
+  activityLine.layoutHorizontally();
+  activityLine.centerAlignContent();
+  activityLine.setPadding(5, 6, 0, 0);
+  createText(activityLine, `${emoji} `, STYLES.fonts.text, STYLES.colors.text);
+  createText(
+    activityLine,
+    `${timestampStr} `,
+    STYLES.fonts.text,
+    STYLES.colors.text
+  );
+  const suffixText = activityLine.addStack();
+  suffixText.layoutVertically();
+  suffixText.addSpacer(4);
+  createText(
+    suffixText,
+    "hours ago",
+    STYLES.fonts.suffix,
+    STYLES.colors.suffix
+  );
+  return activityLine;
+}
+
 // === WIDGET ASSEMBLY ===
 async function createWidget() {
   const widget = new ListWidget();
-  widget.backgroundColor = STYLES.colors.background;
-  
-  // Widget title
-  const title = widget.addText("Barley 🐶");
-  title.centerAlignText();
-  title.font = STYLES.fonts.title;
-  title.textColor = STYLES.colors.text;
-  widget.addSpacer(); 
-  
-  // Add a list entry for each activity with its most recent timestamp
+  widget.backgroundColor = STYLES.colors.background; // Widget title
+  addTitle(widget, "Barley 🐶");
+  widget.addSpacer(); // Add a list entry for each activity with its most recent timestamp
   for (let view of views) {
     const timestamp = await fetchLatestTimestamp(view.name);
-    applyTextStyle(widget, view.emoji, timeDiff(timestamp));
+    addActivityLine(widget, view.emoji, timeDiff(timestamp));
   }
-  widget.addSpacer(); 
+  widget.addSpacer(); // Return widget with its constructed UI elements
 
-  // Return widget with its constructed UI elements
   return widget;
 }
 
