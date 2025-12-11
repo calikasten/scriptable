@@ -33,9 +33,10 @@ const STYLES = {
 // Format date in MM-dd-yyyy
 const DATE_FORMAT = "MM-dd-yyyy";
 
-function exampleHelper() {
+const exampleHelper = () => {
   // return formattedText;
-}
+};
+
 // === NETWORK & API CLIENT ===
 // This section contains all functions that use the internet (fetching from API, downloading images, saving/reading cached responses)
 
@@ -50,32 +51,32 @@ async function fetchImage(url) {
 
 // === UI COMPONENTS ===
 // Generic text element
-function createText(
+const createText = (
   stack,
   text,
   font = STYLE.font,
   color = STYLE.color,
   align = "center"
-) {
-  const line = stack.addText(text);
-  line.font = font;
-  line.textColor = color;
+) => {
+  const textElement = stack.addText(text);
+  textElement.font = font;
+  textElement.textColor = color;
   switch (align) {
     case "center":
-      line.centerAlignText();
+      textElement.centerAlignText();
       break;
     case "left":
-      line.leftAlignText();
+      textElement.leftAlignText();
       break;
     case "right":
-      line.rightAlignText();
+      textElement.rightAlignText();
       break;
   }
-  return line;
-}
+  return textElement;
+};
 
 // Title text
-function addTitle(widget, text) {
+const addTitle = (widget, text) => {
   return createText(
     widget,
     text,
@@ -83,23 +84,23 @@ function addTitle(widget, text) {
     STYLES.colors.title,
     "center"
   );
-}
+};
 
 // Text rows
-function addTextRow(widget, numberedLines) {
+const addTextRow = (widget, numberedLine) => {
   return createText(
     widget,
-    numberedLines.join("\n"),
+    numberedLine.join("\n"),
     STYLES.fonts.text,
     STYLES.colors.text,
     "left"
   );
-}
+};
 
 // === WIDGET ASSEMBLY  ===
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
 
-function createWidget() {
+const createWidget = () => {
   const widget = new ListWidget(); // Widget title
 
   addTitle(widget, "TITLE"); // Data to display in widget
@@ -107,11 +108,11 @@ function createWidget() {
 
   const widgetData = ["text", "or", "other", "data", "types"]; // Number each line of widget data
 
-  const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, numberedLines); // Return widget with its constructed UI elements
+  const numberedLine = widgetData.map((value, i) => `${i + 1}. ${value}`);
+  addTextRow(widget, numberedLine); // Return widget with its constructed UI elements
 
   return widget;
-}
+};
 
 // === MAIN EXECUTION ===
 // This section is where the program actually runs (fetches all required data, builds the widget, and displays the widget)
