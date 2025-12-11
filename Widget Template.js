@@ -102,26 +102,18 @@ const createText = (widget, text, font, color, align = "center") => {
 };
 
 // Title text
-const addTitle = (widget, text) => {
-  return createText(
-    widget,
-    text,
-    STYLES.fonts.title,
-    STYLES.colors.title,
-    "center"
-  );
-};
+const addTitle = (widget, text) =>
+  createText(widget, text, STYLES.fonts.title, STYLES.colors.title, "center");
 
 // Text rows
-const addTextRow = (widget, numberedLines) => {
-  return createText(
+const addTextRow = (widget, numberedLines) =>
+  createText(
     widget,
     numberedLines.join("\n"),
     STYLES.fonts.text,
     STYLES.colors.text,
     "left"
   );
-};
 
 // === WIDGET ASSEMBLY  ===
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
@@ -162,4 +154,3 @@ if (config.runsInWidget) {
 }
 
 Script.complete();
-
