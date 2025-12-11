@@ -85,32 +85,32 @@ async function getData(useCache = true) {
 
 // === UI COMPONENTS ===
 // Generic text element
-function createText(
+const createText = (
   stack,
   text,
   font = STYLE.font,
   color = STYLE.color,
   align = "center"
-) {
-  const line = stack.addText(text);
-  line.font = font;
-  line.textColor = color;
+) => {
+  const textElement = stack.addText(text);
+  textElement.font = font;
+  textElement.textColor = color;
   switch (align) {
     case "center":
-      line.centerAlignText();
+      textElement.centerAlignText();
       break;
     case "left":
-      line.leftAlignText();
+      textElement.leftAlignText();
       break;
     case "right":
-      line.rightAlignText();
+      textElement.rightAlignText();
       break;
   }
-  return line;
-}
+  return textElement;
+};
 
 // Title text
-function addTitle(widget, text) {
+const addTitle = (widget, text) => {
   return createText(
     widget,
     text,
@@ -118,10 +118,10 @@ function addTitle(widget, text) {
     STYLES.colors.title,
     "center"
   );
-}
+};
 
 // Text rows
-function addTextRow(widget, numberedLines) {
+const addTextRow = (widget, numberedLines) => {
   return createText(
     widget,
     numberedLines.join("\n"),
@@ -129,7 +129,7 @@ function addTextRow(widget, numberedLines) {
     STYLES.colors.text,
     "left"
   );
-}
+};
 
 // === WIDGET ASSEMBLY  ===
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
@@ -170,3 +170,4 @@ if (config.runsInWidget) {
 }
 
 Script.complete();
+
