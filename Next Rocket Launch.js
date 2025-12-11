@@ -30,7 +30,7 @@ const STYLES = {
 
 // === HELPER FUNCTIONS ===
 // Format timestap into localized date/time string
-function formatDateTime(timestamp) {
+const formatDateTime = (timestamp) => {
   if (!timestamp) return "Launch time TBD";
   const date = new Date(timestamp);
   const locale = Device.language();
@@ -45,10 +45,10 @@ function formatDateTime(timestamp) {
     hour12: false,
   }).format(date);
   return `${dateString} at ${timeString}`;
-}
+};
 
 // Calculate countodnw string from now until timestamp
-function getCountdown(timestamp) {
+const getCountdown = (timestamp) => {
   if (!timestamp) return "Countdown unavailable";
   const diffMs = new Date(timestamp) - new Date();
   if (diffMs <= 0) return "Launched";
@@ -61,11 +61,11 @@ function getCountdown(timestamp) {
   return `${days ? days + "d " : ""}${
     days || hours ? hours + "h " : ""
   }${minutes}m`;
-}
+};
 
 // === NETWORK & API CLIENT ===
 // Retrieve cached API data or fetch from API if cache is invalid
-async function getCachedData() {
+const getCachedData = async () => {
   const fileManager = FileManager.local();
   const file = fileManager.joinPath(
     fileManager.cacheDirectory(),
@@ -91,10 +91,10 @@ async function getCachedData() {
     console.error("Failed to fetch data:", error);
     return null;
   }
-}
+};
 
 // Load image from cache or fetch and cache if not available
-async function cacheImage(url, filename) {
+const cacheImage = async (url, filename) => {
   const fileManager = FileManager.local();
   const path = fileManager.joinPath(fileManager.cacheDirectory(), filename);
 
@@ -107,74 +107,68 @@ async function cacheImage(url, filename) {
     console.error("Failed to cache/load image:", error);
     return null;
   }
-}
+};
 
 // === UI COMPONENTS ===
 // Generic text element
-function createText(stack, text, font, color, align = "center") {
-  const line = stack.addText(text);
-  line.font = font;
-  line.textColor = color;
-  switch (align) {
-    case "center":
-      line.centerAlignText();
-      break;
-    case "left":
-      line.leftAlignText();
-      break;
-    case "right":
-      line.rightAlignText();
-      break;
-  }
-  return line;
-}
+const createText = (widget, text, font, color, align = "center") => {
+  const textElement = widget.addText(text);
+  textElement.font = font;
+  textElement.textColor = color;
+
+  const alignMap = {
+    left: () => textElement.leftAlignText(),
+    center: () => textElement.centerAlignText(),
+    right: () => textElement.rightAlignText(),
+  };
+
+  (alignMap[align] || alignMap.center)();
+
+  return textElement;
+};
 
 // Mission name text
-function addMissionText(stack, missionName) {
-  return createText(
+const addMissionText = (stack, missionName) =>
+  createText(
     stack,
     missionName || "Unknown Mission",
     STYLES.fonts.title,
     STYLES.colors.text,
     "center"
   );
-}
 
 // Rocket type text
-function addRocketType(stack, rocketName) {
-  return createText(
+const addRocketType = (stack, rocketName) =>
+  createText(
     stack,
     rocketName || "Unknown Rocket",
     STYLES.fonts.text,
     STYLES.colors.text,
     "center"
   );
-}
 
 // Launch date/time text
-function addLaunchDateText(stack, dateString) {
-  return createText(
+const addLaunchDateText = (stack, dateString) =>
+  createText(
     stack,
     dateString || "Launch time TBD",
     STYLES.fonts.text,
     STYLES.colors.text,
     "center"
   );
-}
 
 // Divider line
-function addDivider(stack, length = 14) {
-  return createText(
+const addDivider = (stack, length = 14) =>
+  createText(
     stack,
     "—".repeat(length),
     STYLES.fonts.divider,
     STYLES.colors.divider,
     "center"
   );
-}
 
 // Countdown text
-function addCountdownText(stack, timestamp) {
+const addCountdownText = (stack, timestamp) => {
   const countdownString = getCountdown(timestamp);
   return createText(
     stack,
@@ -185,10 +179,10 @@ function addCountdownText(stack, timestamp) {
       : STYLES.colors.text,
     "center"
   );
-}
+};
 
 // === WIDGET ASSEMBLY ===
-async function createWidget(launch) {
+const createWidget = async (launch) => {
   const widget = new ListWidget(); // Background image and gradient
 
   const background = await cacheImage(
@@ -205,27 +199,27 @@ async function createWidget(launch) {
     widget.backgroundColor = new Color("#000000");
   } // Main vertical stack
 
-  const mainStack = widget.addStack();
-  mainStack.layoutVertically();
-  mainStack.centerAlignContent(); // Mission name
+  const stack = widget.addStack();
+  stack.layoutVertically();
+  stack.centerAlignContent(); // Mission name
 
-  addMissionText(mainStack, launch.mission?.name);
-  mainStack.addSpacer(6); // Rocket type
+  addMissionText(stack, launch.mission?.name);
+  stack.addSpacer(6); // Rocket type
 
-  addRocketType(mainStack, launch.rocket?.configuration?.name);
-  mainStack.addSpacer(4); // Launch date/time
+  addRocketType(stack, launch.rocket?.configuration?.name);
+  stack.addSpacer(4); // Launch date/time
 
-  addLaunchDateText(mainStack, formatDateTime(launch.net)); // Divider before countdown
+  addLaunchDateText(stack, formatDateTime(launch.net)); // Divider before countdown
 
-  mainStack.addSpacer(8);
-  addDivider(mainStack);
-  mainStack.addSpacer(6); // Countdown stack
+  stack.addSpacer(8);
+  addDivider(stack);
+  stack.addSpacer(6); // Countdown stack
 
-  const countdownStack = mainStack.addStack();
-  countdownStack.layoutHorizontally();
-  countdownStack.addSpacer(); // Left flexible spacer
-  addCountdownText(countdownStack, launch.net);
-  countdownStack.addSpacer(); // Flexible spacer on right // Auto-refresh widget
+  const countdown = stack.addStack();
+  countdown.layoutHorizontally();
+  countdown.addSpacer(); // Left flexible spacer
+  addCountdownText(countdown, launch.net);
+  countdown.addSpacer(); // Flexible spacer on right // Auto-refresh widget
 
   const now = Date.now();
   const launchMs = launch.net ? new Date(launch.net).getTime() : now;
@@ -234,7 +228,7 @@ async function createWidget(launch) {
   ); // Return widget with its constructed UI elements
 
   return widget;
-}
+};
 
 // === MAIN EXECUTION ===
 // Load cached data
