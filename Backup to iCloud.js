@@ -2,6 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: cyan; icon-glyph: cloud;
 
+// === MAIN EXECUTION ===
 const main = async () => {
   // === CONFIGURATION ===
   const CONFIG = {
@@ -53,7 +54,7 @@ const main = async () => {
     throw error;
   }
 
-  // === CORE LOGIC / WORKFLOW FUNCTIONS ===
+  // === CORE SCRIPT LOGIC ===
   let scriptsBackedUp = 0;
   let scriptsSkipped = 0;
   const backedUpFileNames = [];
