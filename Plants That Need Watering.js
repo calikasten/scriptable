@@ -108,15 +108,14 @@ const createText = (widget, text, font, color, align = "left") => {
 };
 
 // Count number at top of widget
-const addCountText = (stack, count) => {
-  return createText(
+const addCountText = (stack, count) =>
+  createText(
     stack,
     `${count}`,
     STYLES.fonts.count,
     STYLES.colors.text,
     "center"
   );
-};
 
 // Status text under count
 const addStatusText = (stack, count) => {
