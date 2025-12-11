@@ -34,12 +34,12 @@ const STYLES = {
 
 // === HELPERS ===
 // Calculate time difference
-function timeDiff(timestampStr) {
+const timeDiff = (timestampStr) => {
   if (!timestampStr) return "N/A";
   const date = new Date(timestampStr);
   const diffMS = new Date() - date;
   return (diffMS / (1000 * 60 * 60)).toFixed(1);
-}
+};
 
 // === API CLIENT ===
 // Function to get data from API
@@ -65,44 +65,29 @@ async function fetchLatestTimestamp(viewName) {
 }
 
 // === UI COMPONENTS ===
-// Generic text helper
-function createText(
-  stack,
-  text,
-  font = STYLES.fonts.text,
-  color = STYLES.colors.text,
-  align = "left"
-) {
-  const line = stack.addText(text);
-  line.font = font;
-  line.textColor = color;
-  switch (align) {
-    case "center":
-      line.centerAlignText();
-      break;
-    case "right":
-      line.rightAlignText();
-      break;
-    case "left":
-    default:
-      line.leftAlignText();
-  }
-  return line;
-}
+// Generic text element
+const createText = (widget, text, font, color, align = "left") => {
+  const textElement = widget.addText(text);
+  textElement.font = font;
+  textElement.textColor = color;
+
+  const alignMap = {
+    left: () => textElement.leftAlignText(),
+    center: () => textElement.centerAlignText(),
+    right: () => textElement.rightAlignText(),
+  };
+
+  (alignMap[align] || alignMap.left)();
+
+  return textElement;
+};
 
 // Title text
-function addTitle(stack, text) {
-  return createText(
-    stack,
-    text,
-    STYLES.fonts.title,
-    STYLES.colors.title,
-    "center"
-  );
-}
+const addTitle = (stack, text) =>
+  createText(stack, text, STYLES.fonts.title, STYLES.colors.title, "center");
 
 // Individual "activity" lines
-function addActivityLine(stack, emoji, timestampStr) {
+const addActivityLine = (stack, emoji, timestampStr) => {
   const activityLine = stack.addStack();
   activityLine.layoutHorizontally();
   activityLine.centerAlignContent();
@@ -124,7 +109,7 @@ function addActivityLine(stack, emoji, timestampStr) {
     STYLES.colors.suffix
   );
   return activityLine;
-}
+};
 
 // === WIDGET ASSEMBLY ===
 async function createWidget() {
