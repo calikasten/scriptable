@@ -8,7 +8,7 @@ const CONFIG = {
   cacheDurationMs: 30 * 60 * 1000, // 30 minutes
   backgroundImageUrl:
     "https://calikasten.wordpress.com/wp-content/uploads/2025/10/spacex-1047301226a.webp",
-  refreshIntervalMs: 2 * 60 * 1000, // 15 minutes
+  refreshIntervalMs: 5 * 60 * 1000, // 5 minutes
 };
 
 // === STYLES ===
