@@ -85,27 +85,19 @@ async function getData(useCache = true) {
 
 // === UI COMPONENTS ===
 // Generic text element
-const createText = (
-  stack,
-  text,
-  font = STYLE.font,
-  color = STYLE.color,
-  align = "center"
-) => {
-  const textElement = stack.addText(text);
+const createText = (widget, text, font, color, align = "center") => {
+  const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
-  switch (align) {
-    case "center":
-      textElement.centerAlignText();
-      break;
-    case "left":
-      textElement.leftAlignText();
-      break;
-    case "right":
-      textElement.rightAlignText();
-      break;
-  }
+
+  const alignMap = {
+    left: () => textElement.leftAlignText(),
+    center: () => textElement.centerAlignText(),
+    right: () => textElement.rightAlignText(),
+  };
+
+  (alignMap[align] || alignMap.center)();
+
   return textElement;
 };
 
