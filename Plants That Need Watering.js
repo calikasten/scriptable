@@ -143,7 +143,7 @@ const addPlantName = (stack, name) => {
 };
 
 // === WIDGET ASSEMBLY ===
-const createWidget = (plants) => {
+function createWidget(plants) {
   const widget = new ListWidget();
   const [top, right, bottom, left] = STYLES.spacing.widgetPadding;
   widget.setPadding(top, right, bottom, left);
