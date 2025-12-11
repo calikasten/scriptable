@@ -91,23 +91,24 @@ const analyzeWatering = (data) =>
 
 // === UI COMPONENTS ===
 // Generic text element
-function createText(widget, text, font, color, align = "left") {
-  const line = widget.addText(text);
-  line.font = font;
-  line.textColor = color;
-  switch (align) {
-    case "center":
-      line.centerAlignText();
-      break;
-    case "left":
-      line.leftAlignText();
-      break;
-  }
-  return line;
-}
+const createText = (widget, text, font, color, align = "left") => {
+  const textElement = widget.addText(text);
+  textElement.font = font;
+  textElement.textColor = color;
+
+  const alignMap = {
+    left: () => textElement.leftAlignText(),
+    center: () => textElement.centerAlignText(),
+    right: () => textElement.rightAlignText(),
+  };
+
+  (alignMap[align] || alignMap.left)();
+
+  return textElement;
+};
 
 // Count number at top of widget
-function addCountText(stack, count) {
+const addCountText = (stack, count) => {
   return createText(
     stack,
     `${count}`,
@@ -115,10 +116,10 @@ function addCountText(stack, count) {
     STYLES.colors.text,
     "center"
   );
-}
+};
 
 // Status text under count
-function addStatusText(stack, count) {
+const addStatusText = (stack, count) => {
   const text = count === 1 ? "plant needs watering." : "plants need watering.";
   return createText(
     stack,
@@ -127,10 +128,10 @@ function addStatusText(stack, count) {
     STYLES.colors.text,
     "center"
   );
-}
+};
 
 // Individual plant name in the list
-function addPlantName(stack, name) {
+const addPlantName = (stack, name) => {
   const text = createText(
     stack,
     `• ${name}`,
@@ -140,7 +141,7 @@ function addPlantName(stack, name) {
   );
   stack.addSpacer(STYLES.spacing.spacerSmall);
   return text;
-}
+};
 
 // === WIDGET ASSEMBLY ===
 const createWidget = (plants) => {
