@@ -65,7 +65,7 @@ const getCountdown = (timestamp) => {
 
 // === NETWORK & API CLIENT ===
 // Retrieve cached API data or fetch from API if cache is invalid
-const getCachedData = async () => {
+async function getCachedData() {
   const fileManager = FileManager.local();
   const file = fileManager.joinPath(
     fileManager.cacheDirectory(),
@@ -182,7 +182,7 @@ const addCountdownText = (stack, timestamp) => {
 };
 
 // === WIDGET ASSEMBLY ===
-const createWidget = async (launch) => {
+async function createWidget(launch) {
   const widget = new ListWidget(); // Background image and gradient
 
   const background = await cacheImage(
