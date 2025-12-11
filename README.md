@@ -35,7 +35,7 @@ Displays a list of plants that should be watered today. Plant watering is logged
 
 https://github.com/user-attachments/assets/ab145ccd-9a7f-44b9-ad72-96e6e898ffe3
 
-[Satellite Overhead]https://github.com/calikasten/scriptable/blob/main/Satellite%20Overhead.js] <br>
+[Satellite Overhead](https://github.com/calikasten/scriptable/blob/main/Satellite%20Overhead.js) <br>
 View info about a satellite above.
 
 ## Productivity
