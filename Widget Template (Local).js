@@ -84,7 +84,7 @@ const addTextRow = (widget, numberedLine) =>
 // === WIDGET ASSEMBLY  ===
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
 
-const createWidget = () => {
+function createWidget() {
   const widget = new ListWidget(); // Widget title
 
   addTitle(widget, "TITLE"); // Data to display in widget
