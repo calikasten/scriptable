@@ -134,7 +134,7 @@ const main = async () => {
     note = await editData(note);
     saveData(note);
   }
-  a;
+  
   const widget = await createWidget(note); // Check if script is running inside a widget
 
   if (!config.runsInWidget) {
