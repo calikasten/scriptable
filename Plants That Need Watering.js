@@ -3,19 +3,17 @@
 // icon-color: deep-green; icon-glyph: leaf;
 
 // === CONFIGURATION ===
-const CONFIG = {
-  folder: "Plant Data",
-  file: "plant-data.json",
-};
+const FOLDER = "Plant Data";
+const FILE = "plant-data.json";
 
 // === GLOBAL VARIABLES ===
 // Initialize iCloud file manager and set up paths
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
-  CONFIG.folder
+  FOLDER
 );
-const filePath = fileManager.joinPath(folderPath, CONFIG.file);
+const filePath = fileManager.joinPath(folderPath, FILE);
 
 // Create folder if it doesn't exist
 if (!fileManager.fileExists(folderPath)) {
@@ -188,7 +186,7 @@ function createWidget(plants) {
   }
   // Return widget with its constructed UI elements
   return widget;
-};
+}
 
 // === MAIN EXECUTION ===
 // Load data from Shortcut parameter or file
