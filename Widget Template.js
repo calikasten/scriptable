@@ -5,7 +5,7 @@
 // === CONFIGURATION ===
 // This section stores all "settings", nothing here should change during execution
 
-const CONFIG = {
+const config = {
 	apiKey: "<INSERT API KEY HERE>",
 	appId: "appHEaSiBocpIp1Yw",
 	tableId: "tblaiUHCIOq3LZiDy",
@@ -17,7 +17,7 @@ const CONFIG = {
 // This section defines visual styling (how the UI looks)
 
 // Define colors and fonts
-const STYLES = {
+const styles = {
   colors: {
     title: new Color("#FFFFFF"),
     text: new Color("#FFFF00"),
@@ -51,7 +51,7 @@ async function getData(useCache = true) {
   const fileManager = FileManager.local();
   const cachePath = fileManager.joinPath(
     fileManager.documentsDirectory(),
-    CONFIG.cacheFile
+    config.cacheFile
   ); // Read cached data
   const readCache = () => {
     if (!fileManager.fileExists(cachePath)) return null;
@@ -62,13 +62,13 @@ async function getData(useCache = true) {
     }
   };
   const cached = useCache ? readCache() : null; // Return cached fields if cached data is valid
-  if (cached && Date.now() - cached._fetched < CONFIG.cacheDurationMs)
+  if (cached && Date.now() - cached._fetched < config.cacheDurationMs)
     return cached.fields; // Otherwise, fetch data from API
   try {
     const request = new Request(
-      `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
+      `https://api.airtable.com/v0/${config.appId}/${config.tableId}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
     );
-    request.headers = { Authorization: `Bearer ${CONFIG.apiKey}` };
+    request.headers = { Authorization: `Bearer ${config.apiKey}` };
     const response = await request.loadJSON();
     const fields = response.records?.[0]?.fields || null; // Update cache with newly fetched data
     if (fields)
@@ -103,15 +103,15 @@ const createText = (widget, text, font, color, align = "center") => {
 
 // Add title text element
 const addTitle = (widget, text) =>
-  createText(widget, text, STYLES.fonts.title, STYLES.colors.title, "center");
+  createText(widget, text, styles.fonts.title, styles.colors.title, "center");
 
 // Add text row element
 const addTextRow = (widget, numberedLines) =>
   createText(
     widget,
     numberedLines.join("\n"),
-    STYLES.fonts.text,
-    STYLES.colors.text,
+    styles.fonts.text,
+    styles.colors.text,
     "left"
   );
 
