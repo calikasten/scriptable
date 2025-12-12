@@ -3,8 +3,10 @@
 // icon-color: deep-green; icon-glyph: leaf;
 
 // === CONFIGURATION ===
-const FOLDER = "Plant Data";
-const FILE = "plant-data.json";
+const CONFIG {
+  folder: "Plant Data",
+  file: "plant-data.json",
+};
 
 // === GLOBAL VARIABLES ===
 // Initialize iCloud file manager and set up paths
