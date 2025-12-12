@@ -71,10 +71,10 @@ const addTitle = (widget, text) =>
   createText(widget, text, styles.fonts.title, styles.colors.title, "center");
 
 // Add text row element
-const addTextRow = (widget, numberedLines) =>
+const addTextRow = (widget, numberedRows) =>
   createText(
     widget,
-    numberedLines.join("\n"),
+    numberedRows.join("\n"),
     styles.fonts.text,
     styles.colors.text,
     "left"
@@ -92,9 +92,8 @@ function createWidget() {
   // Data to display in widget
   const widgetData = ["text", "or", "other", "data", "types"]; 
 
-  
   const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, numberedLines); // Number each line of widget data
+  addTextRow(widget, numberedRows); // Number each row of widget data
   
   return widget; // Return widget with its constructed UI elements
 }
