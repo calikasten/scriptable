@@ -5,18 +5,16 @@
 // === MAIN EXECUTION ===
 async function main() {
   // === CONFIGURATION ===
-  const CONFIG = {
+  const config = {
     overwriteOnlyIfChanged: true,
-    backupFolderName: "Script Backups",
+    folder: "Script Backups",
   };
 
   // === PATHS ===
+  // Determine directories for documents and backups
   const fileManager = FileManager.iCloud();
   const rootDirectory = fileManager.documentsDirectory();
-  const backupDirectory = fileManager.joinPath(
-    rootDirectory,
-    CONFIG.backupFolderName
-  );
+  const backupDirectory = fileManager.joinPath(rootDirectory, config.folder);
 
   // If backup folder doesn't exist, create it
   if (!fileManager.fileExists(backupDirectory)) {
@@ -26,11 +24,11 @@ async function main() {
   // === HELPERS ===
   // Check if a file is a hidden file or system file
   const isHiddenOrSystemFile = (fileName) => {
-    const lower = fileName.toLowerCase();
+    const lowercaseName = fileName.toLowerCase();
     return (
       fileName.startsWith(".") ||
-      lower.includes("__macosx") ||
-      lower === ".ds_store"
+      lowercaseName.includes("__macosx") ||
+      lowercaseName === ".ds_store"
     );
   };
 
@@ -44,15 +42,16 @@ async function main() {
   };
 
   // Get all scripts from root directory (with .js extension)
-  let scriptFiles;
-  try {
-    scriptFiles = fileManager
-      .listContents(rootDirectory)
-      .filter((name) => name.endsWith(".js") && !isHiddenOrSystemFile(name));
-  } catch (error) {
-    console.error(`[Backup][ERROR] Unable to list root directory: ${error}`);
-    throw error;
-  }
+  const scriptFiles = (() => {
+    try {
+      return fileManager
+        .listContents(rootDirectory)
+        .filter((name) => name.endsWith(".js") && !isHiddenOrSystemFile(name));
+    } catch (error) {
+      console.error(`[Backup][ERROR] Unable to list root directory: ${error}`);
+      throw error;
+    }
+  })();
 
   // === CORE SCRIPT LOGIC ===
   let scriptsBackedUp = 0;
@@ -64,6 +63,7 @@ async function main() {
     const sourcePath = fileManager.joinPath(rootDirectory, fileName);
 
     let content;
+
     // Read file content
     try {
       content = fileManager.readString(sourcePath);
@@ -77,7 +77,7 @@ async function main() {
 
     // Criteria to create backup or overwrite existing backup
     const writeBackup =
-      !CONFIG.overwriteOnlyIfChanged ||
+      !config.overwriteOnlyIfChanged ||
       !fileManager.fileExists(backupPath) ||
       !filesAreEqual(backupPath, content);
 
@@ -93,7 +93,6 @@ async function main() {
         console.error(`[Backup][ERROR] Failed to write ${fileName}: ${error}`);
       }
     } else {
-      // Otherwise skip backup
       scriptsSkipped++;
     }
   }
