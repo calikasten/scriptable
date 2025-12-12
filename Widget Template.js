@@ -24,7 +24,7 @@ dateFormatter.dateFormat = "MM-dd-yyyy";
 const STYLES = {
   colors: {
     title: new Color("#FFFFFF"),
-    text: new Color("FFFF00"),
+    text: new Color("#FFFF00"),
   },
   fonts: {
     title: Font.boldSystemFont(16),
@@ -123,15 +123,24 @@ function createWidget(fields) {
   addTitle(widget, "TITLE");
   widget.addSpacer(5);
 
-  const timestamp = fields?.Timestamp ? new Date(fields.Timestamp) : null; // Data to display
+  const {
+    Timestamp,
+    String: str,
+    Number: num,
+    Boolean: bool,
+    "Single-Select Array": singleArray,
+    "Multi-Select Array": multiArray,
+  } = fields || {};
+
+  const timestamp = Timestamp ? new Date(Timestamp) : null; // Data to display
   const widgetData = [
     timestamp ? dateFormatter.string(timestamp) : "N/A",
     daysSince(timestamp),
-    fields?.String ?? "N/A",
-    fields?.Number ?? "N/A",
-    fields?.Boolean ? "true" : "false",
-    arrayToString(fields?.["Single-Select Array"]),
-    arrayToString(fields?.["Multi-Select Array"]),
+    str ?? "N/A",
+    num ?? "N/A",
+    bool ? "true" : "false",
+    arrayToString(singleArray),
+    arrayToString(multiArray),
   ]; // Number each line of widget data
   const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   addTextRow(widget, numberedLines); // Return widget with its constructed UI elements
