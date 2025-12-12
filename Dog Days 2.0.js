@@ -136,4 +136,3 @@ if (config.runsInWidget) {
   widget.presentSmall();
 }
 Script.complete();
-
