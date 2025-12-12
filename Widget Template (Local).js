@@ -31,7 +31,7 @@ const STYLES = {
 // This section contains utility functions that transform data (format, convert, calculate, etc.)
 
 // Format date in MM-dd-yyyy
-const DATE_FORMAT = "MM-dd-yyyy";
+const dateFormatter = "MM-dd-yyyy";
 
 const exampleHelper = () => {
   // return formattedText;
@@ -96,7 +96,7 @@ function createWidget() {
   addTextRow(widget, numberedLine); // Return widget with its constructed UI elements
 
   return widget;
-};
+}
 
 // === MAIN EXECUTION ===
 // This section is where the program actually runs (fetches all required data, builds the widget, and displays the widget)
