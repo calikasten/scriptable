@@ -36,19 +36,18 @@ const STYLES = {
 // Calculate time difference
 const timeDiff = (timestampStr) => {
   if (!timestampStr) return "N/A";
-  const date = new Date(timestampStr);
-  const diffMS = new Date() - date;
+  const date = new Date(timestampStr ?? 0);
+  const diffMS = new Date() - new Date(timestampStr ?? 0);
   return (diffMS / (1000 * 60 * 60)).toFixed(1);
 };
 
 // === API CLIENT ===
 // Function to get data from API
 async function fetchLatestTimestamp(viewName) {
-  const url = `https://api.airtable.com/v0/${CONFIG.appId}/${
-    CONFIG.tableId
-  }?maxRecords=1&view=${encodeURIComponent(
-    viewName
-  )}&sort[0][field]=Timestamp&sort[0][direction]=desc`;
+  const url =
+    `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}` +
+    `?maxRecords=1&view=${encodeURIComponent(viewName)}` +
+    `&sort[0][field]=Timestamp&sort[0][direction]=desc`;
   try {
     const request = new Request(url);
     request.headers = {
@@ -56,7 +55,6 @@ async function fetchLatestTimestamp(viewName) {
     };
     const response = await request.loadJSON(); // Check if the response is valid, log response, and return data
     if (response.records.length === 0) return null;
-    console.log(response.records[0].fields["Timestamp"]);
     return response.records[0].fields["Timestamp"];
   } catch (error) {
     console.error(`Error fetching data from API for ${viewName}.`);
@@ -138,3 +136,4 @@ if (config.runsInWidget) {
   widget.presentSmall();
 }
 Script.complete();
+
