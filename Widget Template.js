@@ -138,9 +138,9 @@ function createWidget(fields) {
   const widgetData = [
     timestamp ? dateFormatter.string(timestamp) : "N/A",
     daysSince(timestamp),
-    str ?? "N/A",
-    num ?? "N/A",
-    bool ? "true" : "false",
+    string ?? "N/A",
+    number ?? "N/A",
+    boolean ? "true" : "false",
     arrayToString(singleArray),
     arrayToString(multiArray),
   ]; 
