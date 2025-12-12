@@ -166,7 +166,7 @@ const addLaunchDateText = (stack, dateString) =>
     "center"
   );
 
-// Add countdown as text element
+// Add countdown of calculated tiem until launch as text element
 const addCountdownText = (stack, timestamp) => {
   const countdownString = getCountdown(timestamp);
   return createText(
