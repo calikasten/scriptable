@@ -240,10 +240,9 @@ async function createWidget(launch) {
   countdown.addSpacer(); 
   
   // Auto-refresh widget
-  const now = Date.now();
   const launchMs = launch.net ? new Date(launch.net).getTime() : now;
   widget.refreshAfterDate = new Date(
-    Math.min(now + config.refreshIntervalMs, launchMs)
+    Math.min(Date.now() + config.refreshIntervalMs, launchMs)
   );
 
   return widget; // Return widget with its constructed UI elements
