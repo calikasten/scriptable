@@ -89,24 +89,31 @@ const editText = async (existing) => {
   return res === -1 ? existing : alert.textFieldValue(0);
 };
 
-// Generic text element
-const createText = (widget, text, font, color, align = "center") => {
+// Create generic alignment for text elements
+const alignText = (textElement, align) => {
+  switch (align) {
+    case "center":
+      textElement.centerAlignText();
+      break;
+    case "right":
+      textElement.rightAlignText();
+      break;
+    default:
+      textElement.leftAlignText();
+  }
+};
+
+// Create generic text element
+const createText = (widget, text, font, color, align = "left") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
 
-  const alignMap = {
-    left: () => textElement.leftAlignText(),
-    center: () => textElement.centerAlignText(),
-    right: () => textElement.rightAlignText(),
-  };
-
-  (alignMap[align] || alignMap.center)();
-
+  alignText(textElement, align);
   return textElement;
 };
 
-// Add main sticky note text
+// Add main sticky note content as text element
 const addStickyNoteText = (stack, text) =>
   createText(stack, text, styles.font, styles.textColor, "center");
 
