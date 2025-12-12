@@ -49,28 +49,35 @@ async function fetchImage(url) {
 }
 
 // === UI COMPONENTS ===
-// Generic text element
-const createText = (widget, text, font, color, align = "center") => {
+// Create generic alignment for text elements
+const alignText = (textElement, align) => {
+  switch (align) {
+    case "center":
+      textElement.centerAlignText();
+      break;
+    case "right":
+      textElement.rightAlignText();
+      break;
+    default:
+      textElement.leftAlignText();
+  }
+};
+
+// Create generic text element
+const createText = (widget, text, font, color, align = "left") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
 
-  const alignMap = {
-    left: () => textElement.leftAlignText(),
-    center: () => textElement.centerAlignText(),
-    right: () => textElement.rightAlignText(),
-  };
-
-  (alignMap[align] || alignMap.center)();
-
+  alignText(textElement, align);
   return textElement;
 };
 
-// Add title text element
+// Add title as text element
 const addTitle = (widget, text) =>
   createText(widget, text, styles.fonts.title, styles.colors.title, "center");
 
-// Add text row element
+// Add row as text element
 const addTextRow = (widget, numberedRows) =>
   createText(
     widget,
