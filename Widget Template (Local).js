@@ -34,7 +34,6 @@ const STYLES = {
 const dateFormat = "MM-dd-yyyy";
 
 const exampleHelper = () => {
-  // return formattedText;
 };
 
 // === NETWORK & API CLIENT ===
