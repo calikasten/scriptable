@@ -31,7 +31,7 @@ const STYLES = {
 // This section contains utility functions that transform data (format, convert, calculate, etc.)
 
 // Format date in MM-dd-yyyy
-const dateFormatter = "MM-dd-yyyy";
+const dateFormat = "MM-dd-yyyy";
 
 const exampleHelper = () => {
   // return formattedText;
@@ -67,15 +67,15 @@ const createText = (widget, text, font, color, align = "center") => {
   return textElement;
 };
 
-// Title text
+// Add title text element
 const addTitle = (widget, text) =>
   createText(widget, text, STYLES.fonts.title, STYLES.colors.title, "center");
 
-// Text rows
-const addTextRow = (widget, numberedLine) =>
+// Add text row element
+const addTextRow = (widget, numberedLines) =>
   createText(
     widget,
-    numberedLine.join("\n"),
+    numberedLines.join("\n"),
     STYLES.fonts.text,
     STYLES.colors.text,
     "left"
@@ -92,14 +92,15 @@ function createWidget() {
 
   const widgetData = ["text", "or", "other", "data", "types"]; // Number each line of widget data
 
-  const numberedLine = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, numberedLine); // Return widget with its constructed UI elements
+  const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
+  addTextRow(widget, numberedLines); // Return widget with its constructed UI elements
 
   return widget;
 }
 
 // === MAIN EXECUTION ===
 // This section is where the program actually runs (fetches all required data, builds the widget, and displays the widget)
+
 const data = await fetchData(); // Get data
 const widget = await createWidget(); // Build widget
 
