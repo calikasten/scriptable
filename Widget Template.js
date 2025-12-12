@@ -147,8 +147,7 @@ function createWidget(fields) {
   const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
   addTextRow(widget, numberedLines); // Number each line of widget data
 
-  // Return widget with its constructed UI elements
-  return widget;
+  return widget; // Return widget with its constructed UI elements
 }
 
 // === MAIN EXECUTION ===
