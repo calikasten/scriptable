@@ -9,8 +9,8 @@ const CONFIG = {
   tableId: "tbl4cXnZhwuW1TBj4",
 };
 
-// List of activities as Airtable views to surface as list elements
-const views = [
+// List of activities as Airtable views
+const activityViews = [
   { name: "Pee", emoji: "💛" },
   { name: "Poop", emoji: "💩" },
   { name: "Walk", emoji: "🚶" },
@@ -19,7 +19,7 @@ const views = [
 
 // === STYLES ===
 // Format font size and color
-const STYLES = {
+const styles = {
   fonts: {
     title: Font.semiboldSystemFont(20),
     text: Font.semiboldSystemFont(14),
@@ -34,9 +34,8 @@ const STYLES = {
 
 // === HELPERS ===
 // Calculate time difference
-const timeDiff = (timestampStr) => {
+const calculateTimeDiff = (timestampStr) => {
   if (!timestampStr) return "N/A";
-  const date = new Date(timestampStr ?? 0);
   const diffMS = new Date() - new Date(timestampStr ?? 0);
   return (diffMS / (1000 * 60 * 60)).toFixed(1);
 };
@@ -44,16 +43,19 @@ const timeDiff = (timestampStr) => {
 // === API CLIENT ===
 // Function to get data from API
 async function fetchLatestTimestamp(viewName) {
-  const url =
-    `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}` +
-    `?maxRecords=1&view=${encodeURIComponent(viewName)}` +
-    `&sort[0][field]=Timestamp&sort[0][direction]=desc`;
+  const url = `https://api.airtable.com/v0/${config.appId}/${
+    config.tableId
+  }?maxRecords=1&view=${encodeURIComponent(
+    viewName
+  )}&sort[0][field]=Timestamp&sort[0][direction]=desc`;
   try {
     const request = new Request(url);
     request.headers = {
-      Authorization: `Bearer ${CONFIG.apiKey}`,
+      Authorization: `Bearer ${config.apiKey}`,
     };
-    const response = await request.loadJSON(); // Check if the response is valid, log response, and return data
+    const response = await request.loadJSON(); 
+    
+    // Check if the response is valid, log response, and return data
     if (response.records.length === 0) return null;
     return response.records[0].fields["Timestamp"];
   } catch (error) {
@@ -80,52 +82,50 @@ const createText = (widget, text, font, color, align = "left") => {
   return textElement;
 };
 
-// Title text
-const addTitle = (stack, text) =>
-  createText(stack, text, STYLES.fonts.title, STYLES.colors.title, "center");
+// Add title text element
+const addTitle = (widget, text) =>
+  createText(widget, text, styles.fonts.title, styles.colors.text, "center");
 
-// Individual "activity" lines
-const addActivityLine = (stack, emoji, timestampStr) => {
-  const activityLine = stack.addStack();
-  activityLine.layoutHorizontally();
-  activityLine.centerAlignContent();
-  activityLine.setPadding(5, 6, 0, 0);
-  createText(activityLine, `${emoji} `, STYLES.fonts.text, STYLES.colors.text);
+// Add individual "activity" row element
+const addActivityRow = (widget, emoji, timestampStr) => {
+  const activity = widget.addStack();
+  activity.layoutHorizontally();
+  activity.centerAlignContent();
+  activity.setPadding(5, 6, 0, 0);
+  createText(activity, `${emoji} `, styles.fonts.text, styles.colors.text);
   createText(
-    activityLine,
+    activity,
     `${timestampStr} `,
-    STYLES.fonts.text,
-    STYLES.colors.text
+    styles.fonts.text,
+    styles.colors.text
   );
-  const suffixText = activityLine.addStack();
-  suffixText.layoutVertically();
-  suffixText.addSpacer(4);
-  createText(
-    suffixText,
-    "hours ago",
-    STYLES.fonts.suffix,
-    STYLES.colors.suffix
-  );
-  return activityLine;
+  const suffix = activity.addStack();
+  suffix.layoutVertically();
+  suffix.addSpacer(4);
+  createText(suffix, "hours ago", styles.fonts.suffix, styles.colors.suffix);
+  return activity;
 };
 
 // === WIDGET ASSEMBLY ===
 async function createWidget() {
   const widget = new ListWidget();
-  widget.backgroundColor = STYLES.colors.background; // Widget title
-  addTitle(widget, "Barley 🐶");
-  widget.addSpacer(); // Add a list entry for each activity with its most recent timestamp
-  for (let view of views) {
-    const timestamp = await fetchLatestTimestamp(view.name);
-    addActivityLine(widget, view.emoji, timeDiff(timestamp));
-  }
-  widget.addSpacer(); // Return widget with its constructed UI elements
+  widget.backgroundColor = styles.colors.background;
 
-  return widget;
+  addTitle(widget, "Barley 🐶"); // Widget title
+  widget.addSpacer(); 
+  
+  // Data to display in widget
+  for (let activityView of activityViews) {
+    const timestamp = await fetchLatestTimestamp(activityView.name);
+    addActivityRow(widget, activityView.emoji, calculateTimeDiff(timestamp));
+  }
+  widget.addSpacer();
+
+  return widget; // Return widget with its constructed UI elements
 }
 
 // === MAIN EXECUTION ===
-let widget = await createWidget();
+const widget = await createWidget();
 
 // Check if script is running inside a widget
 if (config.runsInWidget) {
