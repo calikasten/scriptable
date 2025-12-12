@@ -3,7 +3,7 @@
 // icon-color: deep-green; icon-glyph: leaf;
 
 // === CONFIGURATION ===
-const CONFIG {
+const config = {
   folder: "Plant Data",
   file: "plant-data.json",
 };
@@ -13,9 +13,9 @@ const CONFIG {
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
-  FOLDER
+  config.folder
 );
-const filePath = fileManager.joinPath(folderPath, FILE);
+const filePath = fileManager.joinPath(folderPath, config.file);
 
 // Create folder if it doesn't exist
 if (!fileManager.fileExists(folderPath)) {
@@ -28,7 +28,7 @@ if (!fileManager.fileExists(folderPath)) {
 
 // === STYLES ===
 // Define colors, fonts, and layout spacing
-const STYLES = {
+const styles = {
   colors: {
     backgroundAlert: new Color("#B00020"),
     backgroundNeutral: new Color("#001F3F"),
@@ -51,17 +51,18 @@ const STYLES = {
 
 // === HELPERS ===
 // Save data to JSON file (overwrites existing content)
-const saveData = (data) => {
+const saveData = (fileManager, filePath, plantData) => {
   try {
-    fileManager.writeString(filePath, JSON.stringify(data));
+    fileManager.writeString(filePath, JSON.stringify(plantData));
   } catch (error) {
     console.error(error);
   }
 };
 
 // Load cached data from JSON file
-const loadData = () => {
+const loadData = (fileManager, filePath) => {
   if (!fileManager.fileExists(filePath)) return null;
+
   try {
     return JSON.parse(fileManager.readString(filePath));
   } catch (error) {
@@ -77,84 +78,94 @@ const daysSince = (dateStr) => {
 };
 
 // Determine which plants need watering
-const analyzeWatering = (data) =>
-  data && typeof data === "object"
-    ? Object.entries(data)
-        .filter(
-          ([, plant]) =>
-            plant.lastWatered &&
-            plant.wateringSchedule &&
-            daysSince(plant.lastWatered) >= +plant.wateringSchedule
-        )
-        .map(([name]) => name)
-    : [];
+const analyzeWatering = (plantData) => {
+  if (!plantData || typeof plantData !== "object") {
+    return [];
+  }
+
+  return Object.entries(plantData)
+    .filter(
+      ([, plant]) =>
+        plant.lastWatered &&
+        plant.wateringSchedule &&
+        daysSince(plant.lastWatered) >= Number(plant.wateringSchedule)
+    )
+    .map(([name]) => name);
+};
 
 // === UI COMPONENTS ===
-// Generic text element
+// Align text elements
+const alignText = (textElement, align) => {
+  switch (align) {
+    case "center":
+      textElement.centerAlignText();
+      break;
+    case "right":
+      textElement.rightAlignText();
+      break;
+    default:
+      textElement.leftAlignText();
+  }
+};
+
+// Create generic text element
 const createText = (widget, text, font, color, align = "left") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
 
-  const alignMap = {
-    left: () => textElement.leftAlignText(),
-    center: () => textElement.centerAlignText(),
-    right: () => textElement.rightAlignText(),
-  };
-
-  (alignMap[align] || alignMap.left)();
-
+  alignText(textElement, align);
   return textElement;
 };
 
-// Count number at top of widget
+// Add count as text element
 const addCountText = (stack, count) =>
   createText(
     stack,
     `${count}`,
-    STYLES.fonts.count,
-    STYLES.colors.text,
+    styles.fonts.count,
+    styles.colors.text,
     "center"
   );
 
-// Status text under count
+// Add status as text element under count
 const addStatusText = (stack, count) => {
   const text = count === 1 ? "plant needs watering." : "plants need watering.";
   return createText(
     stack,
     text,
-    STYLES.fonts.title,
-    STYLES.colors.text,
+    styles.fonts.title,
+    styles.colors.text,
     "center"
   );
 };
 
-// Individual plant name in the list
-const addPlantName = (stack, name) => {
+// Add individual plant name as text element
+const addPlantName = (widget, name) => {
   const text = createText(
-    stack,
+    widget,
     `• ${name}`,
-    STYLES.fonts.plant,
-    STYLES.colors.text,
+    styles.fonts.plant,
+    styles.colors.text,
     "left"
   );
-  stack.addSpacer(STYLES.spacing.spacerSmall);
+  widget.addSpacer(styles.spacing.spacerSmall);
   return text;
 };
 
 // === WIDGET ASSEMBLY ===
 function createWidget(plants) {
   const widget = new ListWidget();
-  const [top, right, bottom, left] = STYLES.spacing.widgetPadding;
+  const [top, right, bottom, left] = styles.spacing.widgetPadding;
   widget.setPadding(top, right, bottom, left);
 
   // Gradient background
   const gradient = new LinearGradient();
   gradient.colors = [
     plants.length
-      ? STYLES.colors.backgroundAlert
-      : STYLES.colors.backgroundNeutral,
-    STYLES.colors.gradientEnd,
+      ? styles.colors.backgroundAlert
+      : styles.colors.backgroundNeutral,
+    styles.colors.gradientEnd,
   ];
   gradient.locations = [0, 0.9];
   gradient.startPoint = new Point(0, 0);
@@ -166,45 +177,45 @@ function createWidget(plants) {
     createText(
       widget,
       "No plants need water today.",
-      STYLES.fonts.alert,
-      STYLES.colors.text,
+      styles.fonts.alert,
+      styles.colors.text,
       "center"
     );
   } else {
     const topStack = widget.addStack();
     topStack.layoutVertically();
     topStack.centerAlignContent();
-    topStack.addSpacer(STYLES.spacing.spacerTop);
+    topStack.addSpacer(styles.spacing.spacerTop); // Negative spacer pulls content upward for visual balance
 
     addCountText(topStack, plants.length);
     addStatusText(topStack, plants.length);
 
-    widget.addSpacer(STYLES.spacing.spacerMedium);
+    widget.addSpacer(styles.spacing.spacerMedium);
 
     // List of plants that need watering
     for (const name of plants) {
       addPlantName(widget, name);
     }
   }
-  // Return widget with its constructed UI elements
-  return widget;
+
+  return widget; // Return widget with its constructed UI elements
 }
 
 // === MAIN EXECUTION ===
 // Load data from Shortcut parameter or file
-let data = args.shortcutParameter;
-if (typeof data === "string") {
+let plantData = args.shortcutParameter;
+if (typeof plantData === "string") {
   try {
-    data = JSON.parse(data);
-  } catch {
-    console.error("Data parse failed");
+    plantData = JSON.parse(plantData);
+  } catch (error) {
+    console.error(`Data parse failed: ${error}`);
   }
 }
-if (data) saveData(data);
-else data = loadData();
+if (plantData) saveData(fileManager, filePath, plantData);
+else plantData = loadData(fileManager, filePath);
 
 // Analyze plants that need watering
-const widget = createWidget(analyzeWatering(data));
+const widget = createWidget(analyzeWatering(plantData));
 
 // Check if script is running inside a widget
 if (config.runsInWidget) {
