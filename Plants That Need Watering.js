@@ -94,7 +94,7 @@ const analyzeWatering = (plantData) => {
 };
 
 // === UI COMPONENTS ===
-// Align text elements
+// Create generic alignment for text elements
 const alignText = (textElement, align) => {
   switch (align) {
     case "center":
@@ -157,9 +157,8 @@ const addPlantName = (widget, name) => {
 function createWidget(plants) {
   const widget = new ListWidget();
   const [top, right, bottom, left] = styles.spacing.widgetPadding;
-  widget.setPadding(top, right, bottom, left);
+  widget.setPadding(top, right, bottom, left); // Gradient background
 
-  // Gradient background
   const gradient = new LinearGradient();
   gradient.colors = [
     plants.length
@@ -185,14 +184,16 @@ function createWidget(plants) {
     const topStack = widget.addStack();
     topStack.layoutVertically();
     topStack.centerAlignContent();
-    topStack.addSpacer(styles.spacing.spacerTop); // Negative spacer pulls content upward for visual balance
+
+    // Negative spacer pulls content upward for visual balance
+    topStack.addSpacer(styles.spacing.spacerTop);
 
     addCountText(topStack, plants.length);
     addStatusText(topStack, plants.length);
 
-    widget.addSpacer(styles.spacing.spacerMedium);
-
-    // List of plants that need watering
+    widget.addSpacer(styles.spacing.spacerMedium); 
+	
+	// List of plants that need watering
     for (const name of plants) {
       addPlantName(widget, name);
     }
