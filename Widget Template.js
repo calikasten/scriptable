@@ -106,10 +106,10 @@ const addTitle = (widget, text) =>
   createText(widget, text, styles.fonts.title, styles.colors.title, "center");
 
 // Add text row element
-const addTextRow = (widget, numberedLines) =>
+const addTextRow = (widget, numberedRows) =>
   createText(
     widget,
-    numberedLines.join("\n"),
+    numberedRows.join("\n"),
     styles.fonts.text,
     styles.colors.text,
     "left"
@@ -123,8 +123,7 @@ function createWidget(fields) {
 
   addTitle(widget, "TITLE"); // Widget title
   widget.addSpacer(5);
-
-  // Data to display in widget
+  
   const {
     Timestamp,
     String: string,
@@ -135,6 +134,8 @@ function createWidget(fields) {
   } = fields || {};
 
   const timestamp = Timestamp ? new Date(Timestamp) : null; 
+
+  // Data to display in widget
   const widgetData = [
     timestamp ? dateFormatter.string(timestamp) : "N/A",
     daysSince(timestamp),
@@ -144,8 +145,8 @@ function createWidget(fields) {
     arrayToString(singleArray),
     arrayToString(multiArray),
   ]; 
-  const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, numberedLines); // Number each line of widget data
+  const numberedRows = widgetData.map((value, i) => `${i + 1}. ${value}`);
+  addTextRow(widget, numberedRows); // Number each row of widget data
 
   return widget; // Return widget with its constructed UI elements
 }
