@@ -84,16 +84,19 @@ const addTextRow = (widget, numberedLines) =>
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
 
 function createWidget() {
-  const widget = new ListWidget(); // Widget title
+  const widget = new ListWidget(); 
 
-  addTitle(widget, "TITLE"); // Data to display in widget
+  addTitle(widget, "TITLE"); // Widget title
   widget.addSpacer(5);
 
-  const widgetData = ["text", "or", "other", "data", "types"]; // Number each line of widget data
+  // Data to display in widget
+  const widgetData = ["text", "or", "other", "data", "types"]; 
 
+  
   const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, numberedLines); // Return widget with its constructed UI elements
-
+  addTextRow(widget, numberedLines); // Number each line of widget data
+  
+  // Return widget with its constructed UI elements
   return widget;
 }
 
