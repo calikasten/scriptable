@@ -3,7 +3,7 @@
 // icon-color: cyan; icon-glyph: cloud;
 
 // === MAIN EXECUTION ===
-const main = async () => {
+async function main() {
   // === CONFIGURATION ===
   const CONFIG = {
     overwriteOnlyIfChanged: true,
@@ -44,13 +44,13 @@ const main = async () => {
   };
 
   // Get all scripts from root directory (with .js extension)
-  let scriptFiles = [];
+  let scriptFiles;
   try {
     scriptFiles = fileManager
       .listContents(rootDirectory)
       .filter((name) => name.endsWith(".js") && !isHiddenOrSystemFile(name));
   } catch (error) {
-    console.error(`[Backup][ERROR] Unable to list root directory: ${err}`);
+    console.error(`[Backup][ERROR] Unable to list root directory: ${error}`);
     throw error;
   }
 
@@ -59,6 +59,7 @@ const main = async () => {
   let scriptsSkipped = 0;
   const backedUpFileNames = [];
 
+  // Process each script file and create or update backup
   for (const fileName of scriptFiles) {
     const sourcePath = fileManager.joinPath(rootDirectory, fileName);
 
@@ -66,20 +67,22 @@ const main = async () => {
     // Read file content
     try {
       content = fileManager.readString(sourcePath);
-    } catch (err) {
+    } catch (error) {
       scriptsSkipped++;
-      console.error(`[Backup][SKIP] Failed to read ${fileName}: ${err}`);
+      console.error(`[Backup][SKIP] Failed to read ${fileName}: ${error}`);
       continue;
     }
 
     const backupPath = fileManager.joinPath(backupDirectory, fileName);
 
-    // Determine whether to write backup
-    if (
+    // Criteria to create backup or overwrite existing backup
+    const writeBackup =
       !CONFIG.overwriteOnlyIfChanged ||
       !fileManager.fileExists(backupPath) ||
-      !filesAreEqual(backupPath, content)
-    ) {
+      !filesAreEqual(backupPath, content);
+
+    // Determine whether to write backup
+    if (writeBackup) {
       // Write or overwrite backup
       try {
         fileManager.writeString(backupPath, content);
@@ -96,7 +99,7 @@ const main = async () => {
   }
 
   // === UI COMPONENTS ===
-  // Display summary alert with counts of backups or scripped skips
+  // Display summary alert with counts of backups and skipped scripts
   const summaryAlert = new Alert();
   summaryAlert.title = "Backup Complete";
   summaryAlert.message = `${scriptsBackedUp} script(s) backed up\n${scriptsSkipped} skipped`;
@@ -110,7 +113,7 @@ const main = async () => {
 
   // === FINALIZE ===
   Script.complete();
-};
+}
 
 // === MAIN EXECUTION ===
 await main();
