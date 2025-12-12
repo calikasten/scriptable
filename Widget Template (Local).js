@@ -5,7 +5,7 @@
 // === CONFIGURATION ===
 // This section stores all "settings", nothing here should change during execution
 
-const CONFIG = {
+const config = {
   // apiUrl: "https://example.com",
   // apiKey: "ASW123J1MS93MDLA2JA023KH18475YOUZ",
   // referenceFile: "example-file.json"
@@ -16,7 +16,7 @@ const CONFIG = {
 // This section defines visual styling (how the UI looks)
 
 // Define colors and fonts
-const STYLES = {
+const styles = {
   colors: {
     title: new Color("#FFFFFF"),
     text: new Color("#FFFF00"),
@@ -40,7 +40,7 @@ const exampleHelper = () => {
 // This section contains all functions that use the internet (fetching from API, downloading images, saving/reading cached responses)
 
 async function fetchData() {
-  // const request = new Request(CONFIG.apiUrl);
+  // const request = new Request(config.apiUrl);
   // return await request.loadJSON();
 }
 
