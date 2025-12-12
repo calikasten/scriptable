@@ -86,8 +86,7 @@ timeFormatter.useShortTimeStyle();
 // === NETWORK / API CLIENT ===
 async function fetchNextSatellitePass(satellite, latitude, longitude) {
   const url =
-    `https://api.g7vrd.co.uk/v1/satellite-passes/${satellite.norad}/` +
-    `${latitude}/${longitude}.json?min_elevation=70&hours=24`;
+    `https://api.g7vrd.co.uk/v1/satellite-passes/${satellite.norad}/${latitude}/${longitude}.json?min_elevation=70&hours=24`;
 
   try {
     const response = await new Request(url).loadJSON();
