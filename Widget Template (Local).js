@@ -68,15 +68,15 @@ const createText = (widget, text, font, color, align = "center") => {
 
 // Add title text element
 const addTitle = (widget, text) =>
-  createText(widget, text, STYLES.fonts.title, STYLES.colors.title, "center");
+  createText(widget, text, styles.fonts.title, styles.colors.title, "center");
 
 // Add text row element
 const addTextRow = (widget, numberedLines) =>
   createText(
     widget,
     numberedLines.join("\n"),
-    STYLES.fonts.text,
-    STYLES.colors.text,
+    styles.fonts.text,
+    styles.colors.text,
     "left"
   );
 
