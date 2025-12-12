@@ -16,10 +16,6 @@ const CONFIG = {
 // === STYLES ===
 // This section defines visual styling (how the UI looks)
 
-// Format date in MM-dd-yyyy
-const dateFormatter = new DateFormatter();
-dateFormatter.dateFormat = "MM-dd-yyyy";
-
 // Define colors and fonts
 const STYLES = {
   colors: {
@@ -34,6 +30,10 @@ const STYLES = {
 
 // === HELPERS ===
 // This section contains utility functions that transform data (format, convert, calculate, etc.)
+
+// Format date in MM-dd-yyyy
+const dateFormatter = new DateFormatter();
+dateFormatter.dateFormat = "MM-dd-yyyy";
 
 // Calculate time difference (in days)
 const daysSince = (date) =>
@@ -101,11 +101,11 @@ const createText = (widget, text, font, color, align = "center") => {
   return textElement;
 };
 
-// Title text
+// Add title text element
 const addTitle = (widget, text) =>
   createText(widget, text, STYLES.fonts.title, STYLES.colors.title, "center");
 
-// Text rows
+// Add text row element
 const addTextRow = (widget, numberedLines) =>
   createText(
     widget,
@@ -119,20 +119,22 @@ const addTextRow = (widget, numberedLines) =>
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
 
 function createWidget(fields) {
-  const widget = new ListWidget(); // Widget title
-  addTitle(widget, "TITLE");
+  const widget = new ListWidget(); 
+
+  addTitle(widget, "TITLE"); // Widget title
   widget.addSpacer(5);
 
+  // Data to display in widget
   const {
     Timestamp,
-    String: str,
-    Number: num,
-    Boolean: bool,
+    String: string,
+    Number: number,
+    Boolean: boolean,
     "Single-Select Array": singleArray,
     "Multi-Select Array": multiArray,
   } = fields || {};
 
-  const timestamp = Timestamp ? new Date(Timestamp) : null; // Data to display
+  const timestamp = Timestamp ? new Date(Timestamp) : null; 
   const widgetData = [
     timestamp ? dateFormatter.string(timestamp) : "N/A",
     daysSince(timestamp),
@@ -141,15 +143,16 @@ function createWidget(fields) {
     bool ? "true" : "false",
     arrayToString(singleArray),
     arrayToString(multiArray),
-  ]; // Number each line of widget data
+  ]; 
   const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
-  addTextRow(widget, numberedLines); // Return widget with its constructed UI elements
+  addTextRow(widget, numberedLines); // Number each line of widget data
 
+  // Return widget with its constructed UI elements
   return widget;
 }
 
 // === MAIN EXECUTION ===
-// This section is where the prgram actually runs (fetches all required data, builds the widget, and displays the widget)
+// This section is where the program actually runs (fetches all required data, builds the widget, and displays the widget)
 
 const data = await getData(true); // Get data
 const widget = createWidget(data); // Build widget
