@@ -29,7 +29,7 @@ const STYLES = {
 };
 
 // === HELPER FUNCTIONS ===
-// Format timestap into localized date/time string
+// Format timestamp into localized date/time string
 const formatDateTime = (timestamp) => {
   if (!timestamp) return "Launch time TBD";
   const date = new Date(timestamp);
@@ -47,7 +47,7 @@ const formatDateTime = (timestamp) => {
   return `${dateString} at ${timeString}`;
 };
 
-// Calculate countodnw string from now until timestamp
+// Calculate countdown string from now until timestamp
 const getCountdown = (timestamp) => {
   if (!timestamp) return "Countdown unavailable";
   const diffMs = new Date(timestamp) - new Date();
@@ -79,7 +79,9 @@ async function getCachedData() {
   ) {
     try {
       return JSON.parse(fileManager.readString(file));
-    } catch {}
+    } catch (error) {
+      console.error(`Failed to read cache: ${error}`);
+    }
   }
 
   try {
@@ -88,10 +90,10 @@ async function getCachedData() {
     fileManager.writeString(file, JSON.stringify(response));
     return response;
   } catch (error) {
-    console.error("Failed to fetch data:", error);
+    console.error(`Failed to fetch data: ${error}`);
     return null;
   }
-};
+}
 
 // Load image from cache or fetch and cache if not available
 const cacheImage = async (url, filename) => {
@@ -104,7 +106,7 @@ const cacheImage = async (url, filename) => {
     fileManager.writeImage(path, image);
     return image;
   } catch (error) {
-    console.error("Failed to cache/load image:", error);
+    console.error(`Failed to cache/load image: ${error}`);
     return null;
   }
 };
@@ -183,22 +185,22 @@ const addCountdownText = (stack, timestamp) => {
 
 // === WIDGET ASSEMBLY ===
 async function createWidget(launch) {
-  const widget = new ListWidget(); // Background image and gradient
+  const widget = new ListWidget(); // Apply background image and gradient
 
   const background = await cacheImage(
     CONFIG.backgroundImageUrl,
     "launch_bg.jpg"
-  );
+  ); // Background gradient
+
+  const backgroundGradient = new LinearGradient();
+  backgroundGradient.locations = [0, 1];
+  backgroundGradient.colors = STYLES.colors.gradient;
   if (background) {
     widget.backgroundImage = background;
-    const gradient = new LinearGradient();
-    gradient.locations = [0, 1];
-    gradient.colors = STYLES.colors.gradient;
-    widget.backgroundGradient = gradient;
+    widget.backgroundGradient = backgroundGradient;
   } else {
     widget.backgroundColor = new Color("#000000");
   } // Main vertical stack
-
   const stack = widget.addStack();
   stack.layoutVertically();
   stack.centerAlignContent(); // Mission name
@@ -228,7 +230,7 @@ async function createWidget(launch) {
   ); // Return widget with its constructed UI elements
 
   return widget;
-};
+}
 
 // === MAIN EXECUTION ===
 // Load cached data
