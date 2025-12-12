@@ -3,7 +3,7 @@
 // icon-color: deep-blue; icon-glyph: space-shuttle;
 
 // === CONFIGURATION ===
-const CONFIG = {
+const config = {
   apiUrl: "https://lldev.thespacedevs.com/2.2.0/launch/upcoming",
   cacheDurationMs: 30 * 60 * 1000, // 30 minutes
   backgroundImageUrl:
@@ -13,7 +13,7 @@ const CONFIG = {
 
 // === STYLES ===
 // Define colors and fonts
-const STYLES = {
+const styles = {
   colors: {
     text: Color.white(),
     launched: Color.green(),
@@ -64,7 +64,7 @@ const getCountdown = (timestamp) => {
 };
 
 // === NETWORK & API CLIENT ===
-// Retrieve cached API data or fetch from API if cache is invalid
+// Return cached API data or fetch from API if cache is invalid
 async function getCachedData() {
   const fileManager = FileManager.local();
   const file = fileManager.joinPath(
@@ -75,7 +75,7 @@ async function getCachedData() {
   if (
     fileManager.fileExists(file) &&
     Date.now() - fileManager.modificationDate(file).getTime() <
-      CONFIG.cacheDurationMs
+      config.cacheDurationMs
   ) {
     try {
       return JSON.parse(fileManager.readString(file));
@@ -85,7 +85,7 @@ async function getCachedData() {
   }
 
   try {
-    const response = await new Request(CONFIG.apiUrl).loadJSON();
+    const response = await new Request(config.apiUrl).loadJSON();
     if (!response?.results?.length) throw new Error("No data returned");
     fileManager.writeString(file, JSON.stringify(response));
     return response;
@@ -112,124 +112,141 @@ const cacheImage = async (url, filename) => {
 };
 
 // === UI COMPONENTS ===
-// Generic text element
+// Create generic alignment for text elements
+const alignText = (textElement, align) => {
+  switch (align) {
+    case "center":
+      textElement.centerAlignText();
+      break;
+    case "right":
+      textElement.rightAlignText();
+      break;
+    default:
+      textElement.leftAlignText();
+  }
+};
+
+// Create generic text element
 const createText = (widget, text, font, color, align = "center") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
 
-  const alignMap = {
-    left: () => textElement.leftAlignText(),
-    center: () => textElement.centerAlignText(),
-    right: () => textElement.rightAlignText(),
-  };
-
-  (alignMap[align] || alignMap.center)();
-
+  alignText(textElement, align);
   return textElement;
 };
 
-// Mission name text
+// Add mission name as text element
 const addMissionText = (stack, missionName) =>
   createText(
     stack,
     missionName || "Unknown Mission",
-    STYLES.fonts.title,
-    STYLES.colors.text,
+    styles.fonts.title,
+    styles.colors.text,
     "center"
   );
 
-// Rocket type text
+// Add rocket type as text element
 const addRocketType = (stack, rocketName) =>
   createText(
     stack,
     rocketName || "Unknown Rocket",
-    STYLES.fonts.text,
-    STYLES.colors.text,
+    styles.fonts.text,
+    styles.colors.text,
     "center"
   );
 
-// Launch date/time text
+// Add launch date/time as text element
 const addLaunchDateText = (stack, dateString) =>
   createText(
     stack,
     dateString || "Launch time TBD",
-    STYLES.fonts.text,
-    STYLES.colors.text,
+    styles.fonts.text,
+    styles.colors.text,
     "center"
   );
 
-// Divider line
-const addDivider = (stack, length = 14) =>
-  createText(
-    stack,
-    "—".repeat(length),
-    STYLES.fonts.divider,
-    STYLES.colors.divider,
-    "center"
-  );
-
-// Countdown text
+// Add countdown as text element
 const addCountdownText = (stack, timestamp) => {
   const countdownString = getCountdown(timestamp);
   return createText(
     stack,
     countdownString,
-    STYLES.fonts.countdown,
+    styles.fonts.countdown,
     countdownString === "Launched"
-      ? STYLES.colors.launched
-      : STYLES.colors.text,
+      ? styles.colors.launched
+      : styles.colors.text,
     "center"
   );
 };
 
+// Add divider line as text element
+const addDividerText = (stack, length = 14) =>
+  createText(
+    stack,
+    "—".repeat(length),
+    styles.fonts.divider,
+    styles.colors.divider,
+    "center"
+  );
+
 // === WIDGET ASSEMBLY ===
 async function createWidget(launch) {
-  const widget = new ListWidget(); // Apply background image and gradient
-
+  const widget = new ListWidget(); 
+  
+  // Load background image
   const background = await cacheImage(
-    CONFIG.backgroundImageUrl,
+    config.backgroundImageUrl,
     "launch_bg.jpg"
-  ); // Background gradient
-
+  ); 
+  
+  // Apply background gradient
   const backgroundGradient = new LinearGradient();
   backgroundGradient.locations = [0, 1];
-  backgroundGradient.colors = STYLES.colors.gradient;
+  backgroundGradient.colors = styles.colors.gradient;
   if (background) {
     widget.backgroundImage = background;
     widget.backgroundGradient = backgroundGradient;
   } else {
     widget.backgroundColor = new Color("#000000");
-  } // Main vertical stack
+  } 
+  
+  // Construct main text stack in widget
   const stack = widget.addStack();
   stack.layoutVertically();
-  stack.centerAlignContent(); // Mission name
+  stack.centerAlignContent();
 
-  addMissionText(stack, launch.mission?.name);
-  stack.addSpacer(6); // Rocket type
+  addMissionText(stack, launch.mission?.name); // Mission name
+  stack.addSpacer(6);
 
-  addRocketType(stack, launch.rocket?.configuration?.name);
-  stack.addSpacer(4); // Launch date/time
+  addRocketType(stack, launch.rocket?.configuration?.name); // Rocket type
+  stack.addSpacer(4);
 
-  addLaunchDateText(stack, formatDateTime(launch.net)); // Divider before countdown
+  addLaunchDateText(stack, formatDateTime(launch.net)); // Launch date/time
 
   stack.addSpacer(8);
-  addDivider(stack);
-  stack.addSpacer(6); // Countdown stack
+  addDividerText(stack); // Divider
+  stack.addSpacer(6);
 
   const countdown = stack.addStack();
-  countdown.layoutHorizontally();
-  countdown.addSpacer(); // Left flexible spacer
-  addCountdownText(countdown, launch.net);
-  countdown.addSpacer(); // Flexible spacer on right // Auto-refresh widget
+  countdown.layoutHorizontally(); 
+  
+  // Left flexible spacer
+  countdown.addSpacer();
 
+  addCountdownText(countdown, launch.net); // Countdown 
+  
+  // Flexible spacer on right
+  countdown.addSpacer(); 
+  
+  // Auto-refresh widget
   const now = Date.now();
   const launchMs = launch.net ? new Date(launch.net).getTime() : now;
   widget.refreshAfterDate = new Date(
-    Math.min(now + CONFIG.refreshIntervalMs, launchMs)
-  ); // Return widget with its constructed UI elements
+    Math.min(now + config.refreshIntervalMs, launchMs)
+  );
 
-  return widget;
+  return widget; // Return widget with its constructed UI elements
 }
 
 // === MAIN EXECUTION ===
