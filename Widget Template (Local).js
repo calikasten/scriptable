@@ -5,7 +5,7 @@
 // === CONFIGURATION ===
 // This section stores all "settings", nothing here should change during execution
 
-const settings = {
+const CONFIG = {
   // apiUrl: "https://example.com",
   // apiKey: "ASW123J1MS93MDLA2JA023KH18475YOUZ",
   // referenceFile: "example-file.json"
