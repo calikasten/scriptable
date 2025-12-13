@@ -3,7 +3,7 @@
 // icon-color: deep-blue; icon-glyph: space-shuttle;
 
 // === CONFIGURATION ===
-const config = {
+const settings = {
   apiUrl: "https://lldev.thespacedevs.com/2.2.0/launch/upcoming",
   cacheDurationMs: 30 * 60 * 1000, // 30 minutes
   backgroundImageUrl:
@@ -75,7 +75,7 @@ async function getCachedData() {
   if (
     fileManager.fileExists(file) &&
     Date.now() - fileManager.modificationDate(file).getTime() <
-      config.cacheDurationMs
+      settings.cacheDurationMs
   ) {
     try {
       return JSON.parse(fileManager.readString(file));
@@ -85,7 +85,7 @@ async function getCachedData() {
   }
 
   try {
-    const response = await new Request(config.apiUrl).loadJSON();
+    const response = await new Request(settings.apiUrl).loadJSON();
     if (!response?.results?.length) throw new Error("No data returned");
     fileManager.writeString(file, JSON.stringify(response));
     return response;
@@ -196,7 +196,7 @@ async function createWidget(launch) {
   
   // Load background image
   const background = await cacheImage(
-    config.backgroundImageUrl,
+    settings.backgroundImageUrl,
     "launch_bg.jpg"
   ); 
   
@@ -240,9 +240,9 @@ async function createWidget(launch) {
   countdown.addSpacer(); 
   
   // Auto-refresh widget
-  const launchMs = launch.net ? new Date(launch.net).getTime() : now;
+  const launchMs = launch.net ? new Date(launch.net).getTime() : Date.now();
   widget.refreshAfterDate = new Date(
-    Math.min(Date.now() + config.refreshIntervalMs, launchMs)
+    Math.min(Date.now() + settings.refreshIntervalMs, launchMs)
   );
 
   return widget; // Return widget with its constructed UI elements
