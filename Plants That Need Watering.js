@@ -3,7 +3,7 @@
 // icon-color: deep-green; icon-glyph: leaf;
 
 // === CONFIGURATION ===
-const settings = {
+const CONFIG = {
   folder: "Plant Data",
   file: "plant-data.json",
 };
@@ -13,9 +13,9 @@ const settings = {
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
-  settings.folder
+  CONFIG.folder
 );
-const filePath = fileManager.joinPath(folderPath, settings.file);
+const filePath = fileManager.joinPath(folderPath, CONFIG.file);
 
 // Create folder if it doesn't exist
 if (!fileManager.fileExists(folderPath)) {
