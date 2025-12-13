@@ -3,7 +3,7 @@
 // icon-color: yellow; icon-glyph: sticky-note;
 
 // === CONFIGURATION ===
-const settings = {
+const CONFIG = {
   folderName: "Sticky Note",
   fileName: "sticky-note.txt",
   imageFileName: "sticky-note.png",
@@ -28,8 +28,8 @@ const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
   settings.folderName
 );
-const filePath = fileManager.joinPath(folderPath, settings.fileName);
-const cachedImagePath = fileManager.joinPath(folderPath, settings.imageFileName);
+const filePath = fileManager.joinPath(folderPath, CONFIG.fileName);
+const cachedImagePath = fileManager.joinPath(folderPath, CONFIG.imageFileName);
 
 // Ensure folder and file exist
 if (!fileManager.fileExists(folderPath)) {
@@ -46,18 +46,18 @@ const saveData = (data) => fileManager.writeString(filePath, data);
 const loadImage = async () => {
   let image = fileManager.readImage(cachedImagePath);
 
-  if (settings.forceImageRefresh || !image) {
-    image = await new Request(settings.imageUrl).loadImage();
+  if (CONFIG.forceImageRefresh || !image) {
+    image = await new Request(CONFIG.imageUrl).loadImage();
     fileManager.writeImage(cachedImagePath, image);
   }
 
   if (!image) return null; 
   
   // Resize and draw image to maintain aspect ratio and zoom factor
-  const size = settings.widgetSize;
+  const size = CONFIG.widgetSize;
   const aspect = image.size.width / image.size.height;
-  const drawWidth = size * settings.zoomFactor * (aspect > 1 ? aspect : 1);
-  const drawHeight = size * settings.zoomFactor * (aspect > 1 ? 1 : 1 / aspect);
+  const drawWidth = size * CONFIG.zoomFactor * (aspect > 1 ? aspect : 1);
+  const drawHeight = size * CONFIG.zoomFactor * (aspect > 1 ? 1 : 1 / aspect);
 
   const context = new DrawContext();
   context.size = new Size(size, size);
