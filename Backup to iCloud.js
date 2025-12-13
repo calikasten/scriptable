@@ -22,16 +22,6 @@ async function main() {
   }
 
   // === HELPERS ===
-  // Check if a file is a hidden file or system file
-  const isHiddenOrSystemFile = (fileName) => {
-    const lowercaseName = fileName.toLowerCase();
-    return (
-      fileName.startsWith(".") ||
-      lowercaseName.includes("__macosx") ||
-      lowercaseName === ".ds_store"
-    );
-  };
-
   // Check if file content matches existing content
   const filesAreEqual = (path, content) => {
     try {
@@ -46,7 +36,7 @@ async function main() {
     try {
       return fileManager
         .listContents(rootDirectory)
-        .filter((name) => name.endsWith(".js") && !isHiddenOrSystemFile(name));
+        .filter((name) => name.endsWith(".js"));
     } catch (error) {
       console.error(`[Backup][ERROR] Unable to list root directory: ${error}`);
       throw error;
