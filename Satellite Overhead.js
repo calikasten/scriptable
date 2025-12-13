@@ -48,7 +48,7 @@ const SATELLITES = [
 ];
 
 // Default fallback location if device location is unavailable
-const config = {
+const settings = {
   fallbackLatitude: "<LAT>",
   fallbackLongitude: "<LONG>",
   apiUrl: "",
@@ -147,7 +147,7 @@ const cacheImage = async (url, fileName = "satellite.jpg") => {
 };
 
 // Load cached background image
-const background = await cacheImage(config.backgroundImageUrl);
+const background = await cacheImage(settings.backgroundImageUrl);
 
 // === UI COMPONENT BUILDERS ===
 // Create generic alignment for text elements
@@ -238,15 +238,15 @@ function buildWidget(nextPass) {
   } 
   
   // Auto-refresh widget
-  widget.refreshAfterDate = new Date(Date.now() + config.refreshIntervalMs);
+  widget.refreshAfterDate = new Date(Date.now() + settings.refreshIntervalMs);
 
   return widget;
 }
 
 // === MAIN EXECUTION ===
 async function main() {
-  let latitude = config.fallbackLatitude;
-  let longitude = config.fallbackLongitude;
+  let latitude = settings.fallbackLatitude;
+  let longitude = settings.fallbackLongitude;
 
   try {
     Location.setAccuracyToBest();
