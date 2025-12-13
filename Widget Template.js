@@ -5,7 +5,7 @@
 // === CONFIGURATION ===
 // This section stores all "settings", nothing here should change during execution
 
-const settings = {
+const CONFIG = {
 	apiKey: "<INSERT API KEY HERE>",
 	appId: "appHEaSiBocpIp1Yw",
 	tableId: "tblaiUHCIOq3LZiDy",
@@ -51,7 +51,7 @@ async function getData(useCache = true) {
   const fileManager = FileManager.local();
   const cachePath = fileManager.joinPath(
     fileManager.documentsDirectory(),
-    settings.cacheFile
+    CONFIG.cacheFile
   ); // Read cached data
   const readCache = () => {
     if (!fileManager.fileExists(cachePath)) return null;
@@ -62,13 +62,13 @@ async function getData(useCache = true) {
     }
   };
   const cached = useCache ? readCache() : null; // Return cached fields if cached data is valid
-  if (cached && Date.now() - cached._fetched < settings.cacheDurationMs)
+  if (cached && Date.now() - cached._fetched < CONFIG.cacheDurationMs)
     return cached.fields; // Otherwise, fetch data from API
   try {
     const request = new Request(
-      `https://api.airtable.com/v0/${settings.appId}/${settings.tableId}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
+      `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
     );
-    request.headers = { Authorization: `Bearer ${settings.apiKey}` };
+    request.headers = { Authorization: `Bearer ${CONFIG.apiKey}` };
     const response = await request.loadJSON();
     const fields = response.records?.[0]?.fields || null; // Update cache with newly fetched data
     if (fields)
