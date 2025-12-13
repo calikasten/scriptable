@@ -19,11 +19,7 @@ const filePath = fileManager.joinPath(folderPath, settings.file);
 
 // Create folder if it doesn't exist
 if (!fileManager.fileExists(folderPath)) {
-  try {
     fileManager.createDirectory(folderPath, true);
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 // === STYLES ===
