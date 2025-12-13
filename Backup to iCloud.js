@@ -5,7 +5,7 @@
 // === MAIN EXECUTION ===
 async function main() {
   // === CONFIGURATION ===
-  const settings = {
+  const CONFIG = {
     overwriteOnlyIfChanged: true,
     folder: "Script Backups",
   };
@@ -14,7 +14,7 @@ async function main() {
   // Determine directories for documents and backups
   const fileManager = FileManager.iCloud();
   const rootDirectory = fileManager.documentsDirectory();
-  const backupDirectory = fileManager.joinPath(rootDirectory, settings.folder);
+  const backupDirectory = fileManager.joinPath(rootDirectory, CONFIG.folder);
 
   // If backup folder doesn't exist, create it
   if (!fileManager.fileExists(backupDirectory)) {
@@ -67,7 +67,7 @@ async function main() {
 
     // Criteria to create backup or overwrite existing backup
     const writeBackup =
-      !settings.overwriteOnlyIfChanged ||
+      !CONFIG.overwriteOnlyIfChanged ||
       !fileManager.fileExists(filePath) ||
       !filesAreEqual(filePath, content);
 
