@@ -41,7 +41,7 @@ const daysSince = (date) =>
 
 // Convert array to comma separated string
 const arrayToString = (array) =>
-  Array.isArray(array) ? array.join(", ") : array ?? "N/A";
+  Array.isArray(array) ? array.join(", ") : "N/A";
 
 // === NETWORK & API CLIENT ===
 // This section contains all functions that use the internet (fetching from API, downloading images, saving/reading cached responses)
@@ -148,7 +148,7 @@ function createWidget(fields) {
     daysSince(timestamp),
     string ?? "N/A",
     number ?? "N/A",
-    boolean ? "true" : "false",
+    boolean === true ? "true" : boolean = fasel ? "false" : "N/A",
     arrayToString(singleArray),
     arrayToString(multiArray),
   ]; 
@@ -161,7 +161,7 @@ function createWidget(fields) {
 // === MAIN EXECUTION ===
 // This section is where the program actually runs (fetches all required data, builds the widget, and displays the widget)
 
-const data = await getData(true); // Get data
+const data = await getData(); // Get data
 const widget = createWidget(data); // Build widget
 // Check if script is running inside a widget
 if (config.runsInWidget) {
