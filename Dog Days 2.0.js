@@ -3,7 +3,7 @@
 // icon-color: teal; icon-glyph: paw;
 
 // === CONFIGURATION ==
-const CONFIG = {
+const settings = {
   apiKey: "<INSERT API TOKEN HERE>",
   appId: "app1PnYsdLk3i0N6S",
   tableId: "tbl4cXnZhwuW1TBj4",
@@ -43,15 +43,15 @@ const calculateTimeDiff = (timestampStr) => {
 // === API CLIENT ===
 // Function to get data from API
 async function fetchLatestTimestamp(viewName) {
-  const url = `https://api.airtable.com/v0/${config.appId}/${
-    config.tableId
+  const url = `https://api.airtable.com/v0/${settings.appId}/${
+    settings.tableId
   }?maxRecords=1&view=${encodeURIComponent(
     viewName
   )}&sort[0][field]=Timestamp&sort[0][direction]=desc`;
   try {
     const request = new Request(url);
     request.headers = {
-      Authorization: `Bearer ${config.apiKey}`,
+      Authorization: `Bearer ${settings.apiKey}`,
     };
     const response = await request.loadJSON(); 
     
