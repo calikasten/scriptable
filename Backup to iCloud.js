@@ -63,19 +63,19 @@ async function main() {
       continue;
     }
 
-    const backupPath = fileManager.joinPath(backupDirectory, fileName);
+    const filePath = fileManager.joinPath(backupDirectory, fileName);
 
     // Criteria to create backup or overwrite existing backup
     const writeBackup =
       !settings.overwriteOnlyIfChanged ||
-      !fileManager.fileExists(backupPath) ||
-      !filesAreEqual(backupPath, content);
+      !fileManager.fileExists(filePath) ||
+      !filesAreEqual(filePath, content);
 
     // Determine whether to write backup
     if (writeBackup) {
       // Write or overwrite backup
       try {
-        fileManager.writeString(backupPath, content);
+        fileManager.writeString(filePath, content);
         scriptsBackedUp++;
         backedUpFileNames.push(fileName);
       } catch (error) {
