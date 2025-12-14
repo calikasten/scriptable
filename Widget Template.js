@@ -52,7 +52,9 @@ async function getData(useCache = true) {
   const cachePath = fileManager.joinPath(
     fileManager.documentsDirectory(),
     CONFIG.cacheFile
-  ); // Read cached data
+  ); 
+  
+  // Read cached data
   const readCache = () => {
     if (!fileManager.fileExists(cachePath)) return null;
     try {
@@ -61,16 +63,22 @@ async function getData(useCache = true) {
       return null;
     }
   };
-  const cached = useCache ? readCache() : null; // Return cached fields if cached data is valid
+  const cached = useCache ? readCache() : null; 
+  
+  // Return cached fields if cached data is valid
   if (cached && Date.now() - cached._fetched < CONFIG.cacheDurationMs)
-    return cached.fields; // Otherwise, fetch data from API
+    return cached.fields; 
+
+  // Otherwise, fetch data from API
   try {
     const request = new Request(
       `https://api.airtable.com/v0/${CONFIG.appId}/${CONFIG.tableId}?maxRecords=1&sort[0][field]=Timestamp&sort[0][direction]=desc`
     );
     request.headers = { Authorization: `Bearer ${CONFIG.apiKey}` };
     const response = await request.loadJSON();
-    const fields = response.records?.[0]?.fields || null; // Update cache with newly fetched data
+    const fields = response.records?.[0]?.fields || null; 
+    
+    // Update cache with newly fetched data
     if (fields)
       fileManager.writeString(
         cachePath,
@@ -99,7 +107,7 @@ const alignText = (textElement, align) => {
 };
 
 // Create generic text element
-const createText = (widget, text, font, color, align = "left") => {
+const createText = (widget, text, font, color, align = "center") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
@@ -126,11 +134,11 @@ const addTextRow = (widget, numberedRows) =>
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
 
 function createWidget(fields) {
-  const widget = new ListWidget(); 
+  const widget = new ListWidget();
 
   addTitle(widget, "TITLE"); // Widget title
   widget.addSpacer(5);
-  
+
   const {
     Timestamp,
     String: string,
@@ -140,18 +148,17 @@ function createWidget(fields) {
     "Multi-Select Array": multiArray,
   } = fields || {};
 
-  const timestamp = Timestamp ? new Date(Timestamp) : null; 
+  const timestamp = Timestamp ? new Date(Timestamp) : null; // Data to display in widget
 
-  // Data to display in widget
   const widgetData = [
     timestamp ? dateFormatter.string(timestamp) : "N/A",
     daysSince(timestamp),
     string ?? "N/A",
     number ?? "N/A",
-    boolean === true ? "true" : boolean = fasel ? "false" : "N/A",
+    boolean === true ? "true" : boolean === false ? "false" : "N/A",
     arrayToString(singleArray),
     arrayToString(multiArray),
-  ]; 
+  ];
   const numberedRows = widgetData.map((value, i) => `${i + 1}. ${value}`);
   addTextRow(widget, numberedRows); // Number each row of widget data
 
