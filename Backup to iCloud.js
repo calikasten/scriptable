@@ -4,24 +4,25 @@
 
 // === MAIN EXECUTION ===
 async function main() {
+  
   // === CONFIGURATION ===
   const CONFIG = {
     overwriteOnlyIfChanged: true,
     folder: "Script Backups",
-  };
-
-  // === PATHS ===
+  }; 
+  
+  // === PATHS === 
   // Determine directories for documents and backups
   const fileManager = FileManager.iCloud();
   const rootDirectory = fileManager.documentsDirectory();
-  const backupDirectory = fileManager.joinPath(rootDirectory, CONFIG.folder);
-
+  const backupDirectory = fileManager.joinPath(rootDirectory, CONFIG.folder); 
+  
   // If backup folder doesn't exist, create it
   if (!fileManager.fileExists(backupDirectory)) {
     fileManager.createDirectory(backupDirectory, true);
-  }
-
-  // === HELPERS ===
+  } 
+  
+  // === HELPERS === 
   // Check if file content matches existing content
   const filesAreEqual = (path, content) => {
     try {
@@ -29,8 +30,8 @@ async function main() {
     } catch {
       return false;
     }
-  };
-
+  }; 
+  
   // Get all scripts from root directory (with .js extension)
   const scriptFiles = (() => {
     try {
@@ -41,19 +42,19 @@ async function main() {
       console.error(`[Backup][ERROR] Unable to list root directory: ${error}`);
       throw error;
     }
-  })();
-
+  })(); 
+  
   // === CORE SCRIPT LOGIC ===
   let scriptsBackedUp = 0;
   let scriptsSkipped = 0;
-  const backedUpFileNames = [];
-
+  const backedUpFileNames = []; 
+  
   // Process each script file and create or update backup
   for (const fileName of scriptFiles) {
     const sourcePath = fileManager.joinPath(rootDirectory, fileName);
 
-    let content;
-
+    let content; 
+    
     // Read file content
     try {
       content = fileManager.readString(sourcePath);
@@ -63,14 +64,14 @@ async function main() {
       continue;
     }
 
-    const filePath = fileManager.joinPath(backupDirectory, fileName);
-
+    const filePath = fileManager.joinPath(backupDirectory, fileName); 
+    
     // Criteria to create backup or overwrite existing backup
     const writeBackup =
       !CONFIG.overwriteOnlyIfChanged ||
       !fileManager.fileExists(filePath) ||
-      !filesAreEqual(filePath, content);
-
+      !filesAreEqual(filePath, content); 
+      
     // Determine whether to write backup
     if (writeBackup) {
       // Write or overwrite backup
@@ -85,9 +86,9 @@ async function main() {
     } else {
       scriptsSkipped++;
     }
-  }
-
-  // === UI COMPONENTS ===
+  } 
+  
+  // === UI COMPONENTS === 
   // Display summary alert with counts of backups and skipped scripts
   const summaryAlert = new Alert();
   summaryAlert.title = "Backup Complete";
@@ -98,11 +99,11 @@ async function main() {
   if (backedUpFileNames.length > 0) {
     console.log("Backed up scripts:");
     backedUpFileNames.forEach((name) => console.log(name));
-  }
-
+  } 
+  
   // === FINALIZE ===
   Script.complete();
 }
 
-// === MAIN EXECUTION ===
+// === RUN SCRIPT ===
 await main();
