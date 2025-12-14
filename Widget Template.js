@@ -17,7 +17,7 @@ const CONFIG = {
 // This section defines visual styling (how the UI looks)
 
 // Define colors and fonts
-const styles = {
+const STYLES = {
   colors: {
     title: new Color("#FFFFFF"),
     text: new Color("#FFFF00"),
@@ -118,15 +118,15 @@ const createText = (widget, text, font, color, align = "center") => {
 
 // Add title as text element
 const addTitle = (widget, text) =>
-  createText(widget, text, styles.fonts.title, styles.colors.title, "center");
+  createText(widget, text, STYLES.fonts.title, STYLES.colors.title, "center");
 
 // Add row as text element
 const addTextRow = (widget, numberedRows) =>
   createText(
     widget,
     numberedRows.join("\n"),
-    styles.fonts.text,
-    styles.colors.text,
+    STYLES.fonts.text,
+    STYLES.colors.text,
     "left"
   );
 
