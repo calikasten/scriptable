@@ -170,6 +170,7 @@ function createWidget(fields) {
 
 const data = await getData(); // Get data
 const widget = createWidget(data); // Build widget
+
 // Check if script is running inside a widget
 if (config.runsInWidget) {
   // Run inside a widget
