@@ -13,7 +13,7 @@ const CONFIG = {
 
 // === STYLES ===
 // Define colors and fonts
-const styles = {
+const STYLES = {
   colors: {
     text: Color.white(),
     launched: Color.green(),
@@ -141,8 +141,8 @@ const addMissionText = (stack, missionName) =>
   createText(
     stack,
     missionName || "Unknown Mission",
-    styles.fonts.title,
-    styles.colors.text,
+    STYLES.fonts.title,
+    STYLES.colors.text,
     "center"
   );
 
@@ -151,8 +151,8 @@ const addRocketType = (stack, rocketName) =>
   createText(
     stack,
     rocketName || "Unknown Rocket",
-    styles.fonts.text,
-    styles.colors.text,
+    STYLES.fonts.text,
+    STYLES.colors.text,
     "center"
   );
 
@@ -161,8 +161,8 @@ const addLaunchDateText = (stack, dateString) =>
   createText(
     stack,
     dateString || "Launch time TBD",
-    styles.fonts.text,
-    styles.colors.text,
+    STYLES.fonts.text,
+    STYLES.colors.text,
     "center"
   );
 
@@ -172,10 +172,10 @@ const addCountdownText = (stack, timestamp) => {
   return createText(
     stack,
     countdownString,
-    styles.fonts.countdown,
+    STYLES.fonts.countdown,
     countdownString === "Launched"
-      ? styles.colors.launched
-      : styles.colors.text,
+      ? STYLES.colors.launched
+      : STYLES.colors.text,
     "center"
   );
 };
@@ -185,8 +185,8 @@ const addDividerText = (stack, length = 14) =>
   createText(
     stack,
     "—".repeat(length),
-    styles.fonts.divider,
-    styles.colors.divider,
+    STYLES.fonts.divider,
+    STYLES.colors.divider,
     "center"
   );
 
@@ -202,7 +202,7 @@ async function createWidget(launch) {
   // Apply background gradient
   const backgroundGradient = new LinearGradient();
   backgroundGradient.locations = [0, 1];
-  backgroundGradient.colors = styles.colors.gradient;
+  backgroundGradient.colors = STYLES.colors.gradient;
   if (background) {
     widget.backgroundImage = background;
     widget.backgroundGradient = backgroundGradient;
@@ -249,12 +249,10 @@ if (!data) return console.error("No launch data available.");
 
 const widget = await createWidget(data.results[0]);
 
-// Check if script is running inside a widget
+// Run in widget or display preview
 if (config.runsInWidget) {
-  // Run inside a widget
   Script.setWidget(widget);
 } else {
-  // Otherwise show widget preview
   widget.presentSmall();
 }
 
