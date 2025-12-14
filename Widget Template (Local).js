@@ -33,8 +33,7 @@ const styles = {
 // Format date in MM-dd-yyyy
 const dateFormat = "MM-dd-yyyy";
 
-const exampleHelper = () => {
-};
+const exampleHelper = () => {};
 
 // === NETWORK & API CLIENT ===
 // This section contains all functions that use the internet (fetching from API, downloading images, saving/reading cached responses)
@@ -64,7 +63,7 @@ const alignText = (textElement, align) => {
 };
 
 // Create generic text element
-const createText = (widget, text, font, color, align = "left") => {
+const createText = (widget, text, font, color, align = "center") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
@@ -91,17 +90,15 @@ const addTextRow = (widget, numberedRows) =>
 // This section is where the widget's UI is created (add images, text, arrange layout, apply styles)
 
 function createWidget() {
-  const widget = new ListWidget(); 
+  const widget = new ListWidget();
 
   addTitle(widget, "TITLE"); // Widget title
-  widget.addSpacer(5);
+  widget.addSpacer(5); // Data to display in widget
 
-  // Data to display in widget
-  const widgetData = ["text", "or", "other", "data", "types"]; 
+  const widgetData = ["text", "or", "other", "data", "types"];
 
-  const numberedLines = widgetData.map((value, i) => `${i + 1}. ${value}`);
+  const numberedRows = widgetData.map((value, i) => `${i + 1}. ${value}`);
   addTextRow(widget, numberedRows); // Number each row of widget data
-  
   return widget; // Return widget with its constructed UI elements
 }
 
