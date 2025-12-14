@@ -6,9 +6,7 @@
 const SATELLITES = [
   { name: "ISS (Zarya)", norad: 25544, category: "Space Station" },
   { name: "Tiangong", norad: 48274, category: "Space Station" },
-  { name: "Hubble Space Telescope", norad: 20580, category: "Scientific" }, 
-  
-  // NOAA & Meteorological
+  { name: "Hubble Space Telescope", norad: 20580, category: "Scientific" }, // NOAA & Meteorological
   { name: "NOAA 15", norad: 25338, category: "Weather" },
   { name: "NOAA 17", norad: 27453, category: "Weather" },
   { name: "NOAA 18", norad: 28654, category: "Weather" },
@@ -16,9 +14,7 @@ const SATELLITES = [
   { name: "METEOR M2-2", norad: 44387, category: "Weather" },
   { name: "SUOMI NPP", norad: 37849, category: "Weather" },
   { name: "NOAA 20 (JPSS 1)", norad: 43013, category: "Weather" },
-  { name: "NOAA-21 (JPSS-2)", norad: 54234, category: "Weather" }, 
-  
-  // Amateur Radio (AMSAT)
+  { name: "NOAA-21 (JPSS-2)", norad: 54234, category: "Weather" }, // Amateur Radio (AMSAT)
   { name: "AO-7", norad: 7530, category: "Amateur Radio" },
   { name: "AO-73 (FunCube-1)", norad: 39444, category: "Amateur Radio" },
   { name: "AO-85", norad: 40967, category: "Amateur Radio" },
@@ -40,17 +36,15 @@ const SATELLITES = [
   { name: "CROCUBE", norad: 62394, category: "Amateur Radio" },
   { name: "CUBESAT XI-V", norad: 28895, category: "Amateur Radio" },
   { name: "CUBESAT XI-IV", norad: 27848, category: "Amateur Radio" },
-  { name: "CATSAT", norad: 60246, category: "Amateur Radio" }, 
-  
-  // Earth Observation / Scientific
+  { name: "CATSAT", norad: 60246, category: "Amateur Radio" }, // Earth Observation / Scientific
   { name: "Terra", norad: 25994, category: "Earth Observation" },
   { name: "Aqua", norad: 27424, category: "Earth Observation" },
 ];
 
 // Default fallback location if device location is unavailable
 const CONFIG = {
-  fallbackLatitude: "<LAT>",
-  fallbackLongitude: "<LONG>",
+  fallbackLatitude: 41.90421705471727,
+  fallbackLongitude: -87.6626416108551,
   apiUrl: "",
   backgroundImageUrl:
     "https://calikasten.wordpress.com/wp-content/uploads/2025/12/satellite-2.jpeg",
@@ -58,7 +52,7 @@ const CONFIG = {
 };
 
 // === STYLES ===
-const styles = {
+const STYLES = {
   colors: {
     title: new Color("#F58034"),
     subtitle: Color.white(),
@@ -85,8 +79,7 @@ timeFormatter.useShortTimeStyle();
 
 // === NETWORK / API CLIENT ===
 async function fetchNextSatellitePass(satellite, latitude, longitude) {
-  const url =
-    `https://api.g7vrd.co.uk/v1/satellite-passes/${satellite.norad}/${latitude}/${longitude}.json?min_elevation=70&hours=24`;
+  const url = `https://api.g7vrd.co.uk/v1/satellite-passes/${satellite.norad}/${latitude}/${longitude}.json?min_elevation=70&hours=24`;
 
   try {
     const response = await new Request(url).loadJSON();
@@ -140,7 +133,8 @@ const cacheImage = async (url, fileName = "satellite.jpg") => {
     fileManager.writeImage(path, image);
     return image;
   } catch (error) {
-    console.error(`Failed to cache/load image: ${error}`); // Return cached image if available
+    console.error(`Failed to cache/load image: ${error}`); 
+    // Return cached image if available
     if (fileManager.fileExists(path)) return fileManager.readImage(path);
     return null;
   }
@@ -177,29 +171,30 @@ const createText = (widget, text, font, color, align = "center") => {
 // Add satellite name (title) as text element
 const addNameText = (widget, value) => {
   const row = widget.addStack();
-  createText(row, value, styles.fonts.title, styles.colors.title, "center");
+  createText(row, value, STYLES.fonts.title, STYLES.colors.title, "center");
 };
 
 // Add satellite category as text element
 const addCategoryText = (widget, value) => {
   const row = widget.addStack();
-  createText(row, value, styles.fonts.subtitle, styles.colors.subtitle, "left");
+  createText(row, value, STYLES.fonts.subtitle, STYLES.colors.subtitle, "left");
 };
 
 // Add individual data row element
 const addDataRow = (widget, value) => {
   const row = widget.addStack();
-  createText(row, value, styles.fonts.text, styles.colors.text, "left");
+  createText(row, value, STYLES.fonts.text, STYLES.colors.text, "left");
 };
 
 // === WIDGET ASSEMBLY ===
 function buildWidget(nextPass) {
   const widget = new ListWidget();
-  widget.setPadding(0, -5, 0, 0); // Apply background gradient
-
+  widget.setPadding(0, -5, 0, 0); 
+  
+  // Apply background gradient
   const backgroundGradient = new LinearGradient();
   backgroundGradient.locations = [0, 1];
-  backgroundGradient.colors = styles.colors.gradient;
+  backgroundGradient.colors = STYLES.colors.gradient;
   if (background) {
     widget.backgroundImage = background;
     widget.backgroundGradient = backgroundGradient;
@@ -231,8 +226,8 @@ function buildWidget(nextPass) {
     createText(
       row,
       "Can't determine next satellite pass.",
-      styles.fonts.text,
-      styles.colors.text,
+      STYLES.fonts.text,
+      STYLES.colors.text,
       "center"
     );
   } 
