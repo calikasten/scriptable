@@ -282,12 +282,10 @@ const widget = createWidget({
   eventFormatted,
 });
 
-// Check if script is running inside a widget
+// Run in widget or display preview
 if (config.runsInWidget) {
-  // Run inside a widget
   Script.setWidget(widget);
 } else {
-  // Otherwise show widget preview
   widget.presentMedium();
 }
 
