@@ -19,7 +19,7 @@ const activityViews = [
 
 // === STYLES ===
 // Format font size and color
-const styles = {
+const STYLES = {
   fonts: {
     title: Font.semiboldSystemFont(20),
     text: Font.semiboldSystemFont(14),
@@ -91,7 +91,7 @@ const createText = (widget, text, font, color, align = "left") => {
 
 // Add title as text element
 const addTitle = (widget, text) =>
-  createText(widget, text, styles.fonts.title, styles.colors.text, "center");
+  createText(widget, text, STYLES.fonts.title, STYLES.colors.text, "center");
 
 // Add individual "activity" row element
 const addActivityRow = (widget, emoji, timestampStr) => {
@@ -99,24 +99,24 @@ const addActivityRow = (widget, emoji, timestampStr) => {
   activity.layoutHorizontally();
   activity.centerAlignContent();
   activity.setPadding(5, 6, 0, 0);
-  createText(activity, `${emoji} `, styles.fonts.text, styles.colors.text);
+  createText(activity, `${emoji} `, STYLES.fonts.text, STYLES.colors.text);
   createText(
     activity,
     `${timestampStr} `,
-    styles.fonts.text,
-    styles.colors.text
+    STYLES.fonts.text,
+    STYLES.colors.text
   );
   const suffix = activity.addStack();
   suffix.layoutVertically();
   suffix.addSpacer(4);
-  createText(suffix, "hours ago", styles.fonts.suffix, styles.colors.suffix);
+  createText(suffix, "hours ago", STYLES.fonts.suffix, STYLES.colors.suffix);
   return activity;
 };
 
 // === WIDGET ASSEMBLY ===
 async function createWidget() {
   const widget = new ListWidget();
-  widget.backgroundColor = styles.colors.background;
+  widget.backgroundColor = STYLES.colors.background;
 
   addTitle(widget, "Barley 🐶"); // Widget title
   widget.addSpacer(); 
@@ -134,12 +134,10 @@ async function createWidget() {
 // === MAIN EXECUTION ===
 const widget = await createWidget();
 
-// Check if script is running inside a widget
+// Run in widget or display preview
 if (config.runsInWidget) {
-  // Run inside a widget
   Script.setWidget(widget);
 } else {
-  // Otherwise show widget preview
   widget.presentSmall();
 }
 Script.complete();
