@@ -99,6 +99,7 @@ function createWidget() {
 
   const numberedRows = widgetData.map((value, i) => `${i + 1}. ${value}`);
   addTextRow(widget, numberedRows); // Number each row of widget data
+  
   return widget; // Return widget with its constructed UI elements
 }
 
