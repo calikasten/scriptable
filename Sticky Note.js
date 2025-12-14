@@ -144,6 +144,8 @@ const main = async () => {
     saveData(note);
   }
   const widget = await createWidget(note); 
+
+  // Run in widget or display preview
   if (!config.runsInWidget) {
     await widget.presentLarge();
   } else {
