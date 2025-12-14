@@ -15,7 +15,7 @@ const CONFIG = {
 };
 
 // === STYLES ===
-const styles = {
+const STYLES = {
   font: Font.mediumRoundedSystemFont(16),
   spacerTop: 20,
   textColor: Color.black(),
@@ -26,7 +26,7 @@ const styles = {
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
   fileManager.documentsDirectory(),
-  settings.folderName
+  CONFIG.folderName
 );
 const filePath = fileManager.joinPath(folderPath, CONFIG.fileName);
 const cachedImagePath = fileManager.joinPath(folderPath, CONFIG.imageFileName);
@@ -104,7 +104,7 @@ const alignText = (textElement, align) => {
 };
 
 // Create generic text element
-const createText = (widget, text, font, color, align = "left") => {
+const createText = (widget, text, font, color, align = "center") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
@@ -115,7 +115,7 @@ const createText = (widget, text, font, color, align = "left") => {
 
 // Add main sticky note content as text element
 const addStickyNoteText = (stack, text) =>
-  createText(stack, text, styles.font, styles.textColor, "center");
+  createText(stack, text, STYLES.font, STYLES.textColor, "center");
 
 // Add spacer
 const addSpacer = (stack, size) => {
@@ -127,31 +127,26 @@ const createWidget = async (note) => {
   const widget = new ListWidget();
   widget.backgroundImage = await loadImage();
 
-  addSpacer(widget, styles.spacerTop);
+  addSpacer(widget, STYLES.spacerTop);
   addStickyNoteText(widget, note);
-  addSpacer(widget); 
+  addSpacer(widget);
 
   return widget; // Return widget with its constructed UI elements
 };
 
 // === MAIN EXECUTION ===
 const main = async () => {
-  
-  let note = loadData(); // Load data
-
+  let note = loadData(); // Load data 
+   
   // Allow for text to be edited if running in app
   if (!config.runsInWidget) {
     note = await editText(note);
     saveData(note);
   }
   const widget = await createWidget(note); 
-  
-  // Check if script is running inside a widget
   if (!config.runsInWidget) {
-    // Show widget preview
     await widget.presentLarge();
   } else {
-    // Otherwise run inside a widget
     Script.setWidget(widget);
   }
 
