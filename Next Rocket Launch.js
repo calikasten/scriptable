@@ -4,89 +4,111 @@
 
 // === CONFIGURATION ===
 const CONFIG = {
-  folder: "Plant Data",
-  file: "plant-data.json",
+  apiUrl: "https://lldev.thespacedevs.com/2.2.0/launch/upcoming",
+  cacheDurationMs: 30 * 60 * 1000, // 30 minutes
+  backgroundImageUrl:
+    "https://calikasten.wordpress.com/wp-content/uploads/2025/10/spacex-1047301226a.webp",
+  refreshIntervalMs: 5 * 60 * 1000, // 5 minutes
 };
-
-// === GLOBAL VARIABLES ===
-// Initialize iCloud file manager and set up paths
-const fileManager = FileManager.iCloud();
-const folderPath = fileManager.joinPath(
-  fileManager.documentsDirectory(),
-  CONFIG.folder
-);
-const filePath = fileManager.joinPath(folderPath, CONFIG.file);
-
-// Create folder if it doesn't exist
-if (!fileManager.fileExists(folderPath)) {
-  fileManager.createDirectory(folderPath, true);
-}
 
 // === STYLES ===
-// Define colors, fonts, and layout spacing
+// Define colors and fonts
 const styles = {
   colors: {
-    backgroundAlert: new Color("#B00020"),
-    backgroundNeutral: new Color("#001F3F"),
-    gradientEnd: new Color("#1C1C1E"),
     text: Color.white(),
+    launched: Color.green(),
+    divider: new Color("FFFFFF", 0.5),
+    gradient: [new Color("#000000", 0.7), new Color("#000000", 0.2)],
   },
   fonts: {
-    title: Font.systemFont(12),
-    alert: Font.boldSystemFont(12),
-    plant: Font.boldSystemFont(10),
-    count: Font.boldSystemFont(42),
-  },
-  spacing: {
-    widgetPadding: [0, 10, 10, 10],
-    spacerSmall: 1,
-    spacerMedium: 8,
-    spacerTop: -12,
+    title: Font.semiboldSystemFont(14),
+    text: Font.semiboldSystemFont(12),
+    countdown: Font.semiboldSystemFont(16),
+    divider: Font.lightSystemFont(10),
   },
 };
 
-// === HELPERS ===
-// Save data to JSON file (overwrites existing content)
-const saveData = (fileManager, filePath, plantData) => {
-  try {
-    fileManager.writeString(filePath, JSON.stringify(plantData));
-  } catch (error) {
-    console.error(error);
+// === HELPER FUNCTIONS ===
+// Format timestamp into localized date/time string
+const formatDateTime = (timestamp) => {
+  if (!timestamp) return "Launch time TBD";
+  const date = new Date(timestamp);
+  const locale = Device.language();
+  const dateString = Intl.DateTimeFormat(locale, {
+    month: "numeric",
+    day: "numeric",
+    year: "2-digit",
+  }).format(date);
+  const timeString = Intl.DateTimeFormat(locale, {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  }).format(date);
+  return `${dateString} at ${timeString}`;
+};
+
+// Calculate countdown string from now until timestamp
+const getCountdown = (timestamp) => {
+  if (!timestamp) return "Countdown unavailable";
+  const diffMs = new Date(timestamp) - new Date();
+  if (diffMs <= 0) return "Launched";
+
+  const totalMinutes = Math.floor(diffMs / 1000 / 60);
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${days ? days + "d " : ""}${
+    days || hours ? hours + "h " : ""
+  }${minutes}m`;
+};
+
+// === NETWORK & API CLIENT ===
+// Return cached API data or fetch from API if cache is invalid
+async function getCachedData() {
+  const fileManager = FileManager.local();
+  const file = fileManager.joinPath(
+    fileManager.cacheDirectory(),
+    "launch_api_cache.json"
+  );
+
+  if (
+    fileManager.fileExists(file) &&
+    Date.now() - fileManager.modificationDate(file).getTime() <
+      CONFIG.cacheDurationMs
+  ) {
+    try {
+      return JSON.parse(fileManager.readString(file));
+    } catch (error) {
+      console.error(`Failed to read cache: ${error}`);
+    }
   }
-};
-
-// Load cached data from JSON file
-const loadData = (fileManager, filePath) => {
-  if (!fileManager.fileExists(filePath)) return null;
 
   try {
-    return JSON.parse(fileManager.readString(filePath));
+    const response = await new Request(CONFIG.apiUrl).loadJSON();
+    if (!response?.results?.length) throw new Error("No data returned");
+    fileManager.writeString(file, JSON.stringify(response));
+    return response;
   } catch (error) {
-    console.error(error);
+    console.error(`Failed to fetch data: ${error}`);
     return null;
   }
-};
+}
 
-// Calculate number of days since a date string
-const daysSince = (dateStr) => {
-  const days = Date.parse(dateStr);
-  return isNaN(days) ? 0 : Math.floor((Date.now() - days) / 86_400_000);
-};
+// Load image from cache or fetch and cache if not available
+const cacheImage = async (url, filename) => {
+  const fileManager = FileManager.local();
+  const path = fileManager.joinPath(fileManager.cacheDirectory(), filename);
 
-// Determine which plants need watering
-const analyzeWatering = (plantData) => {
-  if (!plantData || typeof plantData !== "object") {
-    return [];
+  try {
+    if (fileManager.fileExists(path)) return fileManager.readImage(path);
+    const image = await new Request(url).loadImage();
+    fileManager.writeImage(path, image);
+    return image;
+  } catch (error) {
+    console.error(`Failed to cache/load image: ${error}`);
+    return null;
   }
-
-  return Object.entries(plantData)
-    .filter(
-      ([, plant]) =>
-        plant.lastWatered &&
-        plant.wateringSchedule &&
-        daysSince(plant.lastWatered) >= Number(plant.wateringSchedule)
-    )
-    .map(([name]) => name);
 };
 
 // === UI COMPONENTS ===
@@ -105,7 +127,7 @@ const alignText = (textElement, align) => {
 };
 
 // Create generic text element
-const createText = (widget, text, font, color, align = "left") => {
+const createText = (widget, text, font, color, align = "center") => {
   const textElement = widget.addText(text);
   textElement.font = font;
   textElement.textColor = color;
@@ -114,106 +136,118 @@ const createText = (widget, text, font, color, align = "left") => {
   return textElement;
 };
 
-// Add count as text element
-const addCountText = (stack, count) =>
+// Add mission name as text element
+const addMissionText = (stack, missionName) =>
   createText(
     stack,
-    `${count}`,
-    styles.fonts.count,
-    styles.colors.text,
-    "center"
-  );
-
-// Add status as text element under count
-const addStatusText = (stack, count) => {
-  const text = count === 1 ? "plant needs watering." : "plants need watering.";
-  return createText(
-    stack,
-    text,
+    missionName || "Unknown Mission",
     styles.fonts.title,
     styles.colors.text,
     "center"
   );
+
+// Add rocket type as text element
+const addRocketType = (stack, rocketName) =>
+  createText(
+    stack,
+    rocketName || "Unknown Rocket",
+    styles.fonts.text,
+    styles.colors.text,
+    "center"
+  );
+
+// Add launch date/time as text element
+const addLaunchDateText = (stack, dateString) =>
+  createText(
+    stack,
+    dateString || "Launch time TBD",
+    styles.fonts.text,
+    styles.colors.text,
+    "center"
+  );
+
+// Add countdown of calculated time until launch as text element
+const addCountdownText = (stack, timestamp) => {
+  const countdownString = getCountdown(timestamp);
+  return createText(
+    stack,
+    countdownString,
+    styles.fonts.countdown,
+    countdownString === "Launched"
+      ? styles.colors.launched
+      : styles.colors.text,
+    "center"
+  );
 };
 
-// Add individual plant name as text element
-const addPlantName = (widget, name) => {
-  const text = createText(
-    widget,
-    `• ${name}`,
-    styles.fonts.plant,
-    styles.colors.text,
-    "left"
+// Add divider line as text element
+const addDividerText = (stack, length = 14) =>
+  createText(
+    stack,
+    "—".repeat(length),
+    styles.fonts.divider,
+    styles.colors.divider,
+    "center"
   );
-  widget.addSpacer(styles.spacing.spacerSmall);
-  return text;
-};
 
 // === WIDGET ASSEMBLY ===
-function createWidget(plants) {
-  const widget = new ListWidget();
-  const [top, right, bottom, left] = styles.spacing.widgetPadding;
-  widget.setPadding(top, right, bottom, left); 
-  
-  // Gradient background
-  const gradient = new LinearGradient();
-  gradient.colors = [
-    plants.length
-      ? styles.colors.backgroundAlert
-      : styles.colors.backgroundNeutral,
-    styles.colors.gradientEnd,
-  ];
-  gradient.locations = [0, 0.9];
-  gradient.startPoint = new Point(0, 0);
-  gradient.endPoint = new Point(0, 1);
-  widget.backgroundGradient = gradient;
+async function createWidget(launch) {
+  const widget = new ListWidget(); // Load background image
 
-  if (!plants.length) {
-    // Show message if no plants need to be watered today
-    createText(
-      widget,
-      "No plants need water today.",
-      styles.fonts.alert,
-      styles.colors.text,
-      "center"
-    );
+  const background = await cacheImage(
+    CONFIG.backgroundImageUrl,
+    "launch_bg.jpg"
+  );
+
+  // Apply background gradient
+  const backgroundGradient = new LinearGradient();
+  backgroundGradient.locations = [0, 1];
+  backgroundGradient.colors = styles.colors.gradient;
+  if (background) {
+    widget.backgroundImage = background;
+    widget.backgroundGradient = backgroundGradient;
   } else {
-    const topStack = widget.addStack();
-    topStack.layoutVertically();
-    topStack.centerAlignContent(); 
-    
-    // Negative spacer pulls content upward for visual balance
-    topStack.addSpacer(styles.spacing.spacerTop);
-
-    addCountText(topStack, plants.length);
-    addStatusText(topStack, plants.length);
-
-    widget.addSpacer(styles.spacing.spacerMedium); 
-    
-    // List of plants that need watering
-    for (const name of plants) {
-      addPlantName(widget, name);
-    }
+    widget.backgroundColor = new Color("#000000");
   }
+
+  // Construct main text stack in widget
+  const stack = widget.addStack();
+  stack.layoutVertically();
+  stack.centerAlignContent();
+
+  addMissionText(stack, launch.mission?.name); // Mission name
+  stack.addSpacer(6);
+
+  addRocketType(stack, launch.rocket?.configuration?.name); // Rocket type
+  stack.addSpacer(4);
+
+  addLaunchDateText(stack, formatDateTime(launch.net)); // Launch date/time
+  stack.addSpacer(8);
+
+  addDividerText(stack); // Divider
+  stack.addSpacer(6);
+
+  const countdown = stack.addStack();
+  countdown.layoutHorizontally(); 
+  countdown.addSpacer(); // Left flexible spacer
+  addCountdownText(countdown, launch.net); // Countdown 
+  countdown.addSpacer(); // Flexible spacer on right
+  
+  // Auto-refresh widget
+  const launchMs = launch.net ? new Date(launch.net).getTime() : Date.now();
+  widget.refreshAfterDate = new Date(
+    Math.min(Date.now() + CONFIG.refreshIntervalMs, launchMs)
+  );
 
   return widget; // Return widget with its constructed UI elements
 }
 
 // === MAIN EXECUTION ===
-// Load data from Shortcut parameter or file
-let plantData = args.shortcutParameter;
-if (typeof plantData === "string") {
-  try {
-    plantData = JSON.parse(plantData);
-  } catch (error) {
-    console.error(`Data parse failed: ${error}`);
-  }
-}
-if (plantData) saveData(fileManager, filePath, plantData);
-else plantData = loadData(fileManager, filePath);
+// Load cached data
+const data = await getCachedData();
+if (!data) return console.error("No launch data available.");
 
-// Analyze plants that need watering
-const widget = createWidget(analyzeWatering(plantData));
+const widget = await createWidget(data.results[0]);
 
 // Check if script is running inside a widget
 if (config.runsInWidget) {
