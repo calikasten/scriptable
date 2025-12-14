@@ -19,7 +19,7 @@ const filePath = fileManager.joinPath(folderPath, CONFIG.file);
 
 // Create folder if it doesn't exist
 if (!fileManager.fileExists(folderPath)) {
-    fileManager.createDirectory(folderPath, true);
+  fileManager.createDirectory(folderPath, true);
 }
 
 // === STYLES ===
@@ -187,9 +187,8 @@ function createWidget(plants) {
     addCountText(topStack, plants.length);
     addStatusText(topStack, plants.length);
 
-    widget.addSpacer(styles.spacing.spacerMedium); 
-	
-	// List of plants that need watering
+    widget.addSpacer(styles.spacing.spacerMedium); // List of plants that need watering
+
     for (const name of plants) {
       addPlantName(widget, name);
     }
@@ -224,3 +223,4 @@ if (config.runsInWidget) {
 }
 
 Script.complete();
+
