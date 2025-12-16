@@ -40,7 +40,7 @@ const calculateTimeDiff = (timestampStr) => {
   return (diffMS / (1000 * 60 * 60)).toFixed(1);
 };
 
-// === API CLIENT ===
+// === NETWORK & API CLIENT ===
 // Function to get data from API
 async function fetchLatestTimestamp(viewName) {
   const url = `https://api.airtable.com/v0/${CONFIG.appId}/${
