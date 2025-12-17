@@ -43,9 +43,9 @@ const SATELLITES = [
 
 // Default fallback location if device location is unavailable
 const CONFIG = {
-  fallbackLatitude: 41.90421705471727,
-  fallbackLongitude: -87.6626416108551,
-  apiUrl: "",
+  fallbackLatitude: <LATITUDE>,
+  fallbackLongitude: <LONGITUDE>,
+  //apiUrl: "",
   backgroundImageUrl:
     "https://calikasten.wordpress.com/wp-content/uploads/2025/12/satellite-2.jpeg",
   refreshIntervalMs: 5 * 60 * 1000, // 5 minutes
