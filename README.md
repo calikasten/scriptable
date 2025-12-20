@@ -1,5 +1,5 @@
 # Scriptable
-Widgets and automations via the Scriptable app. Last Updated 12/19/2025.
+Widgets and automations via the Scriptable app. Last Updated 12/20/2025.
 
 ## Utilities
 [Backup to iCloud](https://github.com/calikasten/scriptable-scripts/blob/main/Backup%20to%20iCloud.js) <br>
@@ -30,14 +30,14 @@ View details for the next F1 race and race weekend events. Original author [FeBe
 View details for the next rocket launch. <br>
 ![Next Rocket Launch](https://github.com/user-attachments/assets/5e07a066-408d-40a8-8377-cb24b5648c71)
 
+[Next Satellite](https://github.com/calikasten/scriptable/blob/main/Satellite%20Overhead.js) <br>
+View info about a satellite above. <br>
+![Satellite Overhead](https://github.com/user-attachments/assets/fa0e7226-7fe3-4c14-919f-c346d2da78d2)
+
 [Plants That Need Watering](https://github.com/calikasten/scriptable/blob/main/Plants%20That%20Need%20Watering.js) <br>
 Displays a list of plants that should be watered today. Plant watering is logged via the [Log Plant Watering](https://github.com/calikasten/siri-shortcuts/blob/main/Log%20Plant%20Watering.shortcut) Shortcut.
 
 https://github.com/user-attachments/assets/ab145ccd-9a7f-44b9-ad72-96e6e898ffe3
-
-[Satellite Above](https://github.com/calikasten/scriptable/blob/main/Satellite%20Overhead.js) <br>
-View info about a satellite above. <br>
-![Satellite Overhead](https://github.com/user-attachments/assets/fa0e7226-7fe3-4c14-919f-c346d2da78d2)
 
 ## Productivity
 [Sticky Note](https://github.com/calikasten/scriptable/blob/main/Sticky%20Note.js) <br>
