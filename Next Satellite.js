@@ -46,8 +46,8 @@ const SATELLITES = [
 
 const CONFIG = {
   // Fallback coordinates used when device location cannot be determined
-  fallbackLatitude: <latitude>,
-  fallbackLongitude: <longitude>,
+  fallbackLatitude: 0,
+  fallbackLongitude: 0,
   
   minimumSatelliteElevation: 70, // minimum elevation (degrees) for a pass to be considered
   hoursFromNow: 24, // within how many hours from now to search for passes
