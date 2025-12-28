@@ -75,7 +75,7 @@ const STYLES = {
   },
 };
 
-// === HELPER FUNCTIONS ===
+// === HELPERS ===
 // Safely round numeric values coming from the API
 function safeRound(value) {
   return Number.isFinite(value) ? Math.round(value) : "-";
