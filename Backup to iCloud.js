@@ -22,7 +22,7 @@ async function main() {
     fileManager.createDirectory(backupDirectory, true);
   } 
   
-  // === HELPER FUNCTIONS === 
+  // === HELPERS === 
   // Check if file content matches existing content
   const filesAreEqual = (path, content) => {
     try {
