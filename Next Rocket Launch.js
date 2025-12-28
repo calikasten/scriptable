@@ -28,7 +28,7 @@ const STYLES = {
   },
 };
 
-// === HELPER FUNCTIONS ===
+// === HELPERS ===
 // Format timestamp into localized date/time string
 const formatDateTime = (timestamp) => {
   if (!timestamp) return "Launch time TBD";
