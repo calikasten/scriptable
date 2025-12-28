@@ -21,7 +21,7 @@ const STYLES = {
   textColor: Color.black(),
 };
 
-// === HELPERS ===
+// === HELPER FUNCTIONS ===
 // Initialize iCloud file manager and set up paths
 const fileManager = FileManager.iCloud();
 const folderPath = fileManager.joinPath(
