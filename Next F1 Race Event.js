@@ -28,7 +28,7 @@ const STYLES = {
   }
 };
 
-// === HELPERS ===
+// === HELPER FUNCTIONS ===
 // Aliases for countries hosting multiple races
 const COUNTRY_ALIAS = {
   Miami: "United States",
