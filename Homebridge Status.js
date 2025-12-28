@@ -62,7 +62,7 @@ const STYLES = {
   },
 };
 
-// === HELPER FUNCTIONS ===
+// === HELPERS ===
 // Local file name for cached logo file
 const hbLogoFileName = `${Device.model()}_hbLogo.png`;
 
