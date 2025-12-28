@@ -45,7 +45,7 @@ const STYLES = {
   },
 };
 
-// === HELPER FUNCTIONS ===
+// === HELPERS ===
 // Save data to JSON file (overwrites existing content)
 const saveData = (fileManager, filePath, plantData) => {
   try {
