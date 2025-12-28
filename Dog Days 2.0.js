@@ -32,7 +32,7 @@ const STYLES = {
   },
 };
 
-// === HELPERS ===
+// === HELPER FUNCTIONS ===
 // Calculate time difference
 const calculateTimeDiff = (timestampStr) => {
   if (!timestampStr) return "N/A";
