@@ -89,7 +89,7 @@ dateFormatter.useMediumDateStyle();
 const timeFormatter = new DateFormatter();
 timeFormatter.useShortTimeStyle();
 
-// === NETWORK / API CLIENT ===
+// === NETWORK & API CLIENT ===
 // Fetch the earliest upcoming satellite pass across all tracked satellites
 async function fetchSoonestSatellitePass(latitude, longitude) {
   let earliestPass = null; // Perform API requests in parallel for all satellites
