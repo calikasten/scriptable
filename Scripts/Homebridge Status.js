@@ -18,9 +18,6 @@ const CONFIG = {
   },
 };
 
-// Global token variable
-let token;
-
 // === STYLES ===
 const STYLES = {
   // Define text colors, icon fills, and background gradient
@@ -268,44 +265,6 @@ const getHbLogoImage = async (fileManager) => {
   return image;
 };
 
-// === CACHE MANAGEMENT ===
-const getCachePath = (fileManager) => 
-  getFilePath(fileManager, CONFIG.cache.fileName);
-
-const saveStatusCache = async (fileManager, status, timestamp) => {
-  const path = getCachePath(fileManager);
-  const cacheData = {
-    status: {
-      reachable: status.reachable,
-      overallStatus: status.overallStatus,
-      hbUpToDate: status.hbUpToDate,
-      pluginsUpToDate: status.pluginsUpToDate,
-      nodeJsUpToDate: status.nodeJsUpToDate,
-      cpuData: status.cpuData,
-      ramData: status.ramData,
-      uptimesArray: status.uptimesArray,
-    },
-    timestamp: timestamp.getTime(),
-  };
-  fileManager.writeString(path, JSON.stringify(cacheData));
-};
-
-const loadStatusCache = (fileManager) => {
-  const path = getCachePath(fileManager);
-  if (!fileManager.fileExists(path)) return null;
-  
-  try {
-    const cacheData = JSON.parse(fileManager.readString(path));
-    const age = Date.now() - cacheData.timestamp;
-    
-    if (age > CONFIG.cache.maxAgeMs) return null; // Too old
-    
-    return cacheData;
-  } catch {
-    return null;
-  }
-};
-
 // === UI COMPONENTS ===
 // Predefine dark purple gradient
 const darkPurpleGradientBackground = (() => {
@@ -477,41 +436,26 @@ const addChartToWidget = (column, data) => {
 };
 
 // Display error and last refresh time if service is unreachable
-const addNotAvailableInfos = (widget, now, cacheData = null) => {
-  const mainText = cacheData 
-    ? "⚠️ Using cached data (network unavailable)"
-    : "❌ Homebridge service is unreachable!";
-  
-  const text = addText(widget, mainText, STYLES.fonts.text);
+const addNotAvailableInfos = (widget, now) => {
+  const text = addText(
+    widget,
+    "❌ Homebridge service is unreachable!",
+    STYLES.fonts.text
+  );
   text.centerAlignText();
 
-  widget.addSpacer(5);
+  widget.addSpacer(15);
 
-  if (cacheData) {
-    const cacheAge = now.getTime() - cacheData.timestamp;
-    const ageMinutes = Math.floor(cacheAge / 60000);
-    const cacheInfo = addText(
-      widget,
-      `Data from ${ageMinutes}m ago`,
-      STYLES.fonts.updatedAt
-    );
-    cacheInfo.centerAlignText();
-    widget.addSpacer(10);
-  } else {
-    widget.addSpacer(15);
-  }
-
-  const last = addText(
+  const last = widget.addText(
     widget,
-    `Last refresh attempt: ${timeFormatter.string(now)}`,
+    `Last refreshed: ${timeFormatter.string(now)}`,
     STYLES.fonts.updatedAt
   );
-  last.centerAlignText();
 };
 
 // === WIDGET ASSEMBLY ===
 // Assemble header, status panels, charts, uptimes, and footer timestamp
-const buildFullWidget = async (widget, homebridgeStatus, now, fileManager, isFromCache = false) => {
+const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
   widget.addSpacer(10);
 
   const titleStack = widget.addStack();
@@ -521,8 +465,7 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager, isFro
   widget.addSpacer(10);
 
   if (!homebridgeStatus.cpuData || !homebridgeStatus.ramData) {
-    const cacheData = isFromCache ? { timestamp: now.getTime() } : null;
-    addNotAvailableInfos(widget, now, cacheData);
+    addNotAvailableInfos(widget, now);
     return;
   }
 
@@ -608,51 +551,22 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager, isFro
 };
 
 // === MAIN EXECUTION ===
+// Initialize fonts, auth, fetch status, build widget
 (async () => {
   const now = new Date();
   const runtime = {
     fileManager: FileManager.local(),
+    token: await getAuthToken(),
   };
+
+  token = await getAuthToken();
 
   const widget = new ListWidget();
   handleBackground(widget);
 
-  let status;
-  let isFromCache = false;
-  let homebridgeReachable = true;
+  const status = await new HomeBridgeStatus().initialize(runtime.token);
 
-  // Test if Homebridge server is reachable
-  try {
-    const testReq = new Request(api("/api/auth/login"));
-    testReq.timeoutInterval = 5;
-    testReq.method = "HEAD";
-    await testReq.load();
-  } catch {
-    homebridgeReachable = false;
-  }
-
-  if (!homebridgeReachable) {
-    // Homebridge server unreachable - use cache
-    const cacheData = loadStatusCache(runtime.fileManager);
-    
-    if (cacheData) {
-      status = cacheData.status;
-      isFromCache = true;
-    } else {
-      status = new HomeBridgeStatus();
-      status.reachable = false;
-    }
-  } else {
-    // Homebridge server is reachable - fetch live data
-    token = await getAuthToken();
-    status = await new HomeBridgeStatus().initialize(token);
-    
-    if (status.reachable) {
-      await saveStatusCache(runtime.fileManager, status, now);
-    }
-  }
-
-  await buildFullWidget(widget, status, now, runtime.fileManager, isFromCache);
+  await buildFullWidget(widget, status, now, runtime.fileManager);
 
   if (config.runsInWidget) {
     Script.setWidget(widget);
