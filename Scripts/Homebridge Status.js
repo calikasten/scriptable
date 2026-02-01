@@ -16,6 +16,10 @@ const CONFIG = {
     logoUrl:
       "https://raw.githubusercontent.com/homebridge/branding/latest/logos/homebridge-silhouette-round-white.png",
   },
+  cache: {
+    fileName: "homebridge_last_state.json",
+    maxAgeMs: 3600000, // 1 hour
+  },
 };
 
 // === STYLES ===
@@ -265,6 +269,44 @@ const getHbLogoImage = async (fileManager) => {
   return image;
 };
 
+// === CACHE MANAGEMENT ===
+const getCachePath = (fileManager) => 
+  getFilePath(fileManager, CONFIG.cache.fileName);
+
+const saveStatusCache = async (fileManager, status, timestamp) => {
+  const path = getCachePath(fileManager);
+  const cacheData = {
+    status: {
+      reachable: status.reachable,
+      overallStatus: status.overallStatus,
+      hbUpToDate: status.hbUpToDate,
+      pluginsUpToDate: status.pluginsUpToDate,
+      nodeJsUpToDate: status.nodeJsUpToDate,
+      cpuData: status.cpuData,
+      ramData: status.ramData,
+      uptimesArray: status.uptimesArray,
+    },
+    timestamp: timestamp.getTime(),
+  };
+  fileManager.writeString(path, JSON.stringify(cacheData));
+};
+
+const loadStatusCache = (fileManager) => {
+  const path = getCachePath(fileManager);
+  if (!fileManager.fileExists(path)) return null;
+  
+  try {
+    const cacheData = JSON.parse(fileManager.readString(path));
+    const age = Date.now() - cacheData.timestamp;
+    
+    if (age > CONFIG.cache.maxAgeMs) return null;
+    
+    return cacheData;
+  } catch {
+    return null;
+  }
+};
+
 // === UI COMPONENTS ===
 // Predefine dark purple gradient
 const darkPurpleGradientBackground = (() => {
@@ -336,7 +378,7 @@ const addStatusIcon = (stack, status) => {
 
 // Add a status line with icon and text
 const addStatusInfo = (stack, status, text, reachable = true) => {
-  if (!reachable || status === undefined) return; // Skip rendering if unreachable
+  if (!reachable || status === undefined) return;
 
   const statusElement = stack.addStack();
   addStatusIcon(statusElement, status);
@@ -349,14 +391,12 @@ const addStatusInfo = (stack, status, text, reachable = true) => {
 
 // Build status section in header as 2 columns
 const headerStatus = (stack, homebridgeStatus) => {
-  // Determine if service is reachable
   const reachable = homebridgeStatus.reachable;
 
   stack.addSpacer(STYLES.sizes.spacerBeforeStatusColumn);
 
   const statusInfo = stack.addStack(); 
   
-  // Column 1: Overall status and Plugins status
   const statusColumn1 = statusInfo.addStack();
   statusColumn1.layoutVertically();
 
@@ -376,7 +416,6 @@ const headerStatus = (stack, homebridgeStatus) => {
 
   statusInfo.addSpacer(STYLES.sizes.spacerBetweenStatusColumns); 
   
-  // Column 2: Homebridge UI status and Node.js status
   const statusColumn2 = statusInfo.addStack();
   statusColumn2.layoutVertically();
 
@@ -436,26 +475,40 @@ const addChartToWidget = (column, data) => {
 };
 
 // Display error and last refresh time if service is unreachable
-const addNotAvailableInfos = (widget, now) => {
-  const text = addText(
-    widget,
-    "❌ Homebridge service is unreachable!",
-    STYLES.fonts.text
-  );
+const addNotAvailableInfos = (widget, now, cacheData = null) => {
+  const mainText = cacheData 
+    ? "⚠️ Using cached data (not on home network)"
+    : "❌ Unable to connect to Homebridge";
+  
+  const text = addText(widget, mainText, STYLES.fonts.text);
   text.centerAlignText();
 
-  widget.addSpacer(15);
+  widget.addSpacer(5);
 
-  const last = widget.addText(
+  if (cacheData) {
+    const cacheAge = now.getTime() - cacheData.timestamp;
+    const ageMinutes = Math.floor(cacheAge / 60000);
+    const cacheInfo = addText(
+      widget,
+      `Data from ${ageMinutes}m ago`,
+      STYLES.fonts.updatedAt
+    );
+    cacheInfo.centerAlignText();
+    widget.addSpacer(10);
+  } else {
+    widget.addSpacer(15);
+  }
+
+  const last = addText(
     widget,
-    `Last refreshed: ${timeFormatter.string(now)}`,
+    `Last refresh attempt: ${timeFormatter.string(now)}`,
     STYLES.fonts.updatedAt
   );
+  last.centerAlignText();
 };
 
 // === WIDGET ASSEMBLY ===
-// Assemble header, status panels, charts, uptimes, and footer timestamp
-const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
+const buildFullWidget = async (widget, homebridgeStatus, now, fileManager, cacheData = null) => {
   widget.addSpacer(10);
 
   const titleStack = widget.addStack();
@@ -465,7 +518,7 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
   widget.addSpacer(10);
 
   if (!homebridgeStatus.cpuData || !homebridgeStatus.ramData) {
-    addNotAvailableInfos(widget, now);
+    addNotAvailableInfos(widget, now, cacheData);
     return;
   }
 
@@ -473,7 +526,6 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
   mainStack.size = new Size(STYLES.lines.maxLineWidth, 77);
   mainStack.addSpacer(4); 
   
-  // CPU column
   const cpuColumn = mainStack.addStack();
   cpuColumn.layoutVertically();
 
@@ -503,7 +555,6 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
 
   mainStack.addSpacer(11); 
   
-  // RAM column
   const ramColumn = mainStack.addStack();
   ramColumn.layoutVertically();
 
@@ -517,7 +568,6 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
 
   ramColumn.addSpacer(7); 
   
-  // Uptime info
   if (homebridgeStatus.uptimesArray) {
     const upStack = ramColumn.addStack();
     const upColumn = upStack.addStack();
@@ -551,7 +601,6 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
 };
 
 // === MAIN EXECUTION ===
-// Initialize fonts, auth, fetch status, build widget
 (async () => {
   const now = new Date();
   const runtime = {
@@ -564,9 +613,29 @@ const buildFullWidget = async (widget, homebridgeStatus, now, fileManager) => {
   const widget = new ListWidget();
   handleBackground(widget);
 
-  const status = await new HomeBridgeStatus().initialize(runtime.token);
+  let status;
+  let cacheData = null;
 
-  await buildFullWidget(widget, status, now, runtime.fileManager);
+  try {
+    status = await new HomeBridgeStatus().initialize(runtime.token);
+
+    if (status.reachable) {
+      await saveStatusCache(runtime.fileManager, status, now);
+    } else {
+      throw new Error("Service unreachable");
+    }
+  } catch (error) {
+    cacheData = loadStatusCache(runtime.fileManager);
+    
+    if (cacheData) {
+      status = cacheData.status;
+    } else {
+      status = new HomeBridgeStatus();
+      status.reachable = false;
+    }
+  }
+
+  await buildFullWidget(widget, status, now, runtime.fileManager, cacheData);
 
   if (config.runsInWidget) {
     Script.setWidget(widget);
