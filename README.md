@@ -15,7 +15,7 @@ A basic widget template with documentation that doesn't require the internet to 
 
 ## Personal
 [Dog Days 2.0](https://github.com/calikasten/scriptable/blob/main/scripts/dog-days.js) **[ARCHIVED]** <br>
-View the time since your wiener dog's latest activities like business, food, exercise. Activities are logged via the [Ween Watch 2.0](https://github.com/calikasten/siri-shortcuts/blob/main/Ween%20Watch%202.0.shortcut) Shortcut. <br>
+View the time since your wiener dog's latest activities like business, food, exercise. Activities are logged via the [Ween Watch 2.0](https://github.com/calikasten/siri-shortcuts/blob/main/shortcuts/Ween%20Watch%202.0.shortcut) Shortcut. <br>
 ![Dog Days 2 0](https://github.com/user-attachments/assets/b354492c-a3b6-4942-bfd8-97e09c883984)
 
 [Homebridge Status](https://github.com/calikasten/scriptable/blob/main/scripts/homebridge-status.js) <br>
