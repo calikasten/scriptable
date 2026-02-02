@@ -59,7 +59,7 @@ const CONFIG = {
   apiUrl:
     "https://api.g7vrd.co.uk/v1/satellite-passes/{norad}/{lat}/{lon}.json",
   backgroundImageUrl:
-    "https://calikasten.wordpress.com/wp-content/uploads/2025/12/satellite-2.jpeg",
+    "https://raw.githubusercontent.com/calikasten/scriptable/main/assets/satellite.jpeg",
   
   refreshIntervalMs: 5 * 60 * 1000, // 5 minutes
 };
