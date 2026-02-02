@@ -8,7 +8,7 @@ const CONFIG = {
   fileName: "sticky-note.txt",
   imageFileName: "sticky-note.png",
   imageUrl:
-    "https://calikasten.wordpress.com/wp-content/uploads/2025/10/sticky-note.png",
+    "https://raw.githubusercontent.com/calikasten/scriptable/main/assets/sticky-note.png",
   zoomFactor: 1.1,
   widgetSize: 400,
   forceImageRefresh: false,
