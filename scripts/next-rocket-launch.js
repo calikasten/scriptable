@@ -7,7 +7,7 @@ const CONFIG = {
   apiUrl: "https://lldev.thespacedevs.com/2.2.0/launch/upcoming",
   cacheDurationMs: 30 * 60 * 1000, // 30 minutes
   backgroundImageUrl:
-    "https://calikasten.wordpress.com/wp-content/uploads/2025/10/spacex-1047301226a.webp",
+    "https://raw.githubusercontent.com/calikasten/scriptable/main/assets/rocket.jpeg",
   refreshIntervalMs: 5 * 60 * 1000, // 5 minutes
 };
 
