@@ -8,7 +8,7 @@ const CONFIG = {
   locale: "en",
   apiUrl: "https://api.formula1.com/v1/event-tracker/next",
   logoUrl:
-    "https://calikasten.wordpress.com/wp-content/uploads/2025/04/f1-logo.png",
+    "https://raw.githubusercontent.com/calikasten/scriptable/main/assets/f1-logo.png",
   flagBaseUrl:
     "https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Flags%2016x9/",
 };
