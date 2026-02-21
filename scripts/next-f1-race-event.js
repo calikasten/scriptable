@@ -4,7 +4,7 @@
 
 // === CONFIGURATION ===
 const CONFIG = {
-  apiKey: "<INSERT API TOKEN HERE>",
+  apiKey: "<INSERT API KEY HERE>",
   locale: "en",
   apiUrl: "https://api.formula1.com/v1/event-tracker/next",
   logoUrl:
@@ -200,7 +200,7 @@ function createWidget({
   // If no upcoming event, show placeholder text and dashes
   if (!event) {
     const textEvent = eventStack.addText("Race");
-    textEvent.textColor = STYLES.STYLES.colors.accent;
+    textEvent.textColor = STYLES.colors.accent;
     textEvent.font = Font.boldSystemFont(20);
 
     const textCountdown = eventStack.addText("---");
@@ -261,7 +261,9 @@ const raceCountrySlug = aliasCountryName(data.race.meetingCountryName)
 const [logo, flag, circuit] = await Promise.all([
   getImage(CONFIG.logoUrl),
   getImage(`${CONFIG.flagBaseUrl}${raceCountrySlug}-flag.png`),
-  getImage(data.circuitSmallImage.url.replace(/\.\w+$/, "%20carbon.png")),
+  data.circuitSmallImage?.url
+    ? getImage(data.circuitSmallImage.url.replace(/\.\w+$/, "%20carbon.png"))
+    : Promise.resolve(null),
 ]);
 
 // Determine the next upcoming session (or null if all past)
