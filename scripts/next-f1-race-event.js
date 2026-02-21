@@ -36,6 +36,33 @@ const COUNTRY_ALIAS = {
   "Emilia Romagna": "Italy",
 };
 
+const CIRCUIT_SLUG = {
+    "Abu Dhabi": "yasmarina",
+    "Australia": "melbourne",
+    "Austria": "spielberg",
+    "Azerbaijan": "baku",
+    "Bahrain": "sakhir",
+    "Barcelona-Catalunya": "catalunya",
+    "Belgium": "spafrancorchamps",
+    "Brazil": "interlagos",
+    "Canada": "montreal",
+    "China": "shanghai",
+    "Great Britain": "silverstone",
+    "Hungary": "hungaroring",
+    "Italy": "monza",
+    "Japan": "suzuka",
+    "Las Vegas": "lasvegas",
+    "Mexico": "mexicocity",
+    "Miami": "miami",
+    "Monaco": "montecarlo",
+    "Netherlands": "zandvoort",
+    "Qatar": "lusail",
+    "Saudi Arabia": "jeddah",
+    "Singapore": "singapore",
+    "Spain": "madring",
+    "United States": "austin",
+  };
+
 // Map race location name to its canonical country name (if alias exists)
 const aliasCountryName = (name) => COUNTRY_ALIAS[name?.trim()] || name?.trim();
 
@@ -258,12 +285,14 @@ const raceCountrySlug = aliasCountryName(data.race.meetingCountryName)
   .replace(/\s/g, "-");
 
 // Fetch required images (logo, flag, and circuit image)
+const circuitSlug = CIRCUIT_SLUG[data.race.meetingCountryName?.trim()] ?? null;
+const circuitUrl = circuitSlug ? `${CONFIG.circuitBaseUrl}2026track${circuitSlug}detailed.webp`
+: null;
+
 const [logo, flag, circuit] = await Promise.all([
   getImage(CONFIG.logoUrl),
   getImage(`${CONFIG.flagBaseUrl}${raceCountrySlug}-flag.png`),
-  data.circuitSmallImage?.url
-    ? getImage(data.circuitSmallImage.url.replace(/\.\w+$/, "%20carbon.png"))
-    : Promise.resolve(null),
+  circuitUrl ? getImage(circuitUrl) : Promise.resolve(null),
 ]);
 
 // Determine the next upcoming session (or null if all past)
